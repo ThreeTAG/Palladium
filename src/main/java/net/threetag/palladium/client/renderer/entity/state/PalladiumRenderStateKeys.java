@@ -43,6 +43,7 @@ public class PalladiumRenderStateKeys {
     public static ContextKey<Map<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State>> RENDER_LAYERS = create("render_layers");
     public static ContextKey<Set<String>> HIDDEN_MODEL_PARTS = create("hidden_model_parts");
     public static ContextKey<Float[]> AIM = create("aim");
+    public static ContextKey<Float> SHRINK_OVERLAY = create("shrink_player_overlay");
     public static ContextKey<Map<DataContext, PalladiumAnimation>> ANIMATIONS = create("animations");
     public static ContextKey<Float> IN_FLIGHT = create("in_flight");
     public static ContextKey<Float> OPACITY = create("opacity");
@@ -68,6 +69,7 @@ public class PalladiumRenderStateKeys {
 
             state.setRenderData(HIDDEN_MODEL_PARTS, ModelUtil.getHiddenModelPartNames(entity));
             state.setRenderData(AIM, AimAbility.getTimer(entity, state.partialTick));
+            state.setRenderData(SHRINK_OVERLAY, AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.SHRINK_PLAYER_OVERLAY.get(), state.partialTick));
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
             state.setRenderData(OPACITY, 1F - AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.INVISIBILITY.get(), state.partialTick));
             state.setRenderData(TINT, -1);

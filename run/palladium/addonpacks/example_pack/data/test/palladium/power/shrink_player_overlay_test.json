@@ -1,0 +1,21 @@
+{
+  "name": "Shrink Player Overlay Test",
+  "icon": "minecraft:glass_pane",
+  "abilities": {
+    "invisibility": {
+      "type": "palladium:shrink_player_overlay",
+      "properties": {
+        "animation_timer": {
+          "max": 20,
+          "easing": "in_out_cubic"
+        }
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

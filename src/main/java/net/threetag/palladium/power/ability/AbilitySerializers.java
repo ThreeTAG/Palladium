@@ -11,7 +11,7 @@ public class AbilitySerializers {
 
     public static final DeferredHolder<AbilitySerializer<?>, DummyAbility.Serializer> DUMMY = ABILITIES.register("dummy", DummyAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, CommandAbility.Serializer> COMMAND = ABILITIES.register("command", CommandAbility.Serializer::new);
-    public static final DeferredHolder<AbilitySerializer<?>, ShrinkBodyOverlayAbility.Serializer> SHRINK_BODY_OVERLAY = ABILITIES.register("shrink_body_overlay", ShrinkBodyOverlayAbility.Serializer::new);
+    public static final DeferredHolder<AbilitySerializer<?>, ShrinkPlayerOverlayAbility.Serializer> SHRINK_PLAYER_OVERLAY = ABILITIES.register("shrink_player_overlay", ShrinkPlayerOverlayAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, AttributeModifierAbility.Serializer> ATTRIBUTE_MODIFIER = ABILITIES.register("attribute_modifier", AttributeModifierAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, HealingAbility.Serializer> HEALING = ABILITIES.register("healing", HealingAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, SlowfallAbility.Serializer> SLOWFALL = ABILITIES.register("slowfall", SlowfallAbility.Serializer::new);

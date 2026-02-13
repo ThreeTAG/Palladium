@@ -129,7 +129,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Command");
-            this.addAbility(AbilitySerializers.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
+            this.addAbility(AbilitySerializers.SHRINK_PLAYER_OVERLAY, "Shrink Body Overlay");
             this.addAbility(AbilitySerializers.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(AbilitySerializers.HEALING, "Healing");
             this.addAbility(AbilitySerializers.SLOWFALL, "Slowfall");
@@ -264,7 +264,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Befehl");
-            this.addAbility(AbilitySerializers.SHRINK_BODY_OVERLAY, "Körperoverlay schrumpfen");
+            this.addAbility(AbilitySerializers.SHRINK_PLAYER_OVERLAY, "Körperoverlay schrumpfen");
             this.addAbility(AbilitySerializers.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(AbilitySerializers.HEALING, "Heilung");
             this.addAbility(AbilitySerializers.SLOWFALL, "Langsamer Fall");
@@ -401,7 +401,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Befehl");
-            this.addAbility(AbilitySerializers.SHRINK_BODY_OVERLAY, "Körperoverlay schrumpfen");
+            this.addAbility(AbilitySerializers.SHRINK_PLAYER_OVERLAY, "Körperoverlay schrumpfen");
             this.addAbility(AbilitySerializers.ATTRIBUTE_MODIFIER, "Ättribütmodifikator");
             this.addAbility(AbilitySerializers.HEALING, "Helung");
             this.addAbility(AbilitySerializers.SLOWFALL, "Langsamer Fall");
