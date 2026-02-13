@@ -13,7 +13,6 @@
     "ItemMixin",
     "LevelSummaryMixin",
     "LivingEntityMixin",
-    "ServerCommonPacketListenerImplMixin",
     "OverlayMetadataSectionMixin",
     "PackFormatMixin",
     "PackMetadataSectionMixin",
@@ -21,13 +20,13 @@
     "PlayerMixin",
     "RecipeManagerMixin",
     "ResourcePackLoaderMixin",
+    "ServerCommonPacketListenerImplMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "VibrationSystemListenerMixin",
     "WorldVersionMixin"
   ],
   "client": [
     "client.AbstractClientPlayerMixin",
-    "client.PlayerAnimationControllerMixin",
     "client.AvatarRendererMixin",
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
@@ -39,11 +38,13 @@
     "client.ModelMixin",
     "client.ModelPartMixin",
     "client.MolangLoaderMixin",
+    "client.PlayerAnimationControllerMixin",
     "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
     "client.ScreenMixin",
     "client.SkyRendererMixin",
-    "client.SubmitNodeCollectionMixin"
+    "client.SubmitNodeCollectionMixin",
+    "client.TextureManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -97,7 +97,6 @@ public class PowerInstance {
 
     public void firstTick() {
         this.entryMap.forEach((id, instance) -> {
-            System.out.println("first tick!");
             if (instance.isEnabled()) {
                 instance.getAbility().firstTick(entity, instance);
             }
