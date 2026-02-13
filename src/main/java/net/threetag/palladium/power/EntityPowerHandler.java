@@ -5,9 +5,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
+import net.threetag.palladium.logic.triggers.PalladiumCriteriaTriggers;
 import net.threetag.palladium.network.SyncEntityPowersPacket;
 import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladium.registry.PalladiumRegistries;
@@ -93,6 +95,10 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         if (!this.hasPower(instance.getPowerId())) {
             this.powers.put(instance.getPowerId(), instance);
             instance.firstTick();
+
+            if(this.getEntity() instanceof ServerPlayer serverPlayer) {
+                PalladiumCriteriaTriggers.POWER_GAINED.get().trigger(serverPlayer, instance.getPowerId());
+            }
         }
     }
 
