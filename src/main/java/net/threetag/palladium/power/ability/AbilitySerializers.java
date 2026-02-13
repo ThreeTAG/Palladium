@@ -35,7 +35,6 @@ public class AbilitySerializers {
     public static final DeferredHolder<AbilitySerializer<?>, TrailAbility.Serializer> TRAIL = ABILITIES.register("trail", TrailAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, FireAspectAbility.Serializer> FIRE_ASPECT = ABILITIES.register("fire_aspect", FireAspectAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, ParticleAbility.Serializer> PARTICLES = ABILITIES.register("particles", ParticleAbility.Serializer::new);
-    public static final DeferredHolder<AbilitySerializer<?>, AnimationAbility.Serializer> ANIMATION = ABILITIES.register("animation", AnimationAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, FlightAbility.Serializer> FLIGHT = ABILITIES.register("flight", FlightAbility.Serializer::new);
 
 }

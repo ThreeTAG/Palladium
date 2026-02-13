@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.Avatar;
@@ -18,7 +17,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
-import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.VibrationPackRenderLayer;
@@ -30,7 +28,9 @@ import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.flight.DefaultFlightType;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.power.ability.*;
+import net.threetag.palladium.power.ability.AbilitySerializers;
+import net.threetag.palladium.power.ability.AbilityUtil;
+import net.threetag.palladium.power.ability.AimAbility;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -80,20 +80,6 @@ public class PalladiumRenderStateKeys {
 
             // Animations
             Map<DataContext, PalladiumAnimation> animations = new HashMap<>();
-            var flightAnimationHandler = EntityFlightHandler.get(entity).getAnimationHandler();
-            var flightAnimationId = flightAnimationHandler != null ? flightAnimationHandler.getAnimationAssetId() : null;
-            var flightAnim = PalladiumAnimationManager.INSTANCE.get(flightAnimationId);
-            if (flightAnim != null) {
-                animations.put(DataContext.forEntity(entity), flightAnim);
-            }
-            for (AbilityInstance<AnimationAbility> ability : AbilityUtil.getEnabledInstances(entity, AbilitySerializers.ANIMATION.get())) {
-                for (Identifier animationId : ability.getAbility().animations) {
-                    var animation = PalladiumAnimationManager.INSTANCE.get(animationId);
-                    if (animation != null) {
-                        animations.put(DataContext.forAbility(entity, ability), animation);
-                    }
-                }
-            }
             state.setRenderData(ANIMATIONS, animations);
         });
     }

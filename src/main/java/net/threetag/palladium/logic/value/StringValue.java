@@ -3,25 +3,24 @@ package net.threetag.palladium.logic.value;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
-import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.renderer.entity.PalladiumMoLangQuery;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.logic.molang.EntityContext;
 import net.threetag.palladium.util.molang.ModifyStringFunction;
 import team.unnamed.mocha.MochaEngine;
-import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 
-public abstract class StringValue extends Value {
+public abstract class StringValue extends Value implements EntityContext {
 
     public final String molang;
     public final ModifyStringFunction function;
+    private Entity cachedEntity;
 
     public StringValue(String molang) {
         this.molang = molang;
 
         if (this.molang != null && !this.molang.isEmpty() && !this.molang.isBlank()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
-            mocha.scope().set(Palladium.MOD_ID, JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
             this.function = mocha.compile(this.molang, ModifyStringFunction.class);
         } else {
             this.function = null;
@@ -33,11 +32,19 @@ public abstract class StringValue extends Value {
         String s = this.getString(context);
 
         if (this.function != null) {
-            PalladiumMoLangQuery.setContext(context, 1F);
-            s = this.function.modify(s);
+            this.cachedEntity = context.getEntity();
+
+            if (this.cachedEntity != null) {
+                s = this.function.modify(s);
+            }
         }
 
         return s;
+    }
+
+    @Override
+    public Entity entity() {
+        return this.cachedEntity;
     }
 
     public abstract String getString(DataContext context);

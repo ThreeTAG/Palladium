@@ -1,7 +1,0 @@
-{
-  "body.cape": {
-    "x_rot": "palladium.cape_x_rot()",
-    "y_rot": "palladium.cape_y_rot()",
-    "z_rot": "palladium.cape_z_rot()"
-  }
-}

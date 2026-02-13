@@ -1,7 +1,9 @@
 package net.threetag.palladium.proxy;
 
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
+import net.minecraft.client.entity.ClientMannequin;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.Holder;
@@ -51,6 +53,31 @@ import java.util.List;
 import java.util.Objects;
 
 public class PalladiumClientProxy extends PalladiumProxy {
+
+    @Override
+    public float getCurrentPartialTick() {
+        return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks();
+    }
+
+    @Override
+    public boolean hasCape(Entity entity) {
+        if (entity instanceof AbstractClientPlayer player) {
+            return player.getSkin().cape() != null;
+        } else if (entity instanceof ClientMannequin mannequin) {
+            return mannequin.getSkin().cape() != null;
+        }
+
+        return super.hasCape(entity);
+    }
+
+    @Override
+    public boolean isFirstPerson(Entity entity) {
+        if (entity instanceof AbstractClientPlayer player && player.isLocalPlayer()) {
+            return Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {

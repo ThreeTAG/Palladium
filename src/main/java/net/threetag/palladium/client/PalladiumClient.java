@@ -100,6 +100,7 @@ public class PalladiumClient {
     static void clientSetup(FMLClientSetupEvent event) {
         IconRenderer.registerRenderers();
         EntityEffectRenderer.registerRenderers();
+        PalladiumAnimationManager.registerLayers(event);
     }
 
     @SubscribeEvent
@@ -141,7 +142,6 @@ public class PalladiumClient {
         e.addListener(ModelLayerManager.ID, ModelLayerManager.INSTANCE);
         e.addListener(DynamicTextureManager.ID, DynamicTextureManager.INSTANCE);
         e.addListener(PackRenderLayerManager.ID, PackRenderLayerManager.INSTANCE);
-        e.addListener(PalladiumAnimationManager.ID, PalladiumAnimationManager.INSTANCE);
         e.addListener(ParticleEmitterManager.ID, ParticleEmitterManager.INSTANCE);
         e.addListener(BeamManager.ID, BeamManager.INSTANCE);
         e.addListener(TrailManager.ID, TrailManager.INSTANCE);

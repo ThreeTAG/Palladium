@@ -1,0 +1,12 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"cape": {
+			"bones": {
+				"body.cape": {
+					"rotation": ["palladium.cape_x_rot", "palladium.cape_y_rot", "palladium.cape_z_rot"]
+				}
+			}
+		}
+	}
+}

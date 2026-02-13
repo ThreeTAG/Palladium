@@ -19,11 +19,11 @@ public class PalladiumFlightTypes {
 
     public static void bootstrap(BiConsumer<ResourceKey<FlightType>, FlightType> consumer) {
         consumer.accept(LEVITATION, new DefaultFlightType(
-                1F, 1F, new DefaultFlightType.AnimationSettings(Palladium.id("flight/default"), 35F, 20F, 12F))
+                1F, 1F, new DefaultFlightType.AnimationSettings(Palladium.id("flight.default"), 35F, 20F, 12F))
         );
 
         consumer.accept(PROPULSION, new DefaultFlightType(
-                1F, 3F, new DefaultFlightType.AnimationSettings(Palladium.id("flight/default"), 35F, 20F, 12F))
+                1F, 3F, new DefaultFlightType.AnimationSettings(Palladium.id("flight.default"), 35F, 20F, 12F))
         );
 
         consumer.accept(WEB_SWINGING, new SwingingFlightType(

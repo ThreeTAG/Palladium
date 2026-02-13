@@ -129,7 +129,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Command");
-//            this.addAbility(AbilitySerializers.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(AbilitySerializers.SHRINK_BODY_OVERLAY, "Shrink Body Overlay");
             this.addAbility(AbilitySerializers.ATTRIBUTE_MODIFIER, "Attribute Modifier");
             this.addAbility(AbilitySerializers.HEALING, "Healing");
@@ -145,7 +144,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.SHADER_EFFECT, "Shader Effect");
             this.addAbility(AbilitySerializers.GUI_OVERLAY, "Gui Overlay");
             this.addAbility(AbilitySerializers.SHOW_BOTH_ARMS, "Show Both Arms");
-//            this.addAbility(AbilitySerializers.PLAYER_ANIMATION, "Player Animation");
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Fluid Walking");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
@@ -266,7 +264,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Befehl");
-//            this.addAbility(AbilitySerializers.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(AbilitySerializers.SHRINK_BODY_OVERLAY, "Körperoverlay schrumpfen");
             this.addAbility(AbilitySerializers.ATTRIBUTE_MODIFIER, "Attributmodifikator");
             this.addAbility(AbilitySerializers.HEALING, "Heilung");
@@ -282,7 +279,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(AbilitySerializers.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(AbilitySerializers.SHOW_BOTH_ARMS, "Beide Arme zeigen");
-//            this.addAbility(AbilitySerializers.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
@@ -405,7 +401,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Befehl");
-//            this.addAbility(AbilitySerializers.RENDER_LAYER_BY_ACCESSORY_SLOT, "Render Layer");
             this.addAbility(AbilitySerializers.SHRINK_BODY_OVERLAY, "Körperoverlay schrumpfen");
             this.addAbility(AbilitySerializers.ATTRIBUTE_MODIFIER, "Ättribütmodifikator");
             this.addAbility(AbilitySerializers.HEALING, "Helung");
@@ -421,7 +416,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.SHADER_EFFECT, "Shader Effekt");
             this.addAbility(AbilitySerializers.GUI_OVERLAY, "GUI-Overlay");
             this.addAbility(AbilitySerializers.SHOW_BOTH_ARMS, "Beide Arme zeijen");
-//            this.addAbility(AbilitySerializers.PLAYER_ANIMATION, "Spieler-Animation");
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");

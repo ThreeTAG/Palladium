@@ -5,6 +5,6 @@ import team.unnamed.mocha.runtime.compiled.Named;
 
 public interface ModifyIntFunction extends MochaCompiledFunction {
 
-    int modify(@Named("value") int value);
+    int modify(@Named("this") int value);
 
 }

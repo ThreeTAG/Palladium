@@ -27,6 +27,7 @@
   ],
   "client": [
     "client.AbstractClientPlayerMixin",
+    "client.PlayerAnimationControllerMixin",
     "client.AvatarRendererMixin",
     "client.GameRendererMixin",
     "client.HumanoidModelMixin",
@@ -37,6 +38,7 @@
     "client.LocalPlayerMixin",
     "client.ModelMixin",
     "client.ModelPartMixin",
+    "client.MolangLoaderMixin",
     "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
     "client.ScreenMixin",

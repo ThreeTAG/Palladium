@@ -6,45 +6,45 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.StringRepresentable;
-import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.renderer.entity.PalladiumMoLangQuery;
+import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.context.DataContextKeys;
+import net.threetag.palladium.logic.molang.EntityContext;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.mocha.MochaEngine;
-import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public record PalladiumAnimation(Map<String, PartAnimation> animations) {
+public final class PalladiumAnimation implements EntityContext {
 
     public static final Codec<PalladiumAnimation> CODEC = Codec.unboundedMap(Codec.STRING, PartAnimation.CODEC)
             .xmap(PalladiumAnimation::new, palladiumAnimation -> palladiumAnimation.animations);
     public static final PalladiumAnimation EMPTY = new PalladiumAnimation(Map.of());
+    private final Map<String, PartAnimation> animations;
+    private Entity cachedEntity;
 
-    @SuppressWarnings("UnstableApiUsage")
     public PalladiumAnimation(Map<String, PartAnimation> animations) {
         this.animations = animations;
 
         if (!this.animations.isEmpty()) {
             MochaEngine<?> mocha = MochaEngine.createStandard();
-            mocha.scope().set(Palladium.MOD_ID, JavaObjectBinding.of(PalladiumMoLangQuery.class, PalladiumMoLangQuery.INSTANCE, null));
             this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }
 
     public void animate(Model<?> model, DataContext context, EntityRenderState renderState, float partialTick) {
         if (!this.animations.isEmpty()) {
+            this.cachedEntity = context.getEntity();
+
             if (renderState instanceof AvatarRenderState state) {
                 context.with(DataContextKeys.CAPE_X_ROT, -(6.0F + state.capeLean / 2.0F + state.capeFlap));
                 context.with(DataContextKeys.CAPE_Y_ROT, 180.0F - state.capeLean2 / 2.0F);
                 context.with(DataContextKeys.CAPE_Z_ROT, state.capeLean2 / -2.0F);
             }
-
-            PalladiumMoLangQuery.setContext(context, partialTick);
 
             this.animations.forEach((bone, animation) -> {
                 var part = ModelUtil.getPartFromModel(model, bone);
@@ -54,6 +54,34 @@ public record PalladiumAnimation(Map<String, PartAnimation> animations) {
                 }
             });
         }
+    }
+
+    @Override
+    public Entity entity() {
+        return this.cachedEntity;
+    }
+
+    public Map<String, PartAnimation> animations() {
+        return animations;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (PalladiumAnimation) obj;
+        return Objects.equals(this.animations, that.animations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(animations);
+    }
+
+    @Override
+    public String toString() {
+        return "PalladiumAnimation[" +
+                "animations=" + animations + ']';
     }
 
     public enum PartAnimationType implements StringRepresentable {
