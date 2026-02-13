@@ -1,0 +1,20 @@
+{
+  "name": "Has Effect Test",
+  "icon": "minecraft:barrier",
+  "abilities": {
+    "test": {
+      "type": "palladium:command",
+      "first_tick_commands": [
+        "say First Tick"
+      ],
+      "commands": [],
+      "last_tick_commands": [],
+      "state": {
+        "enabling": {
+          "type": "palladium:has_effect",
+          "effect": "minecraft:poison"
+        }
+      }
+    }
+  }
+}
