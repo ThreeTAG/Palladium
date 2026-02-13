@@ -1,8 +1,0 @@
-{
-  "right_arm": {
-    "z_rot": "(math.sin(palladium.get_age() * 20) + 0.5) * 40"
-  },
-  "left_arm": {
-    "z_rot": "(math.sin(palladium.get_age() * 20) + 0.5) * -40"
-  }
-}

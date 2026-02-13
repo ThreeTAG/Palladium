@@ -33,7 +33,7 @@ public class PalladiumRenderLayerProvider extends RenderLayerProvider {
                 this.getTexture(type),
                 RenderTypeRegistry.ENTITY_TRANSLUCENT,
                 glowing ? 15 : 0,
-                PackRenderLayerAnimation.EMPTY,
+                null,
                 PackRenderLayerProperties.DEFAULT,
                 PerspectiveAwareConditions.EMPTY
         );

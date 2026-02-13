@@ -5,6 +5,6 @@ import team.unnamed.mocha.runtime.compiled.Named;
 
 public interface ModifyFloatFunction extends MochaCompiledFunction {
 
-    float modify(@Named("value") float value);
+    float modify(@Named("this") float value);
 
 }

@@ -5,6 +5,6 @@ import team.unnamed.mocha.runtime.compiled.Named;
 
 public interface ModifyStringFunction extends MochaCompiledFunction {
 
-    String modify(@Named("value") String value);
+    String modify(@Named("this") String value);
 
 }

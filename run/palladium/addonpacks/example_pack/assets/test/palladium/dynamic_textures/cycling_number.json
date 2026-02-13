@@ -3,7 +3,7 @@
   "variables": {
     "NUMBER": {
       "type": "palladium:entity_tick_count",
-      "modify": "math.mod(value / 20, 3) + 1"
+      "modify": "math.mod(this / 20, 3) + 1"
     }
   }
 }

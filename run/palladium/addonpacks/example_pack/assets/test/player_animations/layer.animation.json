@@ -4,7 +4,7 @@
 		"layer.test": {
 			"bones": {
 				"head.halo": {
-					"rotation": ["pal.disabled", "query.life_time", "pal.disabled"]
+					"position": ["pal.disabled", "math.sin(query.anim_time()) + 4", "pal.disabled"]
 				}
 			}
 		}

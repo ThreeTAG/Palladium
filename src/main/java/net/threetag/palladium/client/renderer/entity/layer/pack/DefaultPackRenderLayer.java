@@ -23,6 +23,7 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
+import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.client.renderer.RenderTypeFunction;
 import net.threetag.palladium.client.renderer.RenderTypeRegistry;
@@ -35,7 +36,6 @@ import net.threetag.palladium.logic.context.DataContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,10 +46,10 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             SkinTypedValue.codec(PackRenderLayerTexture.CODEC).fieldOf("texture").forGetter(l -> l.textures),
             RenderTypeRegistry.CODEC.optionalFieldOf("render_type", RenderTypeRegistry.ENTITY_TRANSLUCENT).forGetter(l -> l.renderType),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
-            PackRenderLayerAnimation.CODEC.optionalFieldOf("animations", PackRenderLayerAnimation.EMPTY).forGetter(l -> l.animations),
+            PalladiumAnimation.CODEC.optionalFieldOf("overrides").forGetter(l -> Optional.ofNullable(l.overrides)),
             propertiesCodec(), conditionsCodec()
-    ).apply(instance, (modelLayers, textures, renderType, lightEmission, animations, properties, conditions) -> {
-        return new DefaultPackRenderLayer(modelLayers.orElse(null), textures, renderType, lightEmission, animations, properties, conditions);
+    ).apply(instance, (modelLayers, textures, renderType, lightEmission, overrides, properties, conditions) -> {
+        return new DefaultPackRenderLayer(modelLayers.orElse(null), textures, renderType, lightEmission, overrides.orElse(null), properties, conditions);
     }));
 
     @Nullable
@@ -58,16 +58,16 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
     private final SkinTypedValue<PackRenderLayerTexture> textures;
     private final RenderTypeFunction renderType;
     private final int lightEmission;
-    private final PackRenderLayerAnimation animations;
+    private final PalladiumAnimation overrides;
 
-    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PackRenderLayerAnimation animations, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PalladiumAnimation overrides, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
         super(properties, conditions);
 
         this.modelLayers = modelLayers;
         this.textures = textures;
         this.renderType = renderType;
         this.lightEmission = lightEmission;
-        this.animations = animations;
+        this.overrides = overrides;
     }
 
     @Override
@@ -102,7 +102,9 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
             mimicModelParts(parentModel.root(), model.root());
 
-            this.animations.animate(model, context, state, state.partialTick);
+            if (this.overrides != null) {
+                this.overrides.animate(model, context, state, state.partialTick);
+            }
 
             if (state instanceof IAvatarAnimationState animationState) {
                 AvatarAnimManager emote = animationState.playerAnimLib$getAnimManager();
@@ -138,7 +140,9 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 modelPart.skipDraw = false;
             }
 
-            this.animations.animate(parentModel, context, state, state.partialTick);
+            if (this.overrides != null) {
+                this.overrides.animate(parentModel, context, state, state.partialTick);
+            }
 
             submitNodeCollector.submitModel(
                     parentModel,
@@ -214,12 +218,16 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 return;
             }
 
-            this.animations.animate(model, context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            if (this.overrides != null) {
+                this.overrides.animate(model, context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            }
         } else {
             armPart.visible = true;
             armPart.skipDraw = false;
 
-            this.animations.animate(playerRenderer.getModel(), context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            if (this.overrides != null) {
+                this.overrides.animate(playerRenderer.getModel(), context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+            }
         }
 
         submitNodeCollector.submitModelPart(armPart, poseStack,
@@ -262,13 +270,13 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                     .add("texture", TYPE_ANY_TEXTURE, "The texture to render the model with.")
                     .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(Identifier::toString).toList()), "The render type to render the model with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
                     .addOptional("light_emission", TYPE_INT, "The light emission of the model. Must be within 0 - 15", 0)
-                    .addOptional("animations", TYPE_IDENTIFIER, "ID of an animations file")
+//                    .addOptional("overrides", TYPE_IDENTIFIER, "ID of an animations file")
                     .addExampleObject(new DefaultPackRenderLayer(
                             new SkinTypedValue<>(ModelLayerLocationCodec.parse("example:wide_model"), ModelLayerLocationCodec.parse("example:slim_model")),
                             new SkinTypedValue<>(new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "wide_texture")), new PackRenderLayerTexture(Identifier.fromNamespaceAndPath("example", "slim_texture"))),
                             RenderTypeRegistry.ENTITY_TRANSLUCENT,
                             5,
-                            PackRenderLayerAnimation.EMPTY,
+                            null,
                             PackRenderLayerProperties.DEFAULT,
                             PerspectiveAwareConditions.EMPTY
                     ));
