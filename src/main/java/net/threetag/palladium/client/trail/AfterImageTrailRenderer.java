@@ -15,6 +15,7 @@ import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.awt.*;
+import java.util.Collections;
 
 public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRenderer.Data> {
 
@@ -43,11 +44,10 @@ public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRender
     @Override
     public Data createData(Entity entity) {
         var data = new Data();
-        PalladiumRenderStateKeys.IGNORE_TRAILS = true;
         data.renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
         data.renderState = data.renderer.createRenderState(entity, 1F);
         data.renderState.setRenderData(PalladiumRenderStateKeys.TINT, this.color.getRGB());
-        PalladiumRenderStateKeys.IGNORE_TRAILS = false;
+        data.renderState.setRenderData(PalladiumRenderStateKeys.TRAILS, Collections.emptyMap());
         return data;
     }
 
@@ -76,7 +76,7 @@ public class AfterImageTrailRenderer extends TrailRenderer<AfterImageTrailRender
             builder.setName("After Image Trail").setDescription("Renders copies of the entity behind it.")
                     .addOptional("color", TYPE_COLOR, "Defines the color/tint of the after image", "#ffffff")
                     .addOptional("opacity", TYPE_FLOAT, "Starting opacity of the after image", 0.5F)
-                    .setExampleObject(new AfterImageTrailRenderer(Color.RED, 0.2F));
+                    .addExampleObject(new AfterImageTrailRenderer(Color.RED, 0.2F));
         }
     }
 }

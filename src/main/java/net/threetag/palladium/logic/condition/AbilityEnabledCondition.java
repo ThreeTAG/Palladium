@@ -2,8 +2,11 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
@@ -21,7 +24,7 @@ public record AbilityEnabledCondition(AbilityReference ability) implements Condi
     @Override
     public boolean test(DataContext context) {
         var entity = context.getLivingEntity();
-        var holder = context.getPowerHolder();
+        var holder = context.getPowerInstance();
 
         if (entity == null) {
             return false;
@@ -49,9 +52,14 @@ public record AbilityEnabledCondition(AbilityReference ability) implements Condi
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the ability is enabled. If the power is not null, it will look for the ability in the specified power. If the power is null, it will look for the ability in the current power.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityEnabledCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Ability enabled")
+                    .setDescription("Checks if the ability is enabled.")
+                    .add("ability", TYPE_ABILITY_REFERENCE, "The ability that needs to be enabled")
+                    .addExampleObject(new AbilityEnabledCondition(new AbilityReference(
+                            Identifier.fromNamespaceAndPath("example", "power"),
+                            "ability_key"
+                    )));
         }
-
     }
 }

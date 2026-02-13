@@ -1,8 +1,10 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 public class FalseCondition implements Condition {
@@ -35,8 +37,10 @@ public class FalseCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "It's just false. That's it.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, FalseCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("False")
+                    .setDescription("It's just false. That's it.")
+                    .addExampleObject(new FalseCondition());
         }
     }
 

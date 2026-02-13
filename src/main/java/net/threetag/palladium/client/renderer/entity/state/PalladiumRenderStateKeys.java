@@ -5,6 +5,7 @@ import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.entity.ClientAvatarState;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.util.context.ContextKey;
@@ -18,6 +19,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.animation.PalladiumAnimation;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
+import net.threetag.palladium.client.renderer.entity.layer.pack.VibrationPackRenderLayer;
 import net.threetag.palladium.client.trail.EntityTrailHandler;
 import net.threetag.palladium.client.trail.Trail;
 import net.threetag.palladium.client.util.ModelUtil;
@@ -46,7 +48,9 @@ public class PalladiumRenderStateKeys {
     public static ContextKey<Float> OPACITY = create("opacity");
     public static ContextKey<Integer> TINT = create("tint");
     public static ContextKey<Map<Trail, EntityTrailHandler.TrailInstance>> TRAILS = create("trails");
-    public static boolean IGNORE_TRAILS = false;
+    public static ContextKey<EntityRenderState> VIBRATION_RENDER_STATE = create("vibration_render_state");
+
+    public static boolean IGNORE_VIBRATION_STATE = false;
 
     private static <T> ContextKey<T> create(String name) {
         return new ContextKey<>(Palladium.id(name));
@@ -67,8 +71,11 @@ public class PalladiumRenderStateKeys {
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
             state.setRenderData(OPACITY, 1F - AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.INVISIBILITY.get(), state.partialTick));
             state.setRenderData(TINT, -1);
-            if (!IGNORE_TRAILS) {
-                state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());
+            state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());
+
+            if (!IGNORE_VIBRATION_STATE) {
+                state.setRenderData(VIBRATION_RENDER_STATE, VibrationPackRenderLayer.createRenderStateForVibrations(entity, state.partialTick));
+                IGNORE_VIBRATION_STATE = false;
             }
 
             // Animations
@@ -100,6 +107,10 @@ public class PalladiumRenderStateKeys {
                 state.capeLean = Mth.clamp(state.capeLean, 0.0F, 150.0F);
             }
         }
+    }
+
+    public static void ignoreVibrationState() {
+        IGNORE_VIBRATION_STATE = true;
     }
 
 }

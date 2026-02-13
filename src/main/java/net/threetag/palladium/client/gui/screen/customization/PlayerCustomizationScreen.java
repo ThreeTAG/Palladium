@@ -10,10 +10,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.threetag.palladium.client.gui.component.tab.IconTabNavigationBar;
+import net.minecraft.resources.ResourceKey;
+import net.threetag.palladium.client.gui.widget.tab.IconTabNavigationBar;
 import net.threetag.palladium.customization.CustomizationCategory;
+import net.threetag.palladium.customization.CustomizationHelper;
 import net.threetag.palladium.customization.CustomizationPreview;
-import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -26,16 +27,22 @@ import java.util.function.Consumer;
 public class PlayerCustomizationScreen extends Screen {
 
     public static final String TITLE_TRANSLATION_KEY = "gui.palladium.player_customizations";
-    protected final Screen lastScreen;
-    public final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 
+    protected final Screen lastScreen;
+    protected final ResourceKey<CustomizationCategory> preselected;
+    public final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
     public final TabManager tabManager = new TabManager(this::addRenderableWidget, this::removeWidget);
     private IconTabNavigationBar tabNavigationBar;
     private CustomizationPreviewComponent preview;
 
     public PlayerCustomizationScreen(Screen lastScreen) {
+        this(lastScreen, null);
+    }
+
+    public PlayerCustomizationScreen(Screen lastScreen, @Nullable ResourceKey<CustomizationCategory> preselected) {
         super(Component.translatable(TITLE_TRANSLATION_KEY));
         this.lastScreen = lastScreen;
+        this.preselected = preselected;
     }
 
     @Override
@@ -49,19 +56,26 @@ public class PlayerCustomizationScreen extends Screen {
 
     private void addContents() {
         var tabBuilder = IconTabNavigationBar.builder(this.tabManager, this.width);
-        var context = DataContext.forEntity(Objects.requireNonNull(this.minecraft).player);
         var registry = Objects.requireNonNull(Objects.requireNonNull(this.minecraft).level).registryAccess()
                 .lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
+        int i = 0;
+        int selectedTab = 0;
 
         for (CustomizationCategory category : registry
-                .stream().filter(category -> category.isVisible(context))
+                .stream().filter(category -> CustomizationHelper.hasSelectableCustomization(this.minecraft.player, category))
                 .sorted(Comparator.comparingInt(CustomizationCategory::sortIndex)).toList()) {
             tabBuilder.addTab(new CustomizationCategoryTab(this, registry.wrapAsHolder(category)));
+
+            if (this.preselected != null && this.preselected.equals(registry.getResourceKey(category).orElse(null))) {
+                selectedTab = i;
+            }
+
+            i++;
         }
 
         this.tabNavigationBar = tabBuilder.build();
         this.addRenderableWidget(this.tabNavigationBar);
-        this.tabNavigationBar.selectTab(0, false);
+        this.tabNavigationBar.selectTab(selectedTab, false);
 
         this.addRenderableWidget(this.preview = new CustomizationPreviewComponent(
                 this.width / 3 * 2, this.tabNavigationBar.getRectangle().bottom(),

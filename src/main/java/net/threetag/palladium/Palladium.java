@@ -17,6 +17,7 @@ import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.config.PalladiumServerConfig;
 import net.threetag.palladium.customization.CustomizationSerializers;
+import net.threetag.palladium.dialog.PalladiumDialogActions;
 import net.threetag.palladium.entity.PalladiumEntityTypes;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.effect.EntityEffects;
@@ -63,6 +64,7 @@ public final class Palladium {
         PalladiumEntityTypes.ENTITIES.register(modEventBus);
         PalladiumMenuTypes.MENU_TYPES.register(modEventBus);
         PalladiumDataComponents.DATA_COMPONENTS.register(modEventBus);
+        PalladiumDialogActions.ACTIONS.register(modEventBus);
         EntityEffects.EFFECTS.register(modEventBus);
         KeyBindTypeSerializers.KEY_BIND_TYPES.register(modEventBus);
         UnlockingHandlerSerializers.UNLOCKING_HANDLERS.register(modEventBus);
@@ -98,6 +100,7 @@ public final class Palladium {
         RegistryDumpCommand.register(e.getBuilder(), e.getBuildContext());
         DataAttachmentCommand.register(e.getBuilder(), e.getBuildContext());
         CustomizationCommand.register(e.getBuilder(), e.getBuildContext());
+        ScreenCommand.register(e.getBuilder(), e.getBuildContext());
     }
 
     public static Identifier id(String path) {

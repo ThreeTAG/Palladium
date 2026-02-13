@@ -19,7 +19,7 @@ public class PalladiumRenderLayerProvider extends RenderLayerProvider {
     }
 
     @Override
-    protected void gather() {
+    protected void gather(HolderLookup.Provider provider) {
         for (BuiltinCustomization.Type type : BuiltinCustomization.Type.values()) {
             this.unconditional(type.getRenderLayerId(), this.makeRenderLayer(type));
         }

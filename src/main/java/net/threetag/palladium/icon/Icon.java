@@ -1,6 +1,5 @@
 package net.threetag.palladium.icon;
 
-import com.google.gson.JsonParseException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.minecraft.IdentifierException;
@@ -15,8 +14,10 @@ import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 public interface Icon {
 
+    Codec<Icon> DIRECT_CODEC = PalladiumRegistries.ICON_SERIALIZER.byNameCodec().dispatch(Icon::getSerializer, IconSerializer::codec);
+
     Codec<Icon> CODEC = Codec.withAlternative(
-            PalladiumRegistries.ICON_SERIALIZER.byNameCodec().dispatch(Icon::getSerializer, IconSerializer::codec),
+            DIRECT_CODEC,
             Codec.STRING.comapFlatMap(Icon::read, Icon::toSimpleString).stable()
     );
 
@@ -30,11 +31,11 @@ public interface Icon {
         } else {
             Identifier id = Identifier.parse(input);
 
-            if (!BuiltInRegistries.ITEM.containsKey(id)) {
-                throw new JsonParseException("Unknown item '" + input + "'");
+            if (BuiltInRegistries.ITEM.containsKey(id)) {
+                return new ItemIcon(BuiltInRegistries.ITEM.getValue(id));
             }
 
-            return new ItemIcon(BuiltInRegistries.ITEM.getValue(id));
+            return new SpriteIcon(id);
         }
     }
 

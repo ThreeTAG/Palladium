@@ -37,7 +37,7 @@ public class EntityTickCountValue extends IntegerValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, EntityTickCountValue> builder, HolderLookup.Provider provider) {
             builder.setName("Entity Tick Count").setDescription("Returns the tick count of the entity.")
-                    .setExampleObject(new EntityTickCountValue("value * 2"));
+                    .addExampleObject(new EntityTickCountValue("value * 2"));
         }
     }
 }

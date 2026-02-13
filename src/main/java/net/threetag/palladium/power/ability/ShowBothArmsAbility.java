@@ -34,7 +34,7 @@ public class ShowBothArmsAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, ShowBothArmsAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Enables the rendering of your off-hand in first-person.")
-                    .setExampleObject(new ShowBothArmsAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new ShowBothArmsAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

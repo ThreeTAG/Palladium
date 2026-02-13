@@ -37,7 +37,7 @@ public class AbilityKeyValue extends StringValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, AbilityKeyValue> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Key").setDescription("Returns the key of the ability in the context.")
-                    .setExampleObject(new AbilityKeyValue(""));
+                    .addExampleObject(new AbilityKeyValue(""));
         }
     }
 }

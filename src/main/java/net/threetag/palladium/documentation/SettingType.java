@@ -40,6 +40,10 @@ public abstract class SettingType {
         return combined(type, simple(type + "[]"));
     }
 
+    public static SettingType intRange(int min, int max) {
+        return simple("Integer (" + min + " ~ " + max + ")");
+    }
+
     private static class Simple extends SettingType {
 
         private final String name;

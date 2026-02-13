@@ -1,11 +1,11 @@
 package net.threetag.palladium.datagen.internal;
 
-import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -13,8 +13,10 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.command.CustomizationCommand;
 import net.threetag.palladium.command.DataAttachmentCommand;
+import net.threetag.palladium.command.ScreenCommand;
 import net.threetag.palladium.command.SuperpowerCommand;
 import net.threetag.palladium.compat.geckolib.GeckoLibCompat;
 import net.threetag.palladium.config.PalladiumClientConfig;
@@ -145,7 +147,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Fluid Walking");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Restrict Slots");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
-            this.addAbility(AbilitySerializers.VIBRATE, "Vibrate");
             this.addAbility(AbilitySerializers.INTANGIBILITY, "Intangibility");
             this.addAbility(AbilitySerializers.NAME_CHANGE, "Name Change");
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk Immunity");
@@ -184,14 +185,19 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s can not be unlocked by commands");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "The given entity can not have customizations");
 
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Opened screen %s for %s");
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_MULTIPLE, "Opened screen %s for %s players");
+
             // Container
             this.add("container.palladium.tailoring", "Tailoring");
             this.add("container.palladium.tailoring.craft", "Create");
 
             // GUI
-            this.add("gui.palladium.powers", "Powers");
-            this.add("gui.palladium.powers.buy_ability", "Do you want to unlock this ability?");
-            this.add("gui.palladium.powers.buy_ability.or", "or");
+            this.add(PowerTreeWidget.TRANS_TITLE, "Powers");
+            this.add(PowerTreeWidget.TRANS_CUSTOMIZE, "Customize");
+            this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Unlock");
+            this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "There doesn't seem to be anything here...");
+            this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
@@ -276,7 +282,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Auf Flüssigkeit Laufen");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
-            this.addAbility(AbilitySerializers.VIBRATE, "Vibrieren");
             this.addAbility(AbilitySerializers.INTANGIBILITY, "Ungreifbarkeit");
             this.addAbility(AbilitySerializers.NAME_CHANGE, "Namesänderung");
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
@@ -315,14 +320,19 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kann nicht per Befehl freigeschaltet werden");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die angegebene Entität kann keine Anpassungen besitzen");
 
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Fenster %s für %s geöffnet");
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_MULTIPLE, "Fenster %s für %s Spieler geöffnet");
+
             // Container
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // GUI
-            this.add("gui.palladium.powers", "Kräfte");
-            this.add("gui.palladium.powers.buy_ability", "Möchtest du diese Fähigkeit freischalten?");
-            this.add("gui.palladium.powers.buy_ability.or", "oder");
+            this.add(PowerTreeWidget.TRANS_TITLE, "Kräfte");
+            this.add(PowerTreeWidget.TRANS_CUSTOMIZE, "Anpassen");
+            this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Freischalten");
+            this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "Hier scheint es nichts zu geben...");
+            this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
@@ -339,7 +349,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addCustomizationCategory(CustomizationCategories.LEGS, "Beine");
         }
     }
-    
+
     public static class Saxon extends PalladiumLangProvider {
 
         public Saxon(PackOutput output) {
@@ -409,7 +419,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FLUID_WALKING, "Uff Flüssichkeht Lofen");
             this.addAbility(AbilitySerializers.RESTRICT_SLOTS, "Slots beschränken");
             this.addAbility(AbilitySerializers.PLAY_SOUND, "Sound");
-            this.addAbility(AbilitySerializers.VIBRATE, "Vibrieren");
             this.addAbility(AbilitySerializers.INTANGIBILITY, "Ungreifbarkeht");
             this.addAbility(AbilitySerializers.NAME_CHANGE, "Namesänderung");
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
@@ -448,14 +457,19 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kannsch du mit Befehln nich freischaltn");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die Geeschd kann kee Anpassungen habn");
 
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Fenster %s für %s uffgemacht");
+            this.add(ScreenCommand.TRANS_SHOWED_SCREEN_MULTIPLE, "Fenster %s für %s Spielor uffgemacht");
+
             // Container
             this.add("container.palladium.tailoring", "Zuschneidern");
             this.add("container.palladium.tailoring.craft", "Herstellen");
 
             // GUI
-            this.add("gui.palladium.powers", "Kräfte");
-            this.add("gui.palladium.powers.buy_ability", "Möschtest'e disse Fähischgeht freischaltn?");
-            this.add("gui.palladium.powers.buy_ability.or", "oder");
+            this.add(PowerTreeWidget.TRANS_TITLE, "Kräfte");
+            this.add(PowerTreeWidget.TRANS_CUSTOMIZE, "Anpassn");
+            this.add(PowerTreeWidget.TRANS_KEY_UNLOCK, "Freischaltn");
+            this.add(PowerTreeWidget.TRANS_KEY_NO_ABILITIES_LABEL, "Hier scheind es nüschd zu gähm...");
+            this.add(PowerTreeWidget.TRANS_KEY_VERY_SAD_LABEL, ":(");
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
@@ -472,5 +486,5 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addCustomizationCategory(CustomizationCategories.LEGS, "Behne");
         }
     }
-    
+
 }

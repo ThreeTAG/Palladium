@@ -45,7 +45,7 @@ public class MoonPhaseValue extends IntegerValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoonPhaseValue> builder, HolderLookup.Provider provider) {
             builder.setName("Moon Phase").setDescription("Returns the current moon phase, an integer from 0 to 7.")
-                    .setExampleObject(new MoonPhaseValue("value * 2"));
+                    .addExampleObject(new MoonPhaseValue("value * 2"));
         }
     }
 }

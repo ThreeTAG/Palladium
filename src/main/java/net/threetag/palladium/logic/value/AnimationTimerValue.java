@@ -25,7 +25,7 @@ public class AnimationTimerValue extends IntegerValue {
     @Override
     public int getInteger(DataContext context) {
         if (context.getEntity() instanceof LivingEntity living) {
-            var ability = this.reference.getInstance(living, context.getPowerHolder());
+            var ability = this.reference.getInstance(living, context.getPowerInstance());
 
             if (ability != null && ability.getAnimationTimer() != null) {
                 return ability.getAnimationTimer().value();
@@ -51,7 +51,7 @@ public class AnimationTimerValue extends IntegerValue {
         public void addDocumentation(CodecDocumentationBuilder<Value, AnimationTimerValue> builder, HolderLookup.Provider provider) {
             builder.setName("Animation Timer").setDescription("Returns the value of the animation timer for the specified ability. Defaults to 0 if no ability or animation timer was found.")
                     .add("ability", TYPE_ABILITY_REFERENCE, "The ability to get the animation timer for. Defined in this syntax: <power_id>#<ability_key>")
-                    .setExampleObject(new AnimationTimerValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
+                    .addExampleObject(new AnimationTimerValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
         }
     }
 }

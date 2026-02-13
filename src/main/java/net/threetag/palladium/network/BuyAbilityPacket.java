@@ -25,8 +25,8 @@ public record BuyAbilityPacket(AbilityReference reference) implements CustomPack
 
     public static void handle(BuyAbilityPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> packet.reference.optional(context.player(), null).ifPresent(ability -> {
-            if(ability.getAbility().getStateManager().getUnlockingHandler() instanceof BuyableUnlockingHandler buyable) {
-                if(buyable.hasEnoughCurrency(context.player())) {
+            if (ability.getAbility().getStateManager().getUnlockingHandler() instanceof BuyableUnlockingHandler buyable) {
+                if (buyable.hasEnoughCurrency(context.player())) {
                     buyable.consumeCurrency(context.player());
                     buyable.unlock(context.player(), ability);
                 }

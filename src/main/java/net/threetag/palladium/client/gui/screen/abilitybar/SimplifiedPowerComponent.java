@@ -1,15 +1,12 @@
 package net.threetag.palladium.client.gui.screen.abilitybar;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.threetag.palladium.client.gui.component.UiAlignment;
-import net.threetag.palladium.client.gui.component.UiComponent;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 
-public class SimplifiedPowerComponent implements UiComponent {
+public class SimplifiedPowerComponent implements AbilityBarComponent {
 
     private final AbilityBar.AbilityList abilityList;
     private final AbilityInstance<?> abilityInstance;
@@ -30,9 +27,9 @@ public class SimplifiedPowerComponent implements UiComponent {
     }
 
     @Override
-    public void render(Minecraft minecraft, GuiGraphics gui, DeltaTracker deltaTracker, int x, int y, UiAlignment alignment) {
+    public void render(Minecraft minecraft, GuiGraphics gui, int x, int y, AbilityBarAlignment alignment) {
         var texture = this.abilityList.getTexture(DataContext.forAbility(minecraft.player, this.abilityInstance));
         gui.blit(RenderPipelines.GUI_TEXTURED,texture, x, y, 0, 168, 24, 24, 256, 256);
-        AbilityListComponent.renderAbility(minecraft, texture, gui, deltaTracker, x + 3, y + 3, alignment, this.abilityInstance, 0);
+        AbilityListComponent.renderAbility(minecraft, texture, gui, x + 3, y + 3, alignment, this.abilityInstance, 0);
     }
 }

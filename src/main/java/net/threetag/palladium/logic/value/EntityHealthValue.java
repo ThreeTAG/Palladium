@@ -37,7 +37,7 @@ public class EntityHealthValue extends FloatValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, EntityHealthValue> builder, HolderLookup.Provider provider) {
             builder.setName("Entity Health").setDescription("Returns the health of the entity.")
-                    .setExampleObject(new EntityHealthValue("value * 2"));
+                    .addExampleObject(new EntityHealthValue("value * 2"));
         }
     }
 }

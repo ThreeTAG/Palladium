@@ -37,7 +37,7 @@ public class CrouchingValue extends BooleanValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, CrouchingValue> builder, HolderLookup.Provider provider) {
             builder.setName("Crouching").setDescription("Checks if the entity is crouching.")
-                    .setExampleObject(new CrouchingValue("is_crouching", "not_crouching"));
+                    .addExampleObject(new CrouchingValue("is_crouching", "not_crouching"));
         }
     }
 }

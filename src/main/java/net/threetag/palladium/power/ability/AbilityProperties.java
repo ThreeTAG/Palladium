@@ -57,11 +57,11 @@ public class AbilityProperties {
     private Identifier animationLayer = ACTIVE_ANIMATION_LAYER;
     private Identifier animation = null;
 
-    private AbilityProperties() {
+    public AbilityProperties() {
 
     }
 
-    private AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
+    public AbilityProperties(Component title, Icon icon, AbilityDescription description, AbilityColor color,
                               boolean hiddenInGUI, boolean hiddenInBar, int listIndex, Vec2 guiPosition,
                               AnimationTimerSetting animationTimerSetting, List<Identifier> renderLayers,
                               boolean allowDampening, Identifier animationLayer, Identifier animation) {

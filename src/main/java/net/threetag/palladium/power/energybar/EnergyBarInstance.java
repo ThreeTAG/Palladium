@@ -6,24 +6,24 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.network.SyncEnergyBarPacket;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 
 public class EnergyBarInstance {
 
-    private final PowerHolder powerHolder;
+    private final PowerInstance powerInstance;
     private final EnergyBarConfiguration configuration;
     private final EnergyBarReference reference;
     private int value, maxValue;
     private int overriddenMaxValue = -1;
 
-    public EnergyBarInstance(EnergyBarConfiguration configuration, PowerHolder powerHolder, EnergyBarReference reference) {
+    public EnergyBarInstance(EnergyBarConfiguration configuration, PowerInstance powerInstance, EnergyBarReference reference) {
         this.configuration = configuration;
-        this.powerHolder = powerHolder;
+        this.powerInstance = powerInstance;
         this.reference = reference;
     }
 
     public void tick(LivingEntity entity) {
-        var context = DataContext.forPower(entity, this.powerHolder);
+        var context = DataContext.forPower(entity, this.powerInstance);
 
         if (this.configuration.syncedValue() != null) {
             var synced = this.configuration.syncedValue().getAsInt(context);
@@ -110,9 +110,9 @@ public class EnergyBarInstance {
     }
 
     private void sync() {
-        if (!this.powerHolder.getEntity().level().isClientSide()) {
-            var msg = new SyncEnergyBarPacket(this.powerHolder.getEntity().getId(), this.reference, this.value, this.maxValue);
-            PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.powerHolder.getEntity(), msg);
+        if (!this.powerInstance.getEntity().level().isClientSide()) {
+            var msg = new SyncEnergyBarPacket(this.powerInstance.getEntity().getId(), this.reference, this.value, this.maxValue);
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.powerInstance.getEntity(), msg);
         }
     }
 

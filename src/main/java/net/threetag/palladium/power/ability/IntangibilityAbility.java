@@ -96,7 +96,7 @@ public class IntangibilityAbility extends Ability {
                     .addOptional("vertical", TYPE_BOOLEAN, "Makes the player vertically intangible aswell.", false)
                     .addOptional("whitelist", TYPE_BLOCK_TAG, "Block tag which includes the block the player can phase through. Leave null for all blocks.")
                     .addOptional("blacklist", TYPE_BLOCK_TAG, "Block tag which includes the block the player can phase through. Leave null for all blocks.", PalladiumBlockTags.PREVENTS_INTANGIBILITY.location().toString())
-                    .setExampleObject(new IntangibilityAbility(false, null, PalladiumBlockTags.PREVENTS_INTANGIBILITY, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new IntangibilityAbility(false, null, PalladiumBlockTags.PREVENTS_INTANGIBILITY, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

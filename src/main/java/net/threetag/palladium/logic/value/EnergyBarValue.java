@@ -25,7 +25,7 @@ public class EnergyBarValue extends IntegerValue {
     @Override
     public int getInteger(DataContext context) {
         if (context.getEntity() instanceof LivingEntity living) {
-            var bar = this.reference.getBar(living, context.getPowerHolder());
+            var bar = this.reference.getBar(living, context.getPowerInstance());
 
             if (bar != null) {
                 return bar.get();
@@ -51,7 +51,7 @@ public class EnergyBarValue extends IntegerValue {
         public void addDocumentation(CodecDocumentationBuilder<Value, EnergyBarValue> builder, HolderLookup.Provider provider) {
             builder.setName("Energy Bar").setDescription("Returns of the current value of a specific energy bar.")
                     .add("energy_bar", TYPE_ABILITY_REFERENCE, "The energy bar to look for. Defined in this syntax: <power_id>#<energy_bar_key>")
-                    .setExampleObject(new EnergyBarValue(EnergyBarReference.parse("namespace:example_power#energy_bar_key"), ""));
+                    .addExampleObject(new EnergyBarValue(EnergyBarReference.parse("namespace:example_power#energy_bar_key"), ""));
         }
     }
 }

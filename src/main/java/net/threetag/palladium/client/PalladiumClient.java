@@ -28,6 +28,10 @@ import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderer;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.hud.AbilityGuiLayer;
 import net.threetag.palladium.client.gui.screen.menu.TailoringScreen;
+import net.threetag.palladium.client.gui.ui.background.UiBackgroundSerializers;
+import net.threetag.palladium.client.gui.ui.component.UiComponentSerializers;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutSerializers;
 import net.threetag.palladium.client.model.ModelLayerManager;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.client.renderer.entity.EffectEntityRenderer;
@@ -78,6 +82,9 @@ public class PalladiumClient {
         TrailRendererSerializers.init();
         TextureTransformerSerializers.init();
         DynamicTextureSerializers.init();
+        UiBackgroundSerializers.init();
+        UiLayoutSerializers.init();
+        UiComponentSerializers.init();
         TextureReference.DYNAMIC_TEXTURE_RESOLVER = (path, context) -> {
             var dyn = DynamicTextureManager.INSTANCE.get(path);
             return dyn != null ? dyn.getTexture(context) : null;
@@ -138,6 +145,7 @@ public class PalladiumClient {
         e.addListener(ParticleEmitterManager.ID, ParticleEmitterManager.INSTANCE);
         e.addListener(BeamManager.ID, BeamManager.INSTANCE);
         e.addListener(TrailManager.ID, TrailManager.INSTANCE);
+        e.addListener(UiLayoutManager.ID, UiLayoutManager.INSTANCE);
 
         e.addDependency(ModelLayerManager.ID, DynamicTextureManager.ID);
         e.addDependency(DynamicTextureManager.ID, PackRenderLayerManager.ID);
@@ -156,6 +164,7 @@ public class PalladiumClient {
         e.createProvider(PalladiumModelProvider::new);
         e.createProvider(PalladiumRenderLayerProvider::new);
         e.createProvider(PalladiumBeamProvider::new);
+        e.createProvider(PalladiumUiLayoutProvider::new);
 
         // Server
         e.createProvider(PalladiumLootTableProvider::new);
@@ -179,6 +188,7 @@ public class PalladiumClient {
         HTMLBuilder.documentedPage(Palladium.id("beams"), BeamRendererSerializer.getTypes(), "Beams", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(Palladium.id("trails"), TrailRendererSerializer.getTypes(), "Trails", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
+        HTMLBuilder.documentedPage(PalladiumRegistryKeys.CONDITION_SERIALIZER, PalladiumRegistries.CONDITION_SERIALIZER, "Conditions", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.FLIGHT_TYPE_SERIALIZERS, PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS, "Flight Types", clientLevel.registryAccess()).save();
         CodecDocumentationBuilder.createDocFiles();
     }

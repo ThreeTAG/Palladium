@@ -18,10 +18,9 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.item.DyeColor;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.component.FlatButton;
-import net.threetag.palladium.client.gui.component.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
-import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
+import net.threetag.palladium.client.gui.widget.FlatButton;
+import net.threetag.palladium.client.gui.widget.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.renderer.entity.state.SuitStandRenderState;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.customization.Customization;
@@ -171,8 +170,6 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
 
     public class SelectableEntry extends Entry {
 
-        private static final Identifier LOCK_TEXTURE = Palladium.id("textures/icon/lock.png");
-
         private final Holder<Customization> customization;
         private final boolean unlocked;
         private final SuitStandRenderState suitStandPreview;
@@ -188,7 +185,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
             this.suitStandPreview.xRot = 0F;
             this.suitStandPreview.bodyRot = 0F;
             this.suitStandPreview.boundingBoxHeight = 1.8F;
-            this.suitStandPreview.setRenderData(PalladiumRenderStateKeys.RENDER_LAYERS, CustomizationPreviewComponent.getRenderLayersForCustomization(customization, DataContext.create()));
+            CustomizationPreviewComponent.updateRenderStateForCustomization(this.suitStandPreview, customization.value(), DataContext.create());
         }
 
         @Override

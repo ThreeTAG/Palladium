@@ -46,7 +46,7 @@ public class HideModelPartAbility extends Ability {
             builder.setDescription("Hides the specified body parts of the entity.")
                     .add("body_parts", SettingType.listOrPrimitive(TYPE_STRING), "The body parts to hide.")
                     .addOptional("affects_first_person", TYPE_BOOLEAN, "Determines if the first person arm should disappear as well (if it's disabled).")
-                    .setExampleObject(new HideModelPartAbility(List.of("head", "body"), false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new HideModelPartAbility(List.of("head", "body"), false, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

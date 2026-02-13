@@ -87,7 +87,7 @@ public class LightningBeamRenderer extends BeamRenderer {
                     .addOptional("segments", TYPE_INT, "The amount of segments the lightning should have.", 5)
                     .addOptional("frequency", TYPE_INT, "The frequency of the lightning fluctuation.", 2)
                     .addOptional("spread", TYPE_FLOAT, "The spread of the lightning fluctuation. It defines how \"far\" the lightning can spread out from the core", 5F)
-                    .setExampleObject(new LightningBeamRenderer(
+                    .addExampleObject(new LightningBeamRenderer(
                             new LaserRenderer(
                                     new LaserRenderer.LaserPart(Color.BLUE, 1F, 0F, null),
                                     new LaserRenderer.LaserPart(Color.WHITE, 1F, 0F, null),

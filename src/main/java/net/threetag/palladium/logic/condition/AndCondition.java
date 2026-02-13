@@ -2,12 +2,15 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public record AndCondition(List<Condition> conditions) implements Condition {
@@ -48,8 +51,11 @@ public record AndCondition(List<Condition> conditions) implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "A condition that is active if all of the conditions in the array are active.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, AndCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("AND")
+                    .setDescription("Allows you to group multiple conditions into one using the AND logic. All of the given conditions must be true for this one to be true aswell.")
+                    .add("conditions", TYPE_CONDITION_LIST, "List of conditions")
+                    .addExampleObject(new AndCondition(Arrays.asList(new CrouchingCondition(), new DayCondition())));
         }
     }
 }

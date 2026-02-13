@@ -78,7 +78,7 @@ public class AlphaMaskTransformer extends TextureTransformer {
         public void addDocumentation(CodecDocumentationBuilder<TextureTransformer, AlphaMaskTransformer> builder, HolderLookup.Provider provider) {
             builder.setName("Alpha Mask").setDescription("Applies an alpha mask to the texture.")
                     .add("mask", TYPE_IDENTIFIER, "The location of the mask texture. Can use variables")
-                    .setExampleObject(new AlphaMaskTransformer("example:mask"));
+                    .addExampleObject(new AlphaMaskTransformer("example:mask"));
         }
     }
 }

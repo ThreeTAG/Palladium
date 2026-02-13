@@ -2,13 +2,16 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public record NotCondition(List<Condition> conditions) implements Condition {
@@ -49,8 +52,11 @@ public record NotCondition(List<Condition> conditions) implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Returns true if all conditions are disabled.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, NotCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("NOT")
+                    .setDescription("Allows you to group multiple conditions into one using the NOT logic. None of the given conditions must be true for this one to be true aswell.")
+                    .add("conditions", TYPE_CONDITION_LIST, "List of conditions")
+                    .addExampleObject(new NotCondition(Arrays.asList(new CrouchingCondition(), new DayCondition())));
         }
     }
 }

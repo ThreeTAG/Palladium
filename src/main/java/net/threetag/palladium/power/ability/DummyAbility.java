@@ -35,7 +35,7 @@ public class DummyAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, DummyAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("A dummy ability that does nothing.")
-                    .setExampleObject(new DummyAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new DummyAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

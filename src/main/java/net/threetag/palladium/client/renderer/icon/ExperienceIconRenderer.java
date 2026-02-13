@@ -9,7 +9,7 @@ import net.threetag.palladium.logic.context.DataContext;
 
 public class ExperienceIconRenderer implements IconRenderer<ExperienceIcon> {
 
-    private static final TexturedIcon BACKGROUND_ICON = new TexturedIcon(Palladium.id("experience"));
+    private static final TexturedIcon BACKGROUND_ICON = new TexturedIcon(Palladium.id("icon/experience"));
 
     @Override
     public void draw(ExperienceIcon icon, Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {

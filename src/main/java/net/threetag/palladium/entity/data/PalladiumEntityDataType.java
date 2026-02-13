@@ -1,6 +1,6 @@
 package net.threetag.palladium.entity.data;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,19 +13,19 @@ public class PalladiumEntityDataType<T extends PalladiumEntityData<? extends Ent
     public static final Predicate<Entity> FILTER_LIVING = (en) -> en instanceof LivingEntity;
     public static final Predicate<Entity> FILTER_PLAYER = (en) -> en instanceof Player;
 
-    private final MapCodec<T> codec;
+    private final Codec<T> codec;
     private final Predicate<Entity> predicate;
 
-    public PalladiumEntityDataType(MapCodec<T> codec, Predicate<Entity> predicate) {
+    public PalladiumEntityDataType(Codec<T> codec, Predicate<Entity> predicate) {
         this.codec = codec;
         this.predicate = predicate;
     }
 
-    public PalladiumEntityDataType(MapCodec<T> codec) {
+    public PalladiumEntityDataType(Codec<T> codec) {
         this(codec, FILTER_ALL);
     }
 
-    public MapCodec<T> codec() {
+    public Codec<T> codec() {
         return this.codec;
     }
 

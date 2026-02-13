@@ -19,7 +19,7 @@ public class EmptyPackResourcesMixin {
     private PackMetadataSection packMeta;
 
     @Inject(method = "getMetadataSection", at = @At("HEAD"), cancellable = true)
-    public void getMetadataSection(MetadataSectionType type, CallbackInfoReturnable<Object> cir) {
+    public void getMetadataSection(MetadataSectionType<?> type, CallbackInfoReturnable<Object> cir) {
         if (type.equals(AddonPackManager.ADDON_TYPE)) {
             cir.setReturnValue(this.packMeta);
         }

@@ -55,7 +55,7 @@ public class FluidWalkingAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, FluidWalkingAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Allows the entity to walk on a specific fluid.")
                     .addOptional("fluid_tag", SettingType.listOrPrimitive(TYPE_FLUID_TAG), "The fluid tag(s) the entity can walk on.", FluidTags.WATER.location().toString())
-                    .setExampleObject(new FluidWalkingAbility(Arrays.asList(FluidTags.WATER, FluidTags.LAVA), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new FluidWalkingAbility(Arrays.asList(FluidTags.WATER, FluidTags.LAVA), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }

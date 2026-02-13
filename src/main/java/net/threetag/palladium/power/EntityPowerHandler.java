@@ -1,40 +1,35 @@
 package net.threetag.palladium.power;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.zigythebird.playeranim.animation.PlayerAnimationController;
-import com.zigythebird.playeranim.api.PlayerAnimationAccess;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.network.SyncEntityPowersPacket;
-import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, EntityPowerHandler> {
 
-    public static final MapCodec<EntityPowerHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            CompoundTag.CODEC.optionalFieldOf("power_data", new CompoundTag()).forGetter(EntityPowerHandler::savePowerDataTag)
-    ).apply(instance, EntityPowerHandler::new));
+    public static final Codec<EntityPowerHandler> CODEC = CompoundTag.CODEC.xmap(EntityPowerHandler::new, EntityPowerHandler::savePowerDataTag);
 
-    private final Map<Identifier, PowerHolder> powers = new LinkedHashMap<>();
+    private final Map<Identifier, PowerInstance> powers = new LinkedHashMap<>();
     private CompoundTag powerData;
 
     public EntityPowerHandler(CompoundTag powerData) {
         this.powerData = powerData;
     }
 
-    public Map<Identifier, PowerHolder> getPowerHolders() {
+    public Map<Identifier, PowerInstance> getPowerInstances() {
         return ImmutableMap.copyOf(this.powers);
     }
 
@@ -46,20 +41,20 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
     }
 
     @Override
-    public MapCodec<EntityPowerHandler> codec() {
+    public Codec<EntityPowerHandler> codec() {
         return CODEC;
     }
 
     @Override
     public void tick() {
         if (!this.getEntity().level().isClientSide()) {
-            List<PowerHolder> invalidPowers = new ArrayList<>();
+            List<PowerInstance> invalidPowers = new ArrayList<>();
             PowerCollector collector = new PowerCollector(this.getEntity(), this, invalidPowers);
 
             // Find invalid
-            for (PowerHolder holder : this.powers.values()) {
-                if (holder.isInvalid()) {
-                    invalidPowers.add(holder);
+            for (PowerInstance instance : this.powers.values()) {
+                if (instance.isInvalid()) {
+                    invalidPowers.add(instance);
                 }
             }
 
@@ -69,16 +64,16 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
             }
 
             // Remove old ones
-            for (PowerHolder holder : invalidPowers) {
-                this.removePowerHolder(holder.getPower());
+            for (PowerInstance instance : invalidPowers) {
+                this.removePowerInstance(instance.getPower());
             }
 
             // Add new ones
-            List<PowerHolder> added = new ArrayList<>();
-            for (PowerCollector.PowerHolderCache holderCache : collector.getAdded()) {
-                var holder = holderCache.make(this.getEntity(), this.powerData);
-                this.addPowerHolder(holder);
-                added.add(holder);
+            List<PowerInstance> added = new ArrayList<>();
+            for (PowerCollector.PowerInstanceCache instanceCache : collector.getAdded()) {
+                var instance = instanceCache.make(this.getEntity(), this.powerData);
+                this.addPowerInstance(instance);
+                added.add(instance);
             }
 
             // Sync
@@ -89,27 +84,27 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         }
 
         // Tick
-        for (PowerHolder holder : this.powers.values()) {
-            holder.tick();
+        for (PowerInstance instance : this.powers.values()) {
+            instance.tick();
         }
     }
 
-    public void addPowerHolder(PowerHolder holder) {
-        if (!this.hasPower(holder.getPowerId())) {
-            this.powers.put(holder.getPowerId(), holder);
-            holder.firstTick();
+    public void addPowerInstance(PowerInstance instance) {
+        if (!this.hasPower(instance.getPowerId())) {
+            this.powers.put(instance.getPowerId(), instance);
+            instance.firstTick();
         }
     }
 
-    public void removePowerHolder(Holder<Power> power) {
+    public void removePowerInstance(Holder<Power> power) {
         var powerId = power.unwrapKey().orElseThrow().identifier();
         if (this.powers.containsKey(powerId)) {
-            var holder = this.powers.get(powerId);
-            boolean hasPersistentData = holder.getPower().value().hasPersistentData();
-            holder.lastTick();
+            var instance = this.powers.get(powerId);
+            boolean hasPersistentData = instance.getPower().value().hasPersistentData();
+            instance.lastTick();
 
             if (hasPersistentData) {
-                this.powerData.put(holder.getPowerId().toString(), holder.save());
+                this.powerData.put(instance.getPowerId().toString(), instance.save());
             }
 
             this.powers.remove(powerId);
@@ -120,7 +115,7 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         }
     }
 
-    public PowerHolder getPowerHolder(Identifier powerId) {
+    public PowerInstance getPowerInstance(Identifier powerId) {
         return this.powers.get(powerId);
     }
 
@@ -128,9 +123,19 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         return this.powers.containsKey(powerId);
     }
 
+    public boolean hasPower(Holder<Power> powerHolder) {
+        for (PowerInstance instance : this.powers.values()) {
+            if (instance.getPower().value() == powerHolder.value()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public CompoundTag savePowerDataTag() {
-        for (PowerHolder holder : this.powers.values()) {
-            this.powerData.put(holder.getPowerId().toString(), holder.save());
+        for (PowerInstance instance : this.powers.values()) {
+            this.powerData.put(instance.getPowerId().toString(), instance.save());
         }
         this.cleanPowerData();
         return this.powerData;

@@ -43,7 +43,7 @@ public class SlowfallAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, SlowfallAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Makes the entity fall slower.")
-                    .setExampleObject(new SlowfallAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new SlowfallAbility(AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

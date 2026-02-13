@@ -1,8 +1,10 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 public class IsElytraFlyingCondition implements Condition {
@@ -41,8 +43,10 @@ public class IsElytraFlyingCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity is currently flying with an elytra.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, IsElytraFlyingCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Is Elytra Flying")
+                    .setDescription("Checks if the entity is currently flying with an elytra.")
+                    .addExampleObject(new IsElytraFlyingCondition());
         }
     }
 }

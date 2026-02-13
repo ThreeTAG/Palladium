@@ -73,6 +73,20 @@
         }
       }
     },
+    "vibration": {
+      "type": "palladium:dummy",
+      "properties": {
+        "title": "Vibration",
+        "list_index": 5,
+        "render_layer": "test:vibration_test"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    },
     "alpha_mask_render_layer": {
       "type": "palladium:dummy",
       "properties": {

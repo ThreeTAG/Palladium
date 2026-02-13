@@ -1,0 +1,31 @@
+{
+  "width": 300,
+  "height": 256,
+  "background": {
+    "type": "palladium:sprite",
+    "sprite": "palladium:background/modal_with_header"
+  },
+  "padding": 7,
+  "components": [
+    {
+      "type": "palladium:text",
+      "text": "Power Tree",
+      "properties": {
+        "alignment": "top_left"
+      }
+    },
+    {
+      "type": "palladium:power_tree",
+      "power": "test:tree_test",
+      "background": {
+        "type": "palladium:repeating_texture",
+        "texture": "minecraft:textures/block/orange_wool.png"
+      },
+      "properties": {
+        "alignment": "bottom_center",
+        "width": 286,
+        "height": 229
+      }
+    }
+  ]
+}

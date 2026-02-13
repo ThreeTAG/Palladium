@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 
 public record EnergyBarUsage(EnergyBarReference energyBar, int amount) {
 
@@ -18,7 +18,7 @@ public record EnergyBarUsage(EnergyBarReference energyBar, int amount) {
 
     public static final StreamCodec<FriendlyByteBuf, EnergyBarUsage> STREAM_CODEC = StreamCodec.composite(EnergyBarReference.STREAM_CODEC, EnergyBarUsage::energyBar, ByteBufCodecs.INT, EnergyBarUsage::amount, EnergyBarUsage::new);
 
-    public void consume(PowerHolder holder) {
+    public void consume(PowerInstance holder) {
         var energyBar = this.energyBar.getBar(holder.getEntity(), holder);
 
         if (energyBar != null) {

@@ -4,6 +4,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.entity.ClientMannequin;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,17 +26,19 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
-import net.threetag.palladium.client.gui.screen.power.BuyAbilityScreen;
-import net.threetag.palladium.client.gui.screen.power.PowersScreen;
+import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
+import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.customization.Customization;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.EffectEntity;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.network.*;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.power.PowerValidator;
 import net.threetag.palladium.power.ability.AbilityInstance;
@@ -42,7 +46,9 @@ import net.threetag.palladium.power.ability.unlocking.BuyableUnlockingHandler;
 import net.threetag.palladium.sound.AbilitySound;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,6 +88,25 @@ public class PalladiumClientProxy extends PalladiumProxy {
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {
         EffectEntity effectEntity = new EffectEntity(anchor.level(), anchor, entityEffect);
         Objects.requireNonNull(Minecraft.getInstance().level).addEntity(effectEntity);
+    }
+
+    @Override
+    public void openScreen(Identifier screenId) {
+        var screen = UiLayoutManager.INSTANCE.get(screenId);
+
+        if (screen != null) {
+            screen.open();
+        }
+    }
+
+    @Override
+    public void openCustomizationScreen(@Nullable ResourceKey<CustomizationCategory> category) {
+        Minecraft.getInstance().setScreen(new PlayerCustomizationScreen(Minecraft.getInstance().screen, category));
+    }
+
+    @Override
+    public Collection<Identifier> getAvailableScreenIds() {
+        return UiLayoutManager.INSTANCE.getIds();
     }
 
     @Override
@@ -174,9 +199,17 @@ public class PalladiumClientProxy extends PalladiumProxy {
     @Override
     public void packetHandleOpenAbilityBuyScreen(OpenAbilityBuyScreenPacket packet, IPayloadContext context) {
         packet.reference().optional(context.player(), null).ifPresent(ability -> {
-            if (Minecraft.getInstance().screen instanceof PowersScreen powersScreen && ability.getAbility().getStateManager().getUnlockingHandler() instanceof BuyableUnlockingHandler buy) {
-                var overlayScreen = new BuyAbilityScreen(packet.reference(), buy.getDisplay(), packet.available(), powersScreen);
-                powersScreen.openOverlayScreen(overlayScreen);
+            var screen = Minecraft.getInstance().screen;
+            if (screen != null && ability.getAbility().getStateManager().getUnlockingHandler() instanceof BuyableUnlockingHandler buy) {
+                for (GuiEventListener child : screen.children()) {
+                    if (child instanceof PowerTreeWidget powerTree) {
+                        for (PowerTreeWidget.AbilityElement abilityElement : powerTree.abilities) {
+                            if (abilityElement.getReference().equals(ability.getReference())) {
+                                abilityElement.openModal(screen, buy.getDisplay(), packet.available());
+                            }
+                        }
+                    }
+                }
             }
         });
     }
@@ -204,10 +237,6 @@ public class PalladiumClientProxy extends PalladiumProxy {
 
                 if (livingEntity == Minecraft.getInstance().player) {
                     AbilityBar.INSTANCE.populate();
-
-                    if (Minecraft.getInstance().screen instanceof PowersScreen powers && powers.selectedTab != null) {
-                        powers.selectedTab.populate();
-                    }
                 }
             });
         }
@@ -250,22 +279,22 @@ public class PalladiumClientProxy extends PalladiumProxy {
             var handler = PowerUtil.getPowerHandler(livingEntity);
 
             for (Holder<Power> power : packet.remove()) {
-                handler.removePowerHolder(power);
+                handler.removePowerInstance(power);
             }
 
             for (SyncEntityPowersPacket.NewPowerChange add : packet.add()) {
-                var powerHolder = new PowerHolder(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, add.priority, new CompoundTag());
-                handler.addPowerHolder(powerHolder);
+                var powerInstance = new PowerInstance(livingEntity, add.power, PowerValidator.ALWAYS_ACTIVE, add.priority, new CompoundTag());
+                handler.addPowerInstance(powerInstance);
 
                 for (Pair<String, DataComponentPatch> abilityComponent : add.abilityComponents) {
-                    var ability = powerHolder.getAbilities().get(abilityComponent.getLeft());
+                    var ability = powerInstance.getAbilities().get(abilityComponent.getLeft());
                     if (ability != null) {
                         ability.applyPatch(abilityComponent.getRight());
                     }
                 }
 
                 for (Triple<String, Integer, Integer> pair : add.energyBars) {
-                    var bar = powerHolder.getEnergyBars().get(pair.getLeft());
+                    var bar = powerInstance.getEnergyBars().get(pair.getLeft());
 
                     if (bar != null) {
                         bar.set(pair.getMiddle());

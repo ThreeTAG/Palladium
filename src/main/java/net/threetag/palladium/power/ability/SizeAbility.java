@@ -43,7 +43,7 @@ public class SizeAbility extends Ability {
         public void addDocumentation(CodecDocumentationBuilder<Ability, SizeAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("An ability that changes the size of the entity using Pehkui.")
                     .add("scale", TYPE_FLOAT, "The target scale of the entity.")
-                    .setExampleObject(new SizeAbility(1.5F, AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
+                    .addExampleObject(new SizeAbility(1.5F, AbilityProperties.BASIC, AbilityStateManager.EMPTY, Collections.emptyList()));
         }
     }
 }

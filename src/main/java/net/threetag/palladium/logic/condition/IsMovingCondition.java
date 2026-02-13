@@ -1,8 +1,10 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.util.EntityUtil;
 
@@ -37,8 +39,10 @@ public class IsMovingCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity is moving.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, IsMovingCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Is moving")
+                    .setDescription("Checks if the entity is currently moving.")
+                    .addExampleObject(new IsMovingCondition());
         }
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.threetag.palladium.component.PalladiumDataComponents;
 import net.threetag.palladium.network.SyncAbilityComponentPacket;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,7 @@ import java.util.function.UnaryOperator;
 public class AbilityInstance<T extends Ability> implements DataComponentHolder {
 
     private final T ability;
-    private final PowerHolder holder;
+    private final PowerInstance powerInstance;
     private int lifetime = 0;
     private int prevEnabledTicks = 0;
     private int enabledTicks = 0;
@@ -28,10 +28,10 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
     private final AbilityReference reference;
     private final AnimationTimer animationTimer;
 
-    public AbilityInstance(T ability, PowerHolder holder) {
+    public AbilityInstance(T ability, PowerInstance powerInstance) {
         this.ability = ability;
-        this.holder = holder;
-        this.reference = new AbilityReference(holder.getPowerId(), ability.getKey());
+        this.powerInstance = powerInstance;
+        this.reference = new AbilityReference(powerInstance.getPowerId(), ability.getKey());
         this.animationTimer = ability.getProperties().getAnimationTimerSetting() != null ? ability.getProperties().getAnimationTimerSetting().create() : null;
 
         var componentsBuilder = DataComponentMap.builder().addAll(PalladiumDataComponents.Abilities.getCommonComponents());
@@ -39,23 +39,23 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
         this.components = new PatchedDataComponentMap(componentsBuilder.build());
     }
 
-    public AbilityInstance(T ability, PowerHolder holder, CompoundTag componentData) {
+    public AbilityInstance(T ability, PowerInstance powerInstance, CompoundTag componentData) {
         this.ability = ability;
-        this.holder = holder;
-        this.reference = new AbilityReference(holder.getPowerId(), ability.getKey());
+        this.powerInstance = powerInstance;
+        this.reference = new AbilityReference(powerInstance.getPowerId(), ability.getKey());
         this.animationTimer = ability.getProperties().getAnimationTimerSetting() != null ? new AnimationTimer(ability.getProperties().getAnimationTimerSetting(), ability.getProperties().getAnimationTimerSetting().min()) : null;
 
         var componentsBuilder = DataComponentMap.builder().addAll(PalladiumDataComponents.Abilities.getCommonComponents());
         this.ability.registerDataComponents(componentsBuilder);
-        this.components = PatchedDataComponentMap.fromPatch(componentsBuilder.build(), DataComponentPatch.CODEC.parse(this.holder.entity.registryAccess().createSerializationContext(NbtOps.INSTANCE), componentData).getOrThrow());
+        this.components = PatchedDataComponentMap.fromPatch(componentsBuilder.build(), DataComponentPatch.CODEC.parse(this.powerInstance.entity.registryAccess().createSerializationContext(NbtOps.INSTANCE), componentData).getOrThrow());
     }
 
     public T getAbility() {
         return this.ability;
     }
 
-    public PowerHolder getHolder() {
-        return this.holder;
+    public PowerInstance getPowerInstance() {
+        return this.powerInstance;
     }
 
     public AbilityReference getReference() {
@@ -113,7 +113,7 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
             this.enabledTicks++;
 
             for (EnergyBarUsage usage : this.ability.getEnergyBarUsages()) {
-                usage.consume(this.holder);
+                usage.consume(this.powerInstance);
             }
         } else if (this.enabledTicks > 0) {
             this.enabledTicks--;
@@ -149,9 +149,9 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
     @Nullable
     public <R> R set(DataComponentType<R> component, @Nullable R value) {
         var changed = this.components.set(component, value);
-        if (!this.holder.getEntity().level().isClientSide()) {
+        if (!this.powerInstance.getEntity().level().isClientSide()) {
             var patch = DataComponentPatch.builder().set(Objects.requireNonNull(this.components.getTyped(component))).build();
-            PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.holder.getEntity(), new SyncAbilityComponentPacket(this.holder.getEntity().getId(), this.reference, patch));
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.powerInstance.getEntity(), new SyncAbilityComponentPacket(this.powerInstance.getEntity().getId(), this.reference, patch));
         }
         return changed;
     }
@@ -191,7 +191,7 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
     }
 
     public Tag save() {
-        return DataComponentMap.CODEC.encodeStart(this.holder.entity.registryAccess().createSerializationContext(NbtOps.INSTANCE), this.components).getOrThrow();
+        return DataComponentMap.CODEC.encodeStart(this.powerInstance.entity.registryAccess().createSerializationContext(NbtOps.INSTANCE), this.components).getOrThrow();
     }
 
 }

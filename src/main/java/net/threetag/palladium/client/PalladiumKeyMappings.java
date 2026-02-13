@@ -11,7 +11,6 @@ import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
-import net.threetag.palladium.client.gui.screen.power.PowersScreen;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -98,7 +97,8 @@ public class PalladiumKeyMappings {
                 }
 
                 while (SHOW_POWERS.consumeClick()) {
-                    client.setScreen(new PowersScreen());
+                    // TODO show powers screen
+//                    client.setScreen(new PowersScreen());
                 }
             }
 
@@ -152,6 +152,38 @@ public class PalladiumKeyMappings {
                 }
 
                 MIDDLE_CLICK_DOWN = middleClickDown;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    static void onClickInput(InputEvent.InteractionKeyMappingTriggered e) {
+        var minecraft = Minecraft.getInstance();
+
+        if (minecraft.player != null) {
+            if (e.getKeyMapping() == minecraft.options.keyAttack) {
+                handleClickInput(e, minecraft, MouseClickKeyBind.ClickType.LEFT_CLICK);
+            } else if (e.getKeyMapping() == minecraft.options.keyUse) {
+                handleClickInput(e, minecraft, MouseClickKeyBind.ClickType.RIGHT_CLICK);
+            } else if (e.getKeyMapping() == minecraft.options.keyPickItem) {
+                handleClickInput(e, minecraft, MouseClickKeyBind.ClickType.MIDDLE_CLICK);
+            }
+        }
+    }
+
+    private static void handleClickInput(InputEvent.InteractionKeyMappingTriggered e, Minecraft minecraft, MouseClickKeyBind.ClickType clickType) {
+        for (AbilityInstance<Ability> ability : AbilityUtil.getInstances(minecraft.player)) {
+            if (ability != null && ability.isUnlocked() && ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler) {
+                if (handler.getKeyBindType() instanceof MouseClickKeyBind mouseClick) {
+                    if (minecraft.screen == null && mouseClick.clickType == clickType) {
+                        handler.onKeyPressed(minecraft.player, ability);
+
+                        if (mouseClick.cancelInteraction) {
+                            e.setSwingHand(false);
+                            e.setCanceled(true);
+                        }
+                    }
+                }
             }
         }
     }

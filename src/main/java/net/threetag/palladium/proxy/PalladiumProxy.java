@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
@@ -13,10 +14,14 @@ import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.entity.effect.EntityEffect;
 import net.threetag.palladium.network.*;
 import net.threetag.palladium.power.ability.AbilityInstance;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class PalladiumProxy {
@@ -39,6 +44,18 @@ public class PalladiumProxy {
 
     public void spawnEffectEntity(Entity anchor, EntityEffect entityEffect) {
 
+    }
+
+    public void openScreen(Identifier screenId) {
+
+    }
+
+    public void openCustomizationScreen(@Nullable ResourceKey<CustomizationCategory> category) {
+
+    }
+
+    public Collection<Identifier> getAvailableScreenIds() {
+        return Collections.emptyList();
     }
 
     public boolean hasMovementInput(Entity entity) {

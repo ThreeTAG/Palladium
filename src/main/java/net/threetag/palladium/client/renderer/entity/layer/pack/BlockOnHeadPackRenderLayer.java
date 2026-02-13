@@ -68,7 +68,7 @@ public class BlockOnHeadPackRenderLayer extends PackRenderLayer<PackRenderLayer.
             builder.setName("Block on Head")
                     .setDescription("Renders a block on the top of the entity's head.")
                     .add("block", TYPE_BLOCK_TAG, "ID of the block/block state definition")
-                    .setExampleObject(new BlockOnHeadPackRenderLayer(
+                    .addExampleObject(new BlockOnHeadPackRenderLayer(
                             Blocks.GLASS.defaultBlockState(),
                             PackRenderLayerProperties.DEFAULT,
                             PerspectiveAwareConditions.EMPTY

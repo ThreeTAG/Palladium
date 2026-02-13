@@ -12,10 +12,10 @@ public class PowerCollector {
 
     private final LivingEntity entity;
     private final EntityPowerHandler handler;
-    private final List<PowerHolder> toRemove;
-    private final List<PowerHolderCache> powerHolders = new ArrayList<>();
+    private final List<PowerInstance> toRemove;
+    private final List<PowerInstanceCache> powerInstances = new ArrayList<>();
 
-    public PowerCollector(LivingEntity entity, EntityPowerHandler handler, List<PowerHolder> toRemove) {
+    public PowerCollector(LivingEntity entity, EntityPowerHandler handler, List<PowerInstance> toRemove) {
         this.entity = entity;
         this.handler = handler;
         this.toRemove = toRemove;
@@ -26,10 +26,10 @@ public class PowerCollector {
             return;
         }
 
-        PowerHolder found = null;
-        for (PowerHolder holder : this.toRemove) {
-            if (holder.getPower().is(power)) {
-                found = holder;
+        PowerInstance found = null;
+        for (PowerInstance instance : this.toRemove) {
+            if (instance.getPower().is(power)) {
+                found = instance;
                 break;
             }
         }
@@ -42,20 +42,20 @@ public class PowerCollector {
         }
 
         if (!this.handler.hasPower(power.unwrapKey().orElseThrow().identifier())) {
-            this.powerHolders.add(new PowerHolderCache(power, validatorSupplier.get(), priority));
+            this.powerInstances.add(new PowerInstanceCache(power, validatorSupplier.get(), priority));
         } else {
-            this.handler.getPowerHolder(power.unwrapKey().orElseThrow().identifier()).setPriority(priority);
+            this.handler.getPowerInstance(power.unwrapKey().orElseThrow().identifier()).setPriority(priority);
         }
     }
 
-    public List<PowerHolderCache> getAdded() {
-        return this.powerHolders;
+    public List<PowerInstanceCache> getAdded() {
+        return this.powerInstances;
     }
 
-    public record PowerHolderCache(Holder<Power> power, PowerValidator validator, int priority) {
+    public record PowerInstanceCache(Holder<Power> power, PowerValidator validator, int priority) {
 
-        public PowerHolder make(LivingEntity entity, CompoundTag compoundTag) {
-            return new PowerHolder(entity, this.power, this.validator, this.priority, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().identifier().toString()));
+        public PowerInstance make(LivingEntity entity, CompoundTag compoundTag) {
+            return new PowerInstance(entity, this.power, this.validator, this.priority, compoundTag.getCompoundOrEmpty(this.power.unwrapKey().orElseThrow().identifier().toString()));
         }
 
     }

@@ -2,9 +2,12 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.power.ability.AbilityReference;
@@ -29,7 +32,7 @@ public record AnimationTimerAbilityCondition(AbilityReference ability, int min, 
     @Override
     public boolean test(DataContext context) {
         var entity = context.getLivingEntity();
-        var holder = context.getPowerHolder();
+        var holder = context.getPowerInstance();
 
         if (entity == null) {
             return false;
@@ -63,8 +66,16 @@ public record AnimationTimerAbilityCondition(AbilityReference ability, int min, 
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the given animation timer in an ability has a certain value.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, AnimationTimerAbilityCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Ability Animation Timer")
+                    .setDescription("Checks if the given animation timer in an ability has a certain value.")
+                    .add("ability", TYPE_ABILITY_REFERENCE, "The ability that is being checked on.")
+                    .addOptional("min", TYPE_TIME, "The minimum required value of the current animation timer value of the ability")
+                    .addOptional("max", TYPE_TIME, "The maximum required value of the current animation timer value of the ability")
+                    .addExampleObject(new AnimationTimerAbilityCondition(new AbilityReference(
+                            Identifier.fromNamespaceAndPath("example", "power"),
+                            "ability_key"
+                    ), 5, 10));
         }
     }
 }

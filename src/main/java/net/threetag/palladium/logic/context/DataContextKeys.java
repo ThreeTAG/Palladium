@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.ability.AbilityInstance;
 
 public class DataContextKeys {
@@ -21,7 +21,7 @@ public class DataContextKeys {
     public static ContextKey<PlayerSlot> SLOT = create("slot");
     public static ContextKey<AbilityInstance<?>> ABILITY_INSTANCE = create("ability_instance");
     public static ContextKey<Holder<Power>> POWER = create("power");
-    public static ContextKey<PowerHolder> POWER_HOLDER = create("power_holder");
+    public static ContextKey<PowerInstance> POWER_INSTANCE = create("power_instance");
     public static ContextKey<Float> CAPE_X_ROT = create("cape_x_rot");
     public static ContextKey<Float> CAPE_Y_ROT = create("cape_y_rot");
     public static ContextKey<Float> CAPE_Z_ROT = create("cape_z_rot");

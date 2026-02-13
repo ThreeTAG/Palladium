@@ -1,0 +1,29 @@
+{
+  "type": "palladium:simple",
+  "background": {
+    "type": "palladium:sprite",
+    "sprite": "palladium:background/modal_with_header"
+  },
+  "components": [
+    {
+      "type": "palladium:text",
+      "properties": {
+        "height": 10,
+        "width": 200
+      },
+      "text": {
+        "translate": "gui.palladium.powers"
+      }
+    },
+    {
+      "type": "palladium:power_tree",
+      "properties": {
+        "alignment": "bottom_center",
+        "height": 169,
+        "width": 242
+      }
+    }
+  ],
+  "height": 196,
+  "width": 256
+}

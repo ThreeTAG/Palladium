@@ -160,7 +160,7 @@ public class BeamAbility extends Ability {
                     .addOptional("set_on_fire_ticks", TYPE_INT, "The amount of ticks the hit entity is set on fire", 0)
                     .addOptional("cause_fire", TYPE_BOOLEAN, "If the beam should cause fire on blocks", false)
                     .addOptional("smelt_blocks", TYPE_BOOLEAN, "If the beam should smelt hit blocks", false)
-                    .setExampleObject(new BeamAbility(
+                    .addExampleObject(new BeamAbility(
                             Identifier.fromNamespaceAndPath("example", "beam_renderer_id"),
                             5F,
                             25F,

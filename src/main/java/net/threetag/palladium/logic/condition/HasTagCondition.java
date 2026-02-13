@@ -3,9 +3,11 @@ package net.threetag.palladium.logic.condition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.context.DataContextKeys;
 
@@ -48,8 +50,11 @@ public record HasTagCondition(String tag) implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity has a specific tag. These tags are added to entities via /tag command.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, HasTagCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Has Tag")
+                    .setDescription("Checks if the entity has a specific tag. These tags are added to entities via /tag command.")
+                    .add("tag", TYPE_STRING, "The tag that needs to be on the entity")
+                    .addExampleObject(new HasTagCondition("example_tag"));
         }
 
         @Override

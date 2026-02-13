@@ -31,8 +31,7 @@ public class CodecDocumentationBuilder<T, R extends T> {
     private final HolderLookup.Provider provider;
     private String name;
     private String description;
-    private R exampleObject;
-    private JsonElement exampleJson;
+    private final List<Example<R>> examples = new ArrayList<>();
     private final Map<String, Entry> entries = new HashMap<>();
     private final List<String> ignoredKeys = new ArrayList<>();
 
@@ -63,37 +62,24 @@ public class CodecDocumentationBuilder<T, R extends T> {
     }
 
     @SuppressWarnings("unchecked")
-    public CodecDocumentationBuilder<T, R> setExampleObject(R exampleObject) {
-        this.exampleObject = exampleObject;
+    public CodecDocumentationBuilder<T, R> addExampleObject(R exampleObject) {
         Codec<T> codec = this.mainCodec != null ? this.mainCodec : (Codec<T>) this.mapCodec.codec();
         try {
-            this.exampleJson = codec.encodeStart(this.provider.createSerializationContext(JsonOps.INSTANCE), exampleObject).getOrThrow();
+            var example = new Example<>(exampleObject, codec.encodeStart(this.provider.createSerializationContext(JsonOps.INSTANCE), exampleObject).getOrThrow());
+            this.examples.add(example);
         } catch (Exception e) {
             Palladium.LOGGER.error("Error while encoding example object for documentation {}", this.name, e);
         }
         return this;
     }
 
-    public CodecDocumentationBuilder<T, R> setExampleJson(JsonElement exampleJson) {
-        this.exampleJson = exampleJson;
+    public CodecDocumentationBuilder<T, R> addExampleJson(JsonObject jsonObject) {
+        this.examples.add(new Example<>(jsonObject));
         return this;
     }
 
-    public CodecDocumentationBuilder<T, R> addToExampleJson(String key, JsonElement jsonElement) {
-        if (this.exampleJson == null || !this.exampleJson.isJsonObject()) {
-            this.exampleJson = new JsonObject();
-        }
-
-        ((JsonObject) this.exampleJson).add(key, jsonElement);
-        return this;
-    }
-
-    public R getExampleObject() {
-        return this.exampleObject;
-    }
-
-    public JsonElement getExampleJson() {
-        return this.exampleJson;
+    public List<Example<R>> getExamples() {
+        return this.examples;
     }
 
     public CodecDocumentationBuilder<T, R> ignore(String key) {
@@ -155,8 +141,12 @@ public class CodecDocumentationBuilder<T, R extends T> {
 
         json.add("fields", fields);
 
-        if (this.exampleJson != null) {
-            json.add("example", orderJsonObject(this.exampleJson));
+        if (!this.examples.isEmpty()) {
+            var examplesJson = new JsonArray();
+            for (Example<R> example : this.examples) {
+                examplesJson.add(orderJsonObject(example.json()));
+            }
+            json.add("examples", examplesJson);
         }
 
         return json;
@@ -189,9 +179,12 @@ public class CodecDocumentationBuilder<T, R extends T> {
                     }).collect(Collectors.toList())));
         }
 
-        if (this.exampleJson != null) {
-            div.add(HTMLBuilder.subSubHeading("Example:"))
-                    .add(new HTMLBuilder.HTMLObject("pre", orderJsonObject(this.exampleJson).toString()).addAttribute("class", "json-snippet"));
+        if (!this.examples.isEmpty()) {
+            div.add(HTMLBuilder.subSubHeading("Examples:"));
+
+            for (Example<R> example : this.examples) {
+                div.add(new HTMLBuilder.HTMLObject("pre", orderJsonObject(example.json()).toString()).addAttribute("class", "json-snippet"));
+            }
         }
     }
 
@@ -275,5 +268,12 @@ public class CodecDocumentationBuilder<T, R extends T> {
 
     private record Entry(String key, SettingType type, String description, boolean required, Object fallback) {
 
+    }
+
+    public record Example<T>(T object, JsonElement json) {
+
+        public Example(JsonObject jsonObject) {
+            this(null, jsonObject);
+        }
     }
 }

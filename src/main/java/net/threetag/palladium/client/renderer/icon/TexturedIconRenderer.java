@@ -11,17 +11,19 @@ public class TexturedIconRenderer implements IconRenderer<TexturedIcon> {
 
     @Override
     public void draw(TexturedIcon icon, Minecraft mc, GuiGraphics guiGraphics, DataContext context, int x, int y, int width, int height) {
-        var texture = icon.texture().withPath(context, "textures/icon/", ".png");
+        var texture = icon.texture().getTexture(context);
 
-        var r = icon.tint().getRed();
-        var g = icon.tint().getGreen();
-        var b = icon.tint().getBlue();
-        var a = icon.tint().getAlpha();
+        if (texture != null) {
+            var r = icon.tint().getRed();
+            var g = icon.tint().getGreen();
+            var b = icon.tint().getBlue();
+            var a = icon.tint().getAlpha();
 
-        guiGraphics.pose().pushMatrix();
-        guiGraphics.pose().translate(x, y);
-        guiGraphics.pose().scale(width / 16F, height / 16F);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, 0, 0, 0, 0, 16, 16, 16, 16, ARGB.color(a, r, g, b));
-        guiGraphics.pose().popMatrix();
+            guiGraphics.pose().pushMatrix();
+            guiGraphics.pose().translate(x, y);
+            guiGraphics.pose().scale(width / 16F, height / 16F);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, 0, 0, 0, 0, 16, 16, 16, 16, ARGB.color(a, r, g, b));
+            guiGraphics.pose().popMatrix();
+        }
     }
 }

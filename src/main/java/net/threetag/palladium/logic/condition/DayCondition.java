@@ -1,8 +1,10 @@
 package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 
 public class DayCondition implements Condition {
@@ -36,8 +38,10 @@ public class DayCondition implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if it's currently daytime";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, DayCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Day")
+                    .setDescription("Check if it's currently daytime")
+                    .addExampleObject(new DayCondition());
         }
     }
 }

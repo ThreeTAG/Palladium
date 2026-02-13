@@ -108,7 +108,7 @@ public class TexturedBeamRenderer extends BeamRenderer {
                     .addOptional("rotation_speed", TYPE_FLOAT, "The rotation speed of the beam.", 0F)
                     .addOptional("render_type", SettingType.enumList(RenderTypeRegistry.types().stream().map(Identifier::toString).toList()), "The render type to render the beam with.", RenderTypeRegistry.getKey(RenderTypeRegistry.ENTITY_TRANSLUCENT))
                     .addOptional("light_emission", TYPE_INT, "The light emission of the beam. Must be within 0 - 15", 0)
-                    .setExampleObject(new TexturedBeamRenderer(
+                    .addExampleObject(new TexturedBeamRenderer(
                             TextureReference.normal(Identifier.fromNamespaceAndPath("namespace", "textures/beams/example_beam.png")),
                             new Vector2f(2 / 16F, 2 / 16F),
                             45F,

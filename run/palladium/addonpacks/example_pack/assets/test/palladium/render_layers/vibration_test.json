@@ -1,0 +1,5 @@
+{
+  "type": "palladium:vibration",
+  "intensity": 10,
+  "fade_ticks": 20
+}

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.power.Power;
-import net.threetag.palladium.power.PowerHolder;
+import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import org.apache.commons.lang3.tuple.Pair;
@@ -44,16 +44,16 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
         context.enqueueWork(() -> Palladium.PROXY.packetHandleSyncEntityPowers(packet, context));
     }
 
-    public static SyncEntityPowersPacket create(LivingEntity entity, List<PowerHolder> removed, List<PowerHolder> added) {
+    public static SyncEntityPowersPacket create(LivingEntity entity, List<PowerInstance> removed, List<PowerInstance> added) {
         List<NewPowerChange> add = new ArrayList<>();
-        added.forEach((powerHolder) -> add.add(new NewPowerChange(powerHolder)));
-        return new SyncEntityPowersPacket(entity.getId(), removed.stream().map(PowerHolder::getPower).toList(), add);
+        added.forEach((powerInstance) -> add.add(new NewPowerChange(powerInstance)));
+        return new SyncEntityPowersPacket(entity.getId(), removed.stream().map(PowerInstance::getPower).toList(), add);
     }
 
     public static SyncEntityPowersPacket create(LivingEntity entity) {
         List<NewPowerChange> add = new ArrayList<>();
-        PowerUtil.getPowerHandler(entity).getPowerHolders().forEach((identifier, powerHolder) -> {
-            add.add(new NewPowerChange(powerHolder));
+        PowerUtil.getPowerHandler(entity).getPowerInstances().forEach((identifier, powerInstance) -> {
+            add.add(new NewPowerChange(powerInstance));
         });
         return new SyncEntityPowersPacket(entity.getId(), Collections.emptyList(), add);
     }
@@ -94,12 +94,12 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
             this.energyBars = energyBars;
         }
 
-        public NewPowerChange(PowerHolder powerHolder) {
-            this.power = powerHolder.getPower();
-            this.priority = powerHolder.getPriority();
+        public NewPowerChange(PowerInstance powerInstance) {
+            this.power = powerInstance.getPower();
+            this.priority = powerInstance.getPriority();
 
             this.abilityComponents = new ArrayList<>();
-            powerHolder.getAbilities().forEach((s, ability) -> {
+            powerInstance.getAbilities().forEach((s, ability) -> {
                 for (TypedDataComponent<?> component : ability.getComponents()) {
                     DataComponentType type = component.type();
                     DataComponentPatch patch = DataComponentPatch.builder().set(type, component.value()).build();
@@ -108,7 +108,7 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
             });
 
             this.energyBars = new ArrayList<>();
-            powerHolder.getEnergyBars().forEach((s, energyBar) -> {
+            powerInstance.getEnergyBars().forEach((s, energyBar) -> {
                 this.energyBars.add(Triple.of(energyBar.getReference().energyBarKey(), energyBar.get(), energyBar.getMax()));
             });
         }

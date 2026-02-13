@@ -7,7 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.threetag.palladium.customization.CustomizationCategory;
-import net.threetag.palladium.client.gui.component.tab.IconTab;
+import net.threetag.palladium.client.gui.widget.tab.IconTab;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.icon.TexturedIcon;
 import net.threetag.palladium.customization.CustomizationPreview;

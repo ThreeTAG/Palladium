@@ -1,10 +1,11 @@
 package net.threetag.palladium.entity.data;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
@@ -22,14 +23,13 @@ public abstract class PalladiumEntityData<T extends Entity, R extends PalladiumE
     @SuppressWarnings("unchecked")
     public final void setEntity(Entity entity) {
         this.entity = (T) entity;
-        this.init();
     }
 
     protected void init() {
 
     }
 
-    public abstract MapCodec<R> codec();
+    public abstract Codec<R> codec();
 
     public void tick() {
     }
@@ -67,6 +67,17 @@ public abstract class PalladiumEntityData<T extends Entity, R extends PalladiumE
 
             if (data != null) {
                 data.tick();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    static void onAdded(EntityJoinLevelEvent e) {
+        for (PalladiumEntityDataType type : e.getEntity().registryAccess().lookupOrThrow(PalladiumRegistryKeys.ENTITY_DATA_TYPE)) {
+            var data = get(e.getEntity(), type);
+
+            if (data != null) {
+                data.init();
             }
         }
     }

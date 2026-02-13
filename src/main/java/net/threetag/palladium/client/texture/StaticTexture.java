@@ -40,7 +40,7 @@ public class StaticTexture extends DynamicTexture {
         public void addDocumentation(CodecDocumentationBuilder<DynamicTexture, StaticTexture> builder, HolderLookup.Provider provider) {
             builder.setName("Static Texture").setDescription("Simple, static texture that does not change.")
                     .add("texture", TYPE_IDENTIFIER, "The texture to use.")
-                    .setExampleObject(new StaticTexture(Identifier.fromNamespaceAndPath("example", "textures/example.png")));
+                    .addExampleObject(new StaticTexture(Identifier.fromNamespaceAndPath("example", "textures/example.png")));
         }
     }
 }

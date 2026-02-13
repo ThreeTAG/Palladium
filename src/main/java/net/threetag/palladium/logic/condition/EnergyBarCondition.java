@@ -1,22 +1,25 @@
 package net.threetag.palladium.logic.condition;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ExtraCodecs;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.energybar.EnergyBarInstance;
 import net.threetag.palladium.power.energybar.EnergyBarReference;
-import net.threetag.palladium.logic.context.DataContext;
 
 public record EnergyBarCondition(EnergyBarReference energyBar, int min, int max) implements Condition {
 
     public static final MapCodec<EnergyBarCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     EnergyBarReference.CODEC.fieldOf("energy_bar").forGetter(EnergyBarCondition::energyBar),
-                    Codec.INT.optionalFieldOf("min", Integer.MIN_VALUE).forGetter(EnergyBarCondition::min),
-                    Codec.INT.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(EnergyBarCondition::max)
+                    ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("min", Integer.MIN_VALUE).forGetter(EnergyBarCondition::min),
+                    ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("max", Integer.MAX_VALUE).forGetter(EnergyBarCondition::max)
             ).apply(instance, EnergyBarCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, EnergyBarCondition> STREAM_CODEC = StreamCodec.composite(
@@ -29,7 +32,7 @@ public record EnergyBarCondition(EnergyBarReference energyBar, int min, int max)
     @Override
     public boolean test(DataContext context) {
         var entity = context.getLivingEntity();
-        EnergyBarInstance energyBarInstance = this.energyBar.getBar(entity, context.getPowerHolder());
+        EnergyBarInstance energyBarInstance = this.energyBar.getBar(entity, context.getPowerInstance());
 
         if (energyBarInstance == null) {
             return false;
@@ -56,8 +59,16 @@ public record EnergyBarCondition(EnergyBarReference energyBar, int min, int max)
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if energy bar has enough energy in it.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, EnergyBarCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Energy Bar")
+                    .setDescription("Checks if an energy bar has a required amount in it.")
+                    .add("energy_bar", TYPE_ENERGY_BAR_REFERENCE, "The energy bar is being looked into.")
+                    .addOptional("min", TYPE_NON_NEGATIVE_INT, "The minimum required value of the energy bar.")
+                    .addOptional("max", TYPE_NON_NEGATIVE_INT, "The maximum required value of the energy bar.")
+                    .addExampleObject(new EnergyBarCondition(new EnergyBarReference(
+                            Identifier.fromNamespaceAndPath("example", "power"),
+                            "energy_bar_key"
+                    ), 5, 10));
         }
     }
 }

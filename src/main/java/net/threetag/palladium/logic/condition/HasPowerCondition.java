@@ -2,21 +2,29 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
-import net.threetag.palladium.power.EntityPowerHandler;
-import net.threetag.palladium.power.PowerUtil;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.power.EntityPowerHandler;
+import net.threetag.palladium.power.Power;
+import net.threetag.palladium.power.PowerUtil;
+import net.threetag.palladium.registry.PalladiumRegistryKeys;
+import net.threetag.palladium.tag.PalladiumPowerTags;
+import net.threetag.palladium.util.MixedHolderSet;
 
-public record HasPowerCondition(Identifier powerId) implements Condition {
+import java.util.List;
 
-    public static final MapCodec<HasPowerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
-            .group(Identifier.CODEC.fieldOf("power").forGetter(HasPowerCondition::powerId)
+public record HasPowerCondition(MixedHolderSet<Power> powers) implements Condition {
+
+    public static final MapCodec<HasPowerCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    MixedHolderSet.codec(PalladiumRegistryKeys.POWER).fieldOf("power").forGetter(HasPowerCondition::powers)
             ).apply(instance, HasPowerCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, HasPowerCondition> STREAM_CODEC = StreamCodec.composite(
-            Identifier.STREAM_CODEC, HasPowerCondition::powerId, HasPowerCondition::new
+            MixedHolderSet.streamCodec(PalladiumRegistryKeys.POWER), HasPowerCondition::powers, HasPowerCondition::new
     );
 
     @Override
@@ -28,7 +36,14 @@ public record HasPowerCondition(Identifier powerId) implements Condition {
         }
 
         EntityPowerHandler handler = PowerUtil.getPowerHandler(entity);
-        return handler != null && handler.getPowerHolders().containsKey(this.powerId);
+
+        for (Holder<Power> powerHolder : this.powers) {
+            if (handler.hasPower(powerHolder)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -49,8 +64,15 @@ public record HasPowerCondition(Identifier powerId) implements Condition {
         }
 
         @Override
-        public String getDocumentationDescription() {
-            return "Checks if the entity has a power with the given ID.";
+        public void addDocumentation(CodecDocumentationBuilder<Condition, HasPowerCondition> builder, HolderLookup.Provider provider) {
+            builder.setName("Has Power")
+                    .setDescription("Checks if the entity has specified power.")
+                    .add("power", TYPE_POWER_HOLDER_SET, "IDs or tags of power that need to be on the entity.")
+                    .addExampleObject(new HasPowerCondition(new MixedHolderSet<>(provider.lookupOrThrow(PalladiumRegistryKeys.POWER).getOrThrow(PalladiumPowerTags.IS_MECHANICAL))))
+                    .addExampleObject(new HasPowerCondition(new MixedHolderSet<>(List.of(
+                            provider.lookupOrThrow(PalladiumRegistryKeys.POWER).getOrThrow(PalladiumPowerTags.IS_GENETIC),
+                            provider.lookupOrThrow(PalladiumRegistryKeys.POWER).getOrThrow(PalladiumPowerTags.IS_MAGICAL)
+                    ))));
         }
     }
 }
