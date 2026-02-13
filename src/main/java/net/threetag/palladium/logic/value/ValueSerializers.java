@@ -10,6 +10,9 @@ public class ValueSerializers {
     public static final DeferredRegister<ValueSerializer<?>> VALUE_SERIALIZERS = DeferredRegister.create(PalladiumRegistryKeys.VALUE_SERIALIZER, Palladium.MOD_ID);
 
     public static final DeferredHolder<ValueSerializer<?>, StaticValue.Serializer> STATIC = VALUE_SERIALIZERS.register("static", StaticValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, MoLangIntegerValue.Serializer> MOLANG_INTEGER = VALUE_SERIALIZERS.register("molang_integer", MoLangIntegerValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, MoLangFloatValue.Serializer> MOLANG_FLOAT = VALUE_SERIALIZERS.register("molang_float", MoLangFloatValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, MoLangStringValue.Serializer> MOLANG_STRING = VALUE_SERIALIZERS.register("molang_string", MoLangStringValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, ConditionalValue.Serializer> CONDITIONAL = VALUE_SERIALIZERS.register("conditional", ConditionalValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, CrouchingValue.Serializer> CROUCHING = VALUE_SERIALIZERS.register("crouching", CrouchingValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, EntityTickCountValue.Serializer> ENTITY_TICK_COUNT = VALUE_SERIALIZERS.register("entity_tick_count", EntityTickCountValue.Serializer::new);

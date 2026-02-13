@@ -20,9 +20,9 @@ public class PalladiumAnimationController extends PlayerAnimationController {
         boolean dirty = false;
         if (PalladiumEntityData.get(this.avatar, PalladiumEntityDataTypes.RENDER_LAYERS.get()) instanceof ClientEntityRenderLayers layers) {
             for (PackRenderLayer<?> layer : layers.getLayers()) {
-                if(layer instanceof DefaultPackRenderLayer packRenderLayer){
+                if (layer instanceof DefaultPackRenderLayer packRenderLayer) {
                     for (String partName : packRenderLayer.getPartNames(this.avatar)) {
-                        if(!this.bones.containsKey(partName)){
+                        if (!this.bones.containsKey(partName)) {
                             this.registerPlayerAnimBone(partName);
                             dirty = true;
                         }
@@ -30,7 +30,7 @@ public class PalladiumAnimationController extends PlayerAnimationController {
                 }
             }
         }
-        if(dirty)
+        if (dirty)
             forceAnimationReset();
         super.setupAnim(state);
     }

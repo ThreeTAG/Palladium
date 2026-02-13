@@ -10,7 +10,7 @@ import net.threetag.palladium.logic.molang.EntityContext;
 import net.threetag.palladium.util.molang.ModifyIntFunction;
 import team.unnamed.mocha.MochaEngine;
 
-public abstract class IntegerValue extends Value  implements EntityContext {
+public abstract class IntegerValue extends Value implements EntityContext {
 
     public final String molang;
     public final ModifyIntFunction function;
@@ -35,7 +35,7 @@ public abstract class IntegerValue extends Value  implements EntityContext {
             this.cachedEntity = context.getEntity();
 
             if (this.cachedEntity != null) {
-               i = this.function.modify(i);
+                i = this.function.modify(i);
             }
         }
 
