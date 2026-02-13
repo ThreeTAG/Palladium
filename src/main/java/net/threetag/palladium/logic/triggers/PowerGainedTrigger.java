@@ -8,6 +8,7 @@ import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -29,6 +30,14 @@ public class PowerGainedTrigger extends SimpleCriterionTrigger<PowerGainedTrigge
                 EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(PowerGainedTrigger.TriggerInstance::player),
                 IdentifierPredicate.CODEC.optionalFieldOf("power").forGetter(PowerGainedTrigger.TriggerInstance::power)
         ).apply(instance, PowerGainedTrigger.TriggerInstance::new));
+
+        public static Criterion<PowerGainedTrigger.TriggerInstance> powerGained(@Nullable String namespace, @Nullable String path) {
+            return PalladiumCriteriaTriggers.POWER_GAINED.get().createCriterion(new PowerGainedTrigger.TriggerInstance(Optional.empty(), Optional.of(new IdentifierPredicate(Optional.ofNullable(namespace), Optional.ofNullable(path)))));
+        }
+
+        public static Criterion<PowerGainedTrigger.TriggerInstance> powerGained(String namespace) {
+            return powerGained(namespace, null);
+        }
 
         public static Criterion<PowerGainedTrigger.TriggerInstance> powerGained() {
             return PalladiumCriteriaTriggers.POWER_GAINED.get().createCriterion(new PowerGainedTrigger.TriggerInstance(Optional.empty(), Optional.empty()));
