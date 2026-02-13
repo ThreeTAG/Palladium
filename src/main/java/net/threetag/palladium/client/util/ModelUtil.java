@@ -38,6 +38,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -81,8 +82,10 @@ public class ModelUtil {
             parts.addAll(instance.getAbility().modelParts);
         }
 
-        for (PackRenderLayer<?> layer : ((ClientEntityRenderLayers) EntityRenderLayers.get(entity, PalladiumEntityDataTypes.RENDER_LAYERS.get())).getLayers()) {
-            parts.addAll(layer.getProperties().hiddenModelParts());
+        for (Map.Entry<PackRenderLayer<PackRenderLayer.State>, PackRenderLayer.State> e : ((ClientEntityRenderLayers) EntityRenderLayers.get(entity, PalladiumEntityDataTypes.RENDER_LAYERS.get())).getLayerStates().entrySet()) {
+            if (e.getKey().shouldRender(e.getValue(), PerspectiveAwareConditions.Perspective.THIRD_PERSON)) {
+                parts.addAll(e.getKey().getProperties().hiddenModelParts());
+            }
         }
 
         return parts;
