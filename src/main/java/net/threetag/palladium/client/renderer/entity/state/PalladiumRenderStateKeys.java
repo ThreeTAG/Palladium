@@ -3,6 +3,7 @@ package net.threetag.palladium.client.renderer.entity.state;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.entity.ClientAvatarState;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -31,7 +32,7 @@ import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.AimAbility;
-import net.threetag.palladium.power.ability.InvisibilityAbility;
+import net.threetag.palladium.power.ability.OpacityChanging;
 
 import java.util.*;
 
@@ -72,7 +73,7 @@ public class PalladiumRenderStateKeys {
             state.setRenderData(TINT, -1);
             state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());
 
-            float opacity = InvisibilityAbility.getOpacity(entity, state.partialTick);
+            float opacity = OpacityChanging.getOpacity(entity, entity instanceof LocalPlayer, state.partialTick);
             state.setRenderData(OPACITY, opacity);
 
             if (opacity < 1.0F) {

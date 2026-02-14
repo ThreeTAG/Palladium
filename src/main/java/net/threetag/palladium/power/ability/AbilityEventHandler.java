@@ -34,7 +34,7 @@ public class AbilityEventHandler {
 
     @SubscribeEvent
     static void onLivingVisibility(LivingEvent.LivingVisibilityEvent e) {
-        e.modifyVisibility(InvisibilityAbility.getVisibilityMultiplier(e.getEntity(), 1F));
+        e.modifyVisibility(OpacityChanging.getMobVisibilityMultiplier(e.getEntity(), 1F));
     }
 
     @SubscribeEvent
