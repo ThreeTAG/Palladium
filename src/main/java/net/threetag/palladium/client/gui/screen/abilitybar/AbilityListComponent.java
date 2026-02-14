@@ -72,8 +72,7 @@ public record AbilityListComponent(AbilityBar.AbilityList abilityList) implement
                         ability.getAbility().getStateManager().getEnablingHandler() instanceof KeyBindEnablingHandler handler) {
                     var key = getComponentForKeyBind(handler.getKeyBindType(), ability, texture, true, index);
                     gui.pose().pushMatrix();
-                    gui.pose().translate(0, 0);
-                    key.render(minecraft, gui, x + 19 - key.getWidth(), y + 17 - key.getHeight(), alignment);
+                    key.render(minecraft, gui, x + 19 - key.getWidth(), y + 19 - key.getHeight(), alignment);
                     gui.pose().popMatrix();
                 }
 
