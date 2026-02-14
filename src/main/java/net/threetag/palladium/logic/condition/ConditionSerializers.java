@@ -25,7 +25,7 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, HealthCondition.Serializer> HEALTH = CONDITION_SERIALIZERS.register("health", HealthCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, ObjectiveScoreCondition.Serializer> OBJECTIVE_SCORE = CONDITION_SERIALIZERS.register("objective_score", ObjectiveScoreCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, HasTagCondition.Serializer> HAS_TAG = CONDITION_SERIALIZERS.register("has_tag", HasTagCondition.Serializer::new);
-    public static final DeferredHolder<ConditionSerializer<?>, AnimationTimerAbilityCondition.Serializer> ANIMATION_TIMER_ABILITY = CONDITION_SERIALIZERS.register("animation_timer_ability", AnimationTimerAbilityCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, AbilityAnimationTimerValueCondition.Serializer> ABILITY_ANIMATION_TIMER_VALUE = CONDITION_SERIALIZERS.register("ability_animation_timer_value", AbilityAnimationTimerValueCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, AbilityTicksCondition.Serializer> ABILITY_TICKS = CONDITION_SERIALIZERS.register("ability_ticks", AbilityTicksCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, AbilityFirstTickCondition.Serializer> ABILITY_FIRST_TICK = CONDITION_SERIALIZERS.register("ability_first_tick", AbilityFirstTickCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, AbilityLastTickCondition.Serializer> ABILITY_LAST_TICK = CONDITION_SERIALIZERS.register("ability_last_tick", AbilityLastTickCondition.Serializer::new);

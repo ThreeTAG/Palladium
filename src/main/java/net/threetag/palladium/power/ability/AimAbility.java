@@ -31,7 +31,7 @@ public class AimAbility extends Ability {
 
         for (AbilityInstance<AimAbility> instance : AbilityUtil.getInstances(entity, AbilitySerializers.AIM.get())) {
             var armType = instance.getAbility().arm;
-            var progress = instance.getAnimationTimerValueEased(partialTicks);
+            var progress = instance.getAnimationTimerProgressEased(partialTicks);
 
             if (!armType.isNone()) {
                 if (armType.isRight(entity)) {

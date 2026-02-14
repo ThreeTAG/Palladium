@@ -12,7 +12,7 @@
         ],
         "variables": {
           "TIMER": {
-            "type": "palladium:animation_timer",
+            "type": "palladium:ability_animation_timer_value",
             "ability": "test:render_layer_test#alpha_mask"
           }
         }

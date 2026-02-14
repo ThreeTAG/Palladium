@@ -21,7 +21,7 @@ public class ValueSerializers {
     public static final DeferredHolder<ValueSerializer<?>, WidePlayerModelValue.Serializer> WIDE_PLAYER_MODEL = VALUE_SERIALIZERS.register("wide_player_model", WidePlayerModelValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, SlimPlayerModelValue.Serializer> SLIM_PLAYER_MODEL = VALUE_SERIALIZERS.register("slim_player_model", SlimPlayerModelValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, AbilityTickCountValue.Serializer> ABILITY_TICK_COUNT = VALUE_SERIALIZERS.register("ability_tick_count", AbilityTickCountValue.Serializer::new);
-    public static final DeferredHolder<ValueSerializer<?>, AnimationTimerValue.Serializer> ANIMATION_TIMER = VALUE_SERIALIZERS.register("animation_timer", AnimationTimerValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, AbilityAnimationTimerValue.Serializer> ABILITY_ANIMATION_TIMER_VALUE = VALUE_SERIALIZERS.register("ability_animation_timer_value", AbilityAnimationTimerValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, AbilityKeyValue.Serializer> ABILITY_KEY = VALUE_SERIALIZERS.register("ability_key", AbilityKeyValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, EnergyBarValue.Serializer> ENERGY_BAR = VALUE_SERIALIZERS.register("energy_bar", EnergyBarValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoonPhaseValue.Serializer> MOON_PHASE = VALUE_SERIALIZERS.register("moon_phase", MoonPhaseValue.Serializer::new);

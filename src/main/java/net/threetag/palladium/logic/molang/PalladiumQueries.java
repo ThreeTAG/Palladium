@@ -25,7 +25,7 @@ public class PalladiumQueries {
                         var ability = AbilityReference.parse(arg.getAsString()).getInstance(living);
 
                         if (ability != null) {
-                            return ability.getAnimationTimerValueEased(ctx.partialTick());
+                            return ability.getAnimationTimerProgressEased(ctx.partialTick());
                         }
                     }
 

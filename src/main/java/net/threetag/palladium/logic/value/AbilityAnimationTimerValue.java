@@ -8,16 +8,16 @@ import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.ability.AbilityReference;
 
-public class AnimationTimerValue extends IntegerValue {
+public class AbilityAnimationTimerValue extends IntegerValue {
 
-    public static final MapCodec<AnimationTimerValue> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<AbilityAnimationTimerValue> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             AbilityReference.CODEC.fieldOf("ability").forGetter(v -> v.reference),
             modifyFunctionCodec()
-    ).apply(instance, AnimationTimerValue::new));
+    ).apply(instance, AbilityAnimationTimerValue::new));
 
     private final AbilityReference reference;
 
-    public AnimationTimerValue(AbilityReference reference, String molang) {
+    public AbilityAnimationTimerValue(AbilityReference reference, String molang) {
         super(molang);
         this.reference = reference;
     }
@@ -37,21 +37,21 @@ public class AnimationTimerValue extends IntegerValue {
 
     @Override
     public ValueSerializer<?> getSerializer() {
-        return ValueSerializers.ANIMATION_TIMER.get();
+        return ValueSerializers.ABILITY_ANIMATION_TIMER_VALUE.get();
     }
 
-    public static class Serializer extends IntSerializer<AnimationTimerValue> {
+    public static class Serializer extends IntSerializer<AbilityAnimationTimerValue> {
 
         @Override
-        public MapCodec<AnimationTimerValue> codec() {
+        public MapCodec<AbilityAnimationTimerValue> codec() {
             return CODEC;
         }
 
         @Override
-        public void addDocumentation(CodecDocumentationBuilder<Value, AnimationTimerValue> builder, HolderLookup.Provider provider) {
-            builder.setName("Animation Timer").setDescription("Returns the value of the animation timer for the specified ability. Defaults to 0 if no ability or animation timer was found.")
+        public void addDocumentation(CodecDocumentationBuilder<Value, AbilityAnimationTimerValue> builder, HolderLookup.Provider provider) {
+            builder.setName("Ability Animation Timer Value").setDescription("Returns the value of the animation timer for the specified ability. Defaults to 0 if no ability or animation timer was found.")
                     .add("ability", TYPE_ABILITY_REFERENCE, "The ability to get the animation timer for. Defined in this syntax: <power_id>#<ability_key>")
-                    .addExampleObject(new AnimationTimerValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
+                    .addExampleObject(new AbilityAnimationTimerValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
         }
     }
 }

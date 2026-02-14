@@ -139,11 +139,15 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
         return this.animationTimer;
     }
 
-    public float getAnimationTimerValue(float partialTick) {
+    public int getAnimationTimerValue() {
+        return this.animationTimer != null ? this.animationTimer.value() : (this.isEnabled() ? 1 : 0);
+    }
+
+    public float getAnimationTimerProgress(float partialTick) {
         return this.animationTimer != null ? this.animationTimer.progress(partialTick) : (this.isEnabled() ? 1F : 0F);
     }
 
-    public float getAnimationTimerValueEased(float partialTick) {
+    public float getAnimationTimerProgressEased(float partialTick) {
         return this.animationTimer != null ? this.animationTimer.eased(partialTick) : (this.isEnabled() ? 1F : 0F);
     }
 

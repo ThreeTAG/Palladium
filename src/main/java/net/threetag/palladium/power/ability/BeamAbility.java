@@ -79,7 +79,7 @@ public class BeamAbility extends Ability {
     @Override
     public void tick(LivingEntity entity, AbilityInstance<?> instance, boolean enabled) {
         HitResult hit = null;
-        var timer = instance.getAnimationTimerValueEased(1F);
+        var timer = instance.getAnimationTimerProgressEased(1F);
         boolean hitTarget = timer >= 1F;
 
         if (hitTarget) {
@@ -141,7 +141,7 @@ public class BeamAbility extends Ability {
     }
 
     public float beamLengthMultiplier(AbilityInstance<?> instance, float partialTick) {
-        return instance.getAnimationTimerValueEased(partialTick);
+        return instance.getAnimationTimerProgressEased(partialTick);
     }
 
     public static class Serializer extends AbilitySerializer<BeamAbility> {

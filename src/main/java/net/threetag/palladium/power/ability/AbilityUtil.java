@@ -7,7 +7,6 @@ import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import net.threetag.palladium.util.Easing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -163,29 +162,11 @@ public class AbilityUtil {
         return getInstances(entity, ability).stream().anyMatch(AbilityInstance::isEnabled);
     }
 
-    public static float getHighestAnimationTimerValue(LivingEntity entity, AbilitySerializer<?> ability, float partialTick) {
-        return getHighestAnimationTimerValue(entity, ability, partialTick, Easing.LINEAR);
-    }
-
-    public static float getHighestAnimationTimerValue(LivingEntity entity, AbilitySerializer<?> ability, float partialTick, Easing easing) {
-        float f = 0F;
-
-        for (AbilityInstance<?> instance : AbilityUtil.getInstances(entity, ability)) {
-            var timer = instance.getAnimationTimer();
-
-            if (timer != null) {
-                f = Math.max(f, timer.interpolated(partialTick));
-            }
-        }
-
-        return easing.apply(f);
-    }
-
     public static float getHighestAnimationTimerProgress(LivingEntity entity, AbilitySerializer<?> ability, float partialTick) {
         float f = 0F;
 
         for (AbilityInstance<?> instance : AbilityUtil.getInstances(entity, ability)) {
-            f = Math.max(f, instance.getAnimationTimerValueEased(partialTick));
+            f = Math.max(f, instance.getAnimationTimerProgressEased(partialTick));
         }
 
         return f;
