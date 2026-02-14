@@ -33,10 +33,7 @@ import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.AimAbility;
 import net.threetag.palladium.power.ability.InvisibilityAbility;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
 public class PalladiumRenderStateKeys {
@@ -72,9 +69,20 @@ public class PalladiumRenderStateKeys {
             state.setRenderData(AIM, AimAbility.getTimer(entity, state.partialTick));
             state.setRenderData(SHRINK_OVERLAY, AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.SHRINK_PLAYER_OVERLAY.get(), state.partialTick));
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
-            state.setRenderData(OPACITY, InvisibilityAbility.getOpacity(entity, state.partialTick));
             state.setRenderData(TINT, -1);
             state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());
+
+            float opacity = InvisibilityAbility.getOpacity(entity, state.partialTick);
+            state.setRenderData(OPACITY, opacity);
+
+            if (opacity < 1.0F) {
+                List<EntityRenderState.ShadowPiece> newShadows = new ArrayList<>();
+                for (EntityRenderState.ShadowPiece shadow : state.shadowPieces) {
+                    newShadows.add(new EntityRenderState.ShadowPiece(shadow.relativeX(), shadow.relativeY(), shadow.relativeZ(), shadow.shapeBelow(), shadow.alpha() * opacity));
+                }
+                state.shadowPieces.clear();
+                state.shadowPieces.addAll(newShadows);
+            }
 
             if (!IGNORE_VIBRATION_STATE) {
                 state.setRenderData(VIBRATION_RENDER_STATE, VibrationPackRenderLayer.createRenderStateForVibrations(entity, state.partialTick));

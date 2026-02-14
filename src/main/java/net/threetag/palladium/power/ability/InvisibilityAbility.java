@@ -48,7 +48,7 @@ public class InvisibilityAbility extends Ability {
     public static float getOpacity(LivingEntity entity, float partialTick) {
         float f = 1F;
 
-        for (AbilityInstance<InvisibilityAbility> ability : AbilityUtil.getEnabledInstances(entity, AbilitySerializers.INVISIBILITY.get())) {
+        for (AbilityInstance<InvisibilityAbility> ability : AbilityUtil.getInstances(entity, AbilitySerializers.INVISIBILITY.get())) {
             f = Math.min(f, Mth.lerp(ability.getAnimationTimerProgressEased(partialTick), 1F, ability.getAbility().opacity));
         }
 
