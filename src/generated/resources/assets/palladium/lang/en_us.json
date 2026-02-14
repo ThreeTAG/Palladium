@@ -103,5 +103,6 @@
   "palladium.configuration.ability_bar_alignment": "Ability Bar - Alignment",
   "palladium.configuration.ability_bar_key_bind_display": "Ability Bar - Key Bind Display",
   "palladium.configuration.hide_experimental_warning": "Singleplayer - Hide Experimental Settings Warning",
-  "palladium.configuration.max_superpower_sets": "Max. amount of superpower sets"
+  "palladium.configuration.max_superpower_sets": "Max. amount of superpower sets",
+  "palladium.configuration.scale_camera_fix": "Visuals - Fix Camera Scale"
 }

@@ -120,6 +120,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Alignment");
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Key Bind Display");
             this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Hide Experimental Settings Warning");
+            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuals - Fix Camera Scale");
             this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. amount of superpower sets");
 
             // Key Mappings
@@ -255,6 +256,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
             this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuell - Kameraskalierung fixen");
             this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
 
             // Key Mappings
@@ -392,6 +394,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
             this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
             this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuell - Kameraskalierung fixen");
             this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
 
             // Key Mappings
