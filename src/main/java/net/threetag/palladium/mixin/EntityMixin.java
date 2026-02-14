@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.PalladiumEntityExtension;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
@@ -42,6 +43,12 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
 
     @Shadow
     private Level level;
+
+    @Shadow
+    public abstract Vec3 position();
+
+    @Unique
+    private Vec3 palladium$previousPos = Vec3.ZERO;
     @Unique
     private Map<PalladiumEntityDataType<?>, PalladiumEntityData<?, ?>> palladium$dataMap;
 
@@ -57,6 +64,11 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
                 this.palladium$dataMap.put(dataType, data);
             }
         }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void tick(CallbackInfo ci) {
+        this.palladium$previousPos = this.position().add(0);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -87,6 +99,11 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
                 });
             }
         }
+    }
+
+    @Override
+    public Vec3 palladium$getPreviousPosition() {
+        return this.palladium$previousPos;
     }
 
     @Override

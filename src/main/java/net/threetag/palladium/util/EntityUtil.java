@@ -11,15 +11,19 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.entity.EffectEntity;
+import net.threetag.palladium.entity.PalladiumEntityExtension;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
 public class EntityUtil {
 
-    // TODO test on client & server
     public static boolean isMoving(Entity entity) {
-        return entity.xo != entity.getX() || entity.yo != entity.getY() || entity.zo != entity.getZ();
+        if (entity instanceof PalladiumEntityExtension ext) {
+            return !ext.palladium$getPreviousPosition().equals(entity.position());
+        }
+
+        return false;
     }
 
     public static Vec3 getLookVector(Entity entity) {
@@ -67,7 +71,7 @@ public class EntityUtil {
 
     // TODO readd trails
     public static boolean canBeTraced(Entity entity) {
-        if(entity instanceof Player player && player.isSpectator()) {
+        if (entity instanceof Player player && player.isSpectator()) {
             return false;
         } else if (entity instanceof AreaEffectCloud) {
             return false;

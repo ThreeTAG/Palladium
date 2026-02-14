@@ -17,8 +17,7 @@ public class IsMovingCondition implements Condition {
 
     @Override
     public boolean test(DataContext context) {
-        var entity = context.getEntity();
-        return entity != null && EntityUtil.isMoving(entity);
+        return EntityUtil.isMoving(context.getEntity());
     }
 
     @Override

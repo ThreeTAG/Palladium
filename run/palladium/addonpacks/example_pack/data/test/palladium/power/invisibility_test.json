@@ -18,6 +18,40 @@
           "behaviour": "toggle"
         }
       }
+    },
+    "stealth": {
+      "type": "palladium:invisibility",
+      "opacity": 0,
+      "opacity_self": 0.2,
+      "properties": {
+        "animation_timer": {
+          "max": 20,
+          "easing": "in_out_cubic"
+        }
+      },
+      "state": {
+        "enabling": [
+          {
+            "type": "palladium:brightness_at_position",
+            "min": 0,
+            "max": 5
+          },
+          {
+            "type": "palladium:or",
+            "conditions": [
+              {
+                "type": "palladium:not",
+                "conditions": {
+                  "type": "palladium:is_moving"
+                }
+              },
+              {
+                "type": "palladium:crouching"
+              }
+            ]
+          }
+        ]
+      }
     }
   }
 }
