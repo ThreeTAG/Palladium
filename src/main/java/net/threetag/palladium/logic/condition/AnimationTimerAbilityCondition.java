@@ -44,7 +44,7 @@ public record AnimationTimerAbilityCondition(AbilityReference ability, int min, 
             return false;
         }
 
-        var timer = (int) dependency.getAnimationTimer().interpolated(1F);
+        var timer = dependency.getAnimationTimer().value();
         return timer >= this.min && timer <= this.max;
     }
 
