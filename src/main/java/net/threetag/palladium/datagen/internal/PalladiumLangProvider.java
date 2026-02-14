@@ -27,6 +27,7 @@ import net.threetag.palladium.customization.CustomizationCategories;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.item.PalladiumCreativeTabs;
 import net.threetag.palladium.item.PalladiumItems;
+import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.ability.AbilitySerializer;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.registry.PalladiumRegistries;
@@ -49,6 +50,10 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
     public void add(CreativeModeTab key, String name) {
         Identifier id = BuiltInRegistries.CREATIVE_MODE_TAB.getKey(key);
         this.add(Util.makeDescriptionId("itemGroup", id), name);
+    }
+
+    public void addPower(ResourceKey<Power> power, String name) {
+        this.add(Util.makeDescriptionId("power", power.identifier()), name);
     }
 
     public void addAbility(Holder<? extends AbilitySerializer<?>> key, String name) {
