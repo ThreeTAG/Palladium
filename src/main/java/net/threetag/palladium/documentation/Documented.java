@@ -5,6 +5,8 @@ import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.entity.flight.SwingingFlightType;
 import net.threetag.palladium.util.NumberComparator;
 
+import java.util.Arrays;
+
 public interface Documented<T, R extends T> {
 
     SettingType TYPE_ANY = SettingType.simple("Anything");
@@ -30,6 +32,8 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_TEXTURE_REFERENCE = SettingType.simple("Texture Reference");
     SettingType TYPE_ANY_TEXTURE = SettingType.combined(TYPE_IDENTIFIER, TYPE_DYNAMIC_TEXTURE, TYPE_TEXTURE_REFERENCE);
     SettingType TYPE_TEXT_COMPONENT = SettingType.simple("Text Component");
+    SettingType TYPE_TEXT_ALIGNMENT = SettingType.enumList(Arrays.asList("left", "center", "right"));
+    SettingType TYPE_TEXT_OVERFLOW = SettingType.enumList(Arrays.asList("clamped", "scrolling"));
     SettingType TYPE_NBT = SettingType.simple("NBT");
     SettingType TYPE_PLAYER_SLOT = SettingType.enumList(PlayerSlot.exampleValues().stream().map(Object::toString).toList());
     SettingType TYPE_RENDER_LAYERS = SettingType.simple("Render Layers");

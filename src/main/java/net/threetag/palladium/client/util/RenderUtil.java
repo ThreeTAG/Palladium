@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.util.TriState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -28,6 +29,9 @@ public class RenderUtil {
     public static final int FULL_BLACK = ARGB.color(255, 0, 0, 0);
     public static final int DEFAULT_GRAY = ARGB.opaque(0x404040);
     public static final Color DEFAULT_GRAY_COLOR = new Color(ARGB.opaque(0x404040));
+
+    private static TriState OVERRIDEN_STRING_SHADOW = TriState.DEFAULT;
+    private static Integer OVERRIDEN_STRING_COLOR = null;
 
     public static void setItemInHumanoidRenderStateSlot(HumanoidRenderState state, EquipmentSlot slot, ItemStack stack) {
         ItemModelResolver itemModelResolver = Minecraft.getInstance().getItemModelResolver();
@@ -110,7 +114,6 @@ public class RenderUtil {
             vertexConsumer.addVertex(pose, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(red, green, blue, alpha).setLight(combinedLightIn);
             vertexConsumer.addVertex(pose, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(red, green, blue, alpha).setLight(combinedLightIn);
         });
-
     }
 
     public static void submitTexturedBox(PoseStack stack, RenderType renderType, SubmitNodeCollector submitNodeCollector, AABB box, int color, int combinedLightIn, int packedOverlay, float heightMultiplier) {
@@ -148,5 +151,29 @@ public class RenderUtil {
             vertexConsumer.addVertex(pose, (float) box.minX, maxY, (float) box.maxZ).setUv(1, 1 - heightMultiplier).setColor(color).setOverlay(packedOverlay).setLight(combinedLightIn).setNormal(pose, 0.0F, 1.0F, 0.0F);
             vertexConsumer.addVertex(pose, (float) box.minX, maxY, (float) box.minZ).setUv(0, 1 - heightMultiplier).setColor(color).setOverlay(packedOverlay).setLight(combinedLightIn).setNormal(pose, 0.0F, 1.0F, 0.0F);
         });
+    }
+
+    public static void flashStringShadowOverride(boolean shadow) {
+        OVERRIDEN_STRING_SHADOW = TriState.from(shadow);
+    }
+
+    public static boolean getStringShadowOverride(boolean original) {
+        var override = OVERRIDEN_STRING_SHADOW.toBoolean(original);
+        OVERRIDEN_STRING_SHADOW = TriState.DEFAULT;
+        return override;
+    }
+
+    public static void flashStringColorOverride(int color) {
+        OVERRIDEN_STRING_COLOR = color;
+    }
+
+    public static int getStringColorOverride(int original) {
+        if (OVERRIDEN_STRING_COLOR != null) {
+            int override = OVERRIDEN_STRING_COLOR;
+            OVERRIDEN_STRING_COLOR = null;
+            return override;
+        } else {
+            return original;
+        }
     }
 }

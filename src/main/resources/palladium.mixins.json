@@ -29,6 +29,7 @@
     "client.AbstractClientPlayerMixin",
     "client.AvatarRendererMixin",
     "client.GameRendererMixin",
+    "client.GuiGraphicsMixin",
     "client.HumanoidModelMixin",
     "client.ItemInHandRendererMixin",
     "client.KeyboardInputMixin",

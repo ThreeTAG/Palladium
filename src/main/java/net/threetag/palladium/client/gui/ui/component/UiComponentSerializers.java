@@ -8,6 +8,7 @@ public class UiComponentSerializers {
     public static final UiComponentSerializer<GradientRectangleUiComponent> GRADIENT_RECTANGLE = register("gradient_rectangle", new GradientRectangleUiComponent.Serializer());
     public static final UiComponentSerializer<BlitUiComponent> BLIT = register("blit", new BlitUiComponent.Serializer());
     public static final UiComponentSerializer<TextUiComponent> TEXT = register("text", new TextUiComponent.Serializer());
+    public static final UiComponentSerializer<PowerNameUiComponent> POWER_NAME = register("power_name", new PowerNameUiComponent.Serializer());
     public static final UiComponentSerializer<TextBoxUiComponent> TEXT_BOX = register("text_box", new TextBoxUiComponent.Serializer());
     public static final UiComponentSerializer<IconUiComponent> ICON = register("icon", new IconUiComponent.Serializer());
     public static final UiComponentSerializer<ItemUiComponent> ITEM = register("item", new ItemUiComponent.Serializer());

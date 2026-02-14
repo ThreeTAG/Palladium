@@ -52,6 +52,7 @@ public class PalladiumCodecs {
                     Codec.INT.xmap(Color::new, Color::getRGB)
             )
     );
+    public static final Codec<Integer> COLOR_INT_CODEC = COLOR_CODEC.xmap(Color::getRGB, Color::new);
     public static final StreamCodec<ByteBuf, Color> COLOR_STREAM_CODEC = ByteBufCodecs.VAR_INT.map(Color::new, Color::getRGB);
 
     @SuppressWarnings("deprecation")

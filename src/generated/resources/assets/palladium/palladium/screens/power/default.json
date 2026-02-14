@@ -6,13 +6,10 @@
   },
   "components": [
     {
-      "type": "palladium:text",
+      "type": "palladium:power_name",
       "properties": {
         "height": 10,
         "width": 200
-      },
-      "text": {
-        "translate": "gui.palladium.powers"
       }
     },
     {
