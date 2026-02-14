@@ -31,6 +31,7 @@ import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
 import net.threetag.palladium.power.ability.AimAbility;
+import net.threetag.palladium.power.ability.InvisibilityAbility;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,7 +72,7 @@ public class PalladiumRenderStateKeys {
             state.setRenderData(AIM, AimAbility.getTimer(entity, state.partialTick));
             state.setRenderData(SHRINK_OVERLAY, AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.SHRINK_PLAYER_OVERLAY.get(), state.partialTick));
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
-            state.setRenderData(OPACITY, 1F - AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.INVISIBILITY.get(), state.partialTick));
+            state.setRenderData(OPACITY, InvisibilityAbility.getOpacity(entity, state.partialTick));
             state.setRenderData(TINT, -1);
             state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());
 

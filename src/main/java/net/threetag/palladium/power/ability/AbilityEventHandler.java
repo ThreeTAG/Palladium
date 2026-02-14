@@ -34,7 +34,7 @@ public class AbilityEventHandler {
 
     @SubscribeEvent
     static void onLivingVisibility(LivingEvent.LivingVisibilityEvent e) {
-        e.modifyVisibility(AbilityUtil.getHighestAnimationTimerProgress(e.getEntity(), AbilitySerializers.INVISIBILITY.get(), 1F));
+        e.modifyVisibility(InvisibilityAbility.getVisibilityMultiplier(e.getEntity(), 1F));
     }
 
     @SubscribeEvent

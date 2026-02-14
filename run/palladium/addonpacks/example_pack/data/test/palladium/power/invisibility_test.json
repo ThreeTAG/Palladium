@@ -4,6 +4,7 @@
   "abilities": {
     "invisibility": {
       "type": "palladium:invisibility",
+      "opacity": 0.2,
       "properties": {
         "animation_timer": {
           "max": 20,
