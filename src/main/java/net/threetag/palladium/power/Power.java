@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.util.StringRepresentable;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.icon.Icon;
@@ -15,7 +14,6 @@ import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.PalladiumCodecs;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -38,12 +36,11 @@ public class Power {
                     PalladiumCodecs.COLOR_CODEC.optionalFieldOf("secondary_color", new Color(126, 97, 86)).forGetter(Power::getSecondaryColor),
                     Codec.BOOL.optionalFieldOf("persistent_data", false).forGetter(Power::hasPersistentData),
                     Codec.BOOL.optionalFieldOf("hidden", false).forGetter(Power::isHidden),
-                    GuiDisplayType.CODEC.optionalFieldOf("gui_display_type", GuiDisplayType.AUTO).forGetter(Power::getGuiDisplayType),
                     Codec.unboundedMap(Codec.STRING, Ability.CODEC).optionalFieldOf("abilities", Collections.emptyMap()).forGetter(Power::getAbilities),
                     Codec.unboundedMap(Codec.STRING, EnergyBarConfiguration.CODEC).optionalFieldOf("energy_bars", Collections.emptyMap()).forGetter(Power::getEnergyBars)
             )
-            .apply(instance, (parent, name, icon, screen, barTexture, primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars) ->
-                    new Power(parent.orElse(null), name, icon, screen, barTexture.orElse(null), primColor, secondColor, persistentData, hidden, guiDisplayType, abilities, energyBars)));
+            .apply(instance, (parent, name, icon, screen, barTexture, primColor, secondColor, persistentData, hidden, abilities, energyBars) ->
+                    new Power(parent.orElse(null), name, icon, screen, barTexture.orElse(null), primColor, secondColor, persistentData, hidden, abilities, energyBars)));
 
     public static final Codec<Holder<Power>> HOLDER_CODEC = RegistryFixedCodec.create(PalladiumRegistryKeys.POWER);
 
@@ -58,9 +55,8 @@ public class Power {
     private final Color primaryColor, secondaryColor;
     private final boolean persistentData;
     private final boolean hidden;
-    private final GuiDisplayType guiDisplayType;
 
-    public Power(@Nullable Identifier parentId, Component name, Icon icon, Identifier screen, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, GuiDisplayType guiDisplayType, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
+    public Power(@Nullable Identifier parentId, Component name, Icon icon, Identifier screen, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
         this.parentId = parentId;
         this.name = name;
         this.icon = icon;
@@ -70,7 +66,6 @@ public class Power {
         this.secondaryColor = secondaryColor;
         this.persistentData = persistentData;
         this.hidden = hidden;
-        this.guiDisplayType = guiDisplayType;
         this.abilities = abilities;
         this.energyBars = energyBars;
 
@@ -125,30 +120,6 @@ public class Power {
 
     public boolean isHidden() {
         return this.hidden;
-    }
-
-    public GuiDisplayType getGuiDisplayType() {
-        return this.guiDisplayType;
-    }
-
-    public enum GuiDisplayType implements StringRepresentable {
-
-        AUTO("auto"),
-        TREE("tree"),
-        LIST("list");
-
-        public static final Codec<GuiDisplayType> CODEC = StringRepresentable.fromEnum(GuiDisplayType::values);
-
-        private final String name;
-
-        GuiDisplayType(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public @NotNull String getSerializedName() {
-            return this.name;
-        }
     }
 
 }
