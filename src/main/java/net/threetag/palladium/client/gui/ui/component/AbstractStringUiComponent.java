@@ -54,7 +54,6 @@ public abstract class AbstractStringUiComponent extends UiComponent {
                 .setColor(this.color)
                 .setShadow(this.shadow)
                 .setAlignment(this.alignment);
-        System.out.println(this.color);
         widget.setMaxWidth(this.getWidth(), this.textOverflow);
         return widget;
     }
