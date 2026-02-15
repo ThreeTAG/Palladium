@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.molang.EntityContext;
+import net.threetag.palladium.logic.molang.MoLangQueryRegistry;
 import net.threetag.palladium.util.molang.ModifyStringFunction;
 import team.unnamed.mocha.MochaEngine;
 
@@ -20,7 +21,7 @@ public abstract class StringValue extends Value implements EntityContext {
         this.molang = molang;
 
         if (this.molang != null && !this.molang.isEmpty() && !this.molang.isBlank()) {
-            MochaEngine<?> mocha = MochaEngine.createStandard();
+            MochaEngine<?> mocha = MoLangQueryRegistry.create(this);
             this.function = mocha.compile(this.molang, ModifyStringFunction.class);
         } else {
             this.function = null;

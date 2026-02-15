@@ -21,7 +21,7 @@ public abstract class FloatValue extends Value implements EntityContext {
         this.molang = molang;
 
         if (this.molang != null && !this.molang.isEmpty() && !this.molang.isBlank()) {
-            MochaEngine<?> mocha = MoLangQueryRegistry.createBaseEngine(this);
+            MochaEngine<?> mocha = MoLangQueryRegistry.create(this);
             this.function = mocha.compile(this.molang, ModifyFloatFunction.class);
         } else {
             this.function = null;

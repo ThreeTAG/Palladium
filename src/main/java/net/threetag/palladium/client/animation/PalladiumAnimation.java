@@ -11,6 +11,7 @@ import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.logic.context.DataContextKeys;
 import net.threetag.palladium.logic.molang.EntityContext;
+import net.threetag.palladium.logic.molang.MoLangQueryRegistry;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.mocha.MochaEngine;
@@ -31,7 +32,7 @@ public final class PalladiumAnimation implements EntityContext {
         this.animations = animations;
 
         if (!this.animations.isEmpty()) {
-            MochaEngine<?> mocha = MochaEngine.createStandard();
+            MochaEngine<?> mocha = MoLangQueryRegistry.create(this);
             this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }

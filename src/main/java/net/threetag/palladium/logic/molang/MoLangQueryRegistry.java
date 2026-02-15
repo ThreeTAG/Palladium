@@ -30,21 +30,23 @@ public class MoLangQueryRegistry {
         NeoForge.EVENT_BUS.post(new RegisterMoLangQueriesEvent(QUERY_BUILDERS));
     }
 
-    public static void create(EntityContext context) {
-        MochaEngine<EntityContext> engine = createBaseEngine(context);
+    public static <T extends EntityContext> MochaEngine<T> create(T context) {
+        MochaEngine<T> engine = createBaseEngine(context);
 
         QUERY_BUILDERS.forEach((namespace, builder) -> {
-            QueryBinding<EntityContext> queryBinding = new QueryBinding<>(context);
+            QueryBinding<T> queryBinding = new QueryBinding<>(context);
             builder.build(queryBinding);
             queryBinding.block();
             engine.scope().set(namespace, queryBinding);
         });
+
+        return engine;
     }
 
     public static <T> MochaEngine<T> createBaseEngine(T entity) {
         MochaEngine<T> engine = MochaEngine.createStandard(entity);
         engine.handleParseExceptions(HANDLER);
-        engine.warnOnReflectiveFunctionUsage(true);
+        engine.warnOnReflectiveFunctionUsage(false);
         engine.scope().set("math", new MochaMathExtensions(engine.scope().getProperty("math")));
         return engine;
     }
