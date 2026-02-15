@@ -8,61 +8,147 @@ import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.entity.flight.SwingingFlightType;
 import net.threetag.palladium.event.RegisterMoLangQueriesEvent;
 import net.threetag.palladium.power.ability.AbilityReference;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import team.unnamed.mocha.runtime.binding.Binding;
+import team.unnamed.mocha.runtime.value.Function;
+import team.unnamed.mocha.runtime.value.ObjectProperty;
+import team.unnamed.mocha.runtime.value.ObjectValue;
+import team.unnamed.mocha.runtime.value.Value;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID)
-public class PalladiumQueries {
+public class PalladiumQueries implements ObjectValue {
 
     @SubscribeEvent
     static void registerMoLang(RegisterMoLangQueriesEvent e) {
-        e.getPalladiumQuery()
-                .setDouble("tick_count", (ctx, args) -> ctx.entity().tickCount + ctx.partialTick())
-                .setDouble("cape_x_rot", (ctx, args) -> 0)
-                .setDouble("cape_y_rot", (ctx, args) -> 0)
-                .setDouble("cape_z_rot", (ctx, args) -> 0)
-                .setDouble("get_animation_timer_eased", (ctx, args) -> {
-                    var arg = args.next().eval();
-                    if (ctx.entity() instanceof LivingEntity living && arg != null) {
-                        var ability = AbilityReference.parse(arg.getAsString()).getInstance(living);
+        e.register(Palladium.MOD_ID, PalladiumQueries.class, PalladiumQueries::new);
+    }
 
-                        if (ability != null) {
-                            return ability.getAnimationTimerProgressEased(ctx.partialTick());
-                        }
-                    }
+    private final EntityContext context;
+    private final Map<String, Supplier<Object>> functions = new HashMap<>();
 
-                    return 0F;
-                })
-                .setDouble("horizontal_speed", (ctx, args) -> ctx.entity().position().subtract(ctx.entity().oldPosition()).length())
-                .setDouble("flight_pitch", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation != null ? animation.getPitch(ctx.partialTick()) : 0;
-                })
-                .setDouble("flight_roll", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation != null ? animation.getRoll(ctx.partialTick()) : 0;
-                })
-                .setDouble("flight_yaw", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation != null ? animation.getYaw(ctx.partialTick()) : 0;
-                })
-                .setDouble("flight_limb_pitch", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation != null ? animation.getLimbPitch(ctx.partialTick()) : 0;
-                })
-                .setDouble("flight_limb_roll", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation != null ? animation.getLimbRoll(ctx.partialTick()) : 0;
-                })
-                .setDouble("flight_limb_yaw", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation != null ? animation.getLimbYaw(ctx.partialTick()) : 0;
-                })
-                .setDouble("swinging_right_arm_pitch", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation instanceof SwingingFlightType.AnimationHandler swinging ? swinging.getRightArmPitch(ctx.partialTick()) : 0;
-                })
-                .setDouble("swinging_left_arm_pitch", (ctx, args) -> {
-                    var animation = ctx.entity() instanceof LivingEntity living ? EntityFlightHandler.get(living).getAnimationHandler() : null;
-                    return animation instanceof SwingingFlightType.AnimationHandler swinging ? swinging.getLeftArmPitch(ctx.partialTick()) : 0;
-                });
+    public PalladiumQueries(EntityContext context) {
+        this.context = context;
+        this.functions.put("tick_count", this::tick_count);
+        this.functions.put("horizontal_speed", this::horizontal_speed);
+        this.functions.put("flight_pitch", this::flight_pitch);
+        this.functions.put("flight_roll", this::flight_roll);
+        this.functions.put("flight_yaw", this::flight_yaw);
+        this.functions.put("flight_limb_pitch", this::flight_limb_pitch);
+        this.functions.put("flight_limb_roll", this::flight_limb_roll);
+        this.functions.put("flight_limb_yaw", this::flight_limb_yaw);
+        this.functions.put("swinging_right_arm_pitch", this::swinging_right_arm_pitch);
+        this.functions.put("swinging_left_arm_pitch", this::swinging_left_arm_pitch);
+    }
+
+    @Override
+    public @NotNull Value get(@NonNull String name) {
+        if (name.equals("get_animation_timer_eased")) {
+            return (Function<?>) (ctx, args) -> Value.of(get_animation_timer_eased(args.next().toString()));
+        } else if (this.functions.containsKey(name)) {
+            return Value.of(this.functions.get(name).get());
+        }
+        return Value.nil();
+    }
+
+    @Binding("tick_count")
+    public double tick_count() {
+        return context.entity().tickCount + context.partialTick();
+    }
+
+    @Binding("get_animation_timer_eased")
+    public double get_animation_timer_eased(String abilityRef) {
+        if (context.entity() instanceof LivingEntity living && abilityRef != null) {
+            var ability = AbilityReference.parse(abilityRef).getInstance(living);
+
+            if (ability != null) {
+                return ability.getAnimationTimerProgressEased(context.partialTick());
+            }
+        }
+
+        return 0F;
+    }
+
+    @Binding("horizontal_speed")
+    public double horizontal_speed() {
+        return context.entity().position().subtract(context.entity().oldPosition()).length();
+    }
+
+    @Binding("flight_pitch")
+    public double flight_pitch() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation != null ? animation.getPitch(context.partialTick()) : 0;
+    }
+
+    @Binding("flight_roll")
+    public double flight_roll() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation != null ? animation.getRoll(context.partialTick()) : 0;
+    }
+
+    @Binding("flight_yaw")
+    public double flight_yaw() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation != null ? animation.getYaw(context.partialTick()) : 0;
+    }
+
+    @Binding("flight_limb_pitch")
+    public double flight_limb_pitch() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation != null ? animation.getLimbPitch(context.partialTick()) : 0;
+    }
+
+    @Binding("flight_limb_roll")
+    public double flight_limb_roll() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation != null ? animation.getLimbRoll(context.partialTick()) : 0;
+    }
+
+    @Binding("flight_limb_yaw")
+    public double flight_limb_yaw() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation != null ? animation.getLimbYaw(context.partialTick()) : 0;
+    }
+
+    @Binding("swinging_right_arm_pitch")
+    public double swinging_right_arm_pitch() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation instanceof SwingingFlightType.AnimationHandler swinging
+                ? swinging.getRightArmPitch(context.partialTick())
+                : 0;
+    }
+
+    @Binding("swinging_left_arm_pitch")
+    public double swinging_left_arm_pitch() {
+        var animation = context.entity() instanceof LivingEntity living
+                ? EntityFlightHandler.get(living).getAnimationHandler()
+                : null;
+        return animation instanceof SwingingFlightType.AnimationHandler swinging
+                ? swinging.getLeftArmPitch(context.partialTick())
+                : 0;
+    }
+
+    @Override
+    public @Nullable ObjectProperty getProperty(@NotNull String name) {
+        return null;
     }
 }

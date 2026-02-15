@@ -31,7 +31,7 @@ public class HumanoidModelMixin<T extends HumanoidRenderState> {
 
         if (animations != null) {
             for (Map.Entry<DataContext, PalladiumAnimation> entry : animations.entrySet()) {
-                entry.getValue().animate(model, entry.getKey(), humanoidRenderState, humanoidRenderState.partialTick);
+                entry.getValue().animate(model, entry.getKey(), humanoidRenderState.partialTick);
             }
         }
     }

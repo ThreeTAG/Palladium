@@ -22,9 +22,6 @@ public class DataContextKeys {
     public static ContextKey<AbilityInstance<?>> ABILITY_INSTANCE = create("ability_instance");
     public static ContextKey<Holder<Power>> POWER = create("power");
     public static ContextKey<PowerInstance> POWER_INSTANCE = create("power_instance");
-    public static ContextKey<Float> CAPE_X_ROT = create("cape_x_rot");
-    public static ContextKey<Float> CAPE_Y_ROT = create("cape_y_rot");
-    public static ContextKey<Float> CAPE_Z_ROT = create("cape_z_rot");
 
     private static <T> ContextKey<T> create(String name) {
         return new ContextKey<>(Palladium.id(name));

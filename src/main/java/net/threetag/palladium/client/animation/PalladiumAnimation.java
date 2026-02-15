@@ -3,13 +3,10 @@ package net.threetag.palladium.client.animation;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.client.util.ModelUtil;
 import net.threetag.palladium.logic.context.DataContext;
-import net.threetag.palladium.logic.context.DataContextKeys;
 import net.threetag.palladium.logic.molang.EntityContext;
 import net.threetag.palladium.logic.molang.MoLangQueryRegistry;
 import net.threetag.palladium.util.molang.ModifyFloatFunction;
@@ -18,7 +15,6 @@ import team.unnamed.mocha.MochaEngine;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public final class PalladiumAnimation implements EntityContext {
 
@@ -27,25 +23,21 @@ public final class PalladiumAnimation implements EntityContext {
     public static final PalladiumAnimation EMPTY = new PalladiumAnimation(Map.of());
     private final Map<String, PartAnimation> animations;
     private Entity cachedEntity;
+    private float cachedPartialTicks;
 
     public PalladiumAnimation(Map<String, PartAnimation> animations) {
         this.animations = animations;
 
         if (!this.animations.isEmpty()) {
-            MochaEngine<?> mocha = MoLangQueryRegistry.create(this);
+            MochaEngine<PalladiumAnimation> mocha = MoLangQueryRegistry.create(this);
             this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }
 
-    public void animate(Model<?> model, DataContext context, EntityRenderState renderState, float partialTick) {
+    public void animate(Model<?> model, DataContext context, float partialTick) {
         if (!this.animations.isEmpty()) {
             this.cachedEntity = context.getEntity();
-
-            if (renderState instanceof AvatarRenderState state) {
-                context.with(DataContextKeys.CAPE_X_ROT, -(6.0F + state.capeLean / 2.0F + state.capeFlap));
-                context.with(DataContextKeys.CAPE_Y_ROT, 180.0F - state.capeLean2 / 2.0F);
-                context.with(DataContextKeys.CAPE_Z_ROT, state.capeLean2 / -2.0F);
-            }
+            this.cachedPartialTicks = partialTick;
 
             this.animations.forEach((bone, animation) -> {
                 var part = ModelUtil.getPartFromModel(model, bone);
@@ -62,27 +54,9 @@ public final class PalladiumAnimation implements EntityContext {
         return this.cachedEntity;
     }
 
-    public Map<String, PartAnimation> animations() {
-        return animations;
-    }
-
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (PalladiumAnimation) obj;
-        return Objects.equals(this.animations, that.animations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(animations);
-    }
-
-    @Override
-    public String toString() {
-        return "PalladiumAnimation[" +
-                "animations=" + animations + ']';
+    public float partialTick() {
+        return this.cachedPartialTicks;
     }
 
     public enum PartAnimationType implements StringRepresentable {
@@ -131,8 +105,8 @@ public final class PalladiumAnimation implements EntityContext {
 
         public void animate(ModelPart part) {
             if (this.animations != null && !this.animations.isEmpty()) {
-                this.animations.forEach((type, value) -> {
-                    float original = switch (type) {
+                for (Map.Entry<PartAnimationType, ModifyFloatFunction> e : this.animations.entrySet()) {
+                    float original = switch (e.getKey()) {
                         case X -> part.x;
                         case Y -> part.y;
                         case Z -> part.z;
@@ -144,9 +118,9 @@ public final class PalladiumAnimation implements EntityContext {
                         case Z_SCALE -> part.zScale;
                     };
 
-                    float val = value.modify(original);
+                    float val = e.getValue().modify(original);
 
-                    switch (type) {
+                    switch (e.getKey()) {
                         case X -> part.x = val;
                         case Y -> part.y = val;
                         case Z -> part.z = val;
@@ -157,9 +131,8 @@ public final class PalladiumAnimation implements EntityContext {
                         case Y_SCALE -> part.yScale = val;
                         case Z_SCALE -> part.zScale = val;
                     }
-                });
+                }
             }
         }
     }
-
 }

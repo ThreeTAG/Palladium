@@ -1,7 +1,6 @@
 package net.threetag.palladium.logic.molang;
 
 import com.zigythebird.playeranimcore.molang.MochaMathExtensions;
-import com.zigythebird.playeranimcore.molang.QueryBinding;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -11,19 +10,19 @@ import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.event.RegisterMoLangQueriesEvent;
 import team.unnamed.mocha.MochaEngine;
 import team.unnamed.mocha.parser.ParseException;
+import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
 import team.unnamed.mocha.runtime.value.Function;
-import team.unnamed.mocha.runtime.value.NumberValue;
-import team.unnamed.mocha.runtime.value.Value;
+import team.unnamed.mocha.runtime.value.ObjectValue;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 @EventBusSubscriber(modid = Palladium.MOD_ID)
 public class MoLangQueryRegistry {
 
     private static final Consumer<ParseException> HANDLER = (e) -> AddonPackLog.warning("Failed to parse!", e);
-    static final Map<String, QueryBuilder> QUERY_BUILDERS = new HashMap<>();
+    static final List<QueryFactory<?>> QUERY_BUILDERS = new ArrayList<>();
 
     @SubscribeEvent
     static void setup(FMLCommonSetupEvent e) {
@@ -33,11 +32,8 @@ public class MoLangQueryRegistry {
     public static <T extends EntityContext> MochaEngine<T> create(T context) {
         MochaEngine<T> engine = createBaseEngine(context);
 
-        QUERY_BUILDERS.forEach((namespace, builder) -> {
-            QueryBinding<T> queryBinding = new QueryBinding<>(context);
-            builder.build(queryBinding);
-            queryBinding.block();
-            engine.scope().set(namespace, queryBinding);
+        QUERY_BUILDERS.forEach((factory) -> {
+            factory.add(engine, context);
         });
 
         return engine;
@@ -51,30 +47,19 @@ public class MoLangQueryRegistry {
         return engine;
     }
 
-    public static class QueryBuilder {
+    public record QueryFactory<T extends ObjectValue>(String name, Class<T> clazz,
+                                                      java.util.function.Function<EntityContext, T> factory) {
 
-        private final Map<String, DoubleQueryHandler> doubleQueries = new HashMap<>();
-        private final Map<String, BooleanQueryHandler> booleanQueries = new HashMap<>();
+        @SuppressWarnings("UnstableApiUsage")
+        public void add(MochaEngine<?> engine, EntityContext context) {
+            var binding = JavaObjectBinding.of(this.clazz(), this.factory().apply(context), null);
+            engine.scope().set(this.name(), binding);
 
-        public QueryBuilder setDouble(String name, DoubleQueryHandler handler) {
-            this.doubleQueries.put(name, handler);
-            return this;
+            if (this.name().equals("query")) {
+                engine.scope().set("q", binding);
+            }
         }
 
-        public QueryBuilder setBoolean(String name, BooleanQueryHandler handler) {
-            this.booleanQueries.put(name, handler);
-            return this;
-        }
-
-        public void build(QueryBinding<? extends EntityContext> binding) {
-            this.doubleQueries.forEach((name, handler) -> {
-                binding.set(name, (team.unnamed.mocha.runtime.value.Function<EntityContext>) (ctx, args) -> NumberValue.of(handler.get(ctx.entity(), args)));
-            });
-
-            this.booleanQueries.forEach((name, handler) -> {
-                binding.set(name, (team.unnamed.mocha.runtime.value.Function<EntityContext>) (ctx, args) -> Value.of(handler.get(ctx.entity(), args)));
-            });
-        }
     }
 
     public interface DoubleQueryHandler {

@@ -106,7 +106,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             mimicModelParts("root", parentModel.root(), model.root(), state, true);
 
             if (this.overrides != null) {
-                this.overrides.animate(model, context, state, state.partialTick);
+                this.overrides.animate(model, context, state.partialTick);
             }
 
             if (state instanceof IAvatarAnimationState animationState) {
@@ -144,7 +144,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
 
             if (this.overrides != null) {
-                this.overrides.animate(parentModel, context, state, state.partialTick);
+                this.overrides.animate(parentModel, context, state.partialTick);
             }
 
             submitNodeCollector.submitModel(
@@ -222,14 +222,14 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
 
             if (this.overrides != null) {
-                this.overrides.animate(model, context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+                this.overrides.animate(model, context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
             }
         } else {
             armPart.visible = true;
             armPart.skipDraw = false;
 
             if (this.overrides != null) {
-                this.overrides.animate(playerRenderer.getModel(), context, null, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
+                this.overrides.animate(playerRenderer.getModel(), context, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks());
             }
         }
 
