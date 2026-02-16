@@ -535,7 +535,7 @@ public class VanillaQueries implements ObjectValue {
 
     @Binding(LIMB_SWING)
     public double limb_swing() {
-        return context.entity() instanceof LivingEntity living ? living.walkAnimation.position() : 0;
+        return context.entity() instanceof LivingEntity living ? living.walkAnimation.position(context.partialTick()) : 0;
     }
 
     @Binding(LIMB_SWING_AMOUNT)
