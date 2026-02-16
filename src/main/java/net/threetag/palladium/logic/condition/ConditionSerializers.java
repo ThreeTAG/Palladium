@@ -15,6 +15,7 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, NotCondition.Serializer> NOT = CONDITION_SERIALIZERS.register("not", NotCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, OrCondition.Serializer> OR = CONDITION_SERIALIZERS.register("or", OrCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, AndCondition.Serializer> AND = CONDITION_SERIALIZERS.register("and", AndCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, MoLangCondition.Serializer> MOLANG = CONDITION_SERIALIZERS.register("molang", MoLangCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, HasPowerCondition.Serializer> HAS_POWER = CONDITION_SERIALIZERS.register("has_power", HasPowerCondition.Serializer::new);
 //    public static final DeferredHolder<ConditionSerializer<?>, WearsSuitSetCondition.Serializer> WEARS_SUIT_SET = CONDITION_SERIALIZERS.register("wears_suit_set", WearsSuitSetCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, AbilityUnlockedCondition.Serializer> ABILITY_UNLOCKED = CONDITION_SERIALIZERS.register("ability_unlocked", AbilityUnlockedCondition.Serializer::new);

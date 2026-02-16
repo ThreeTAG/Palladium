@@ -15,17 +15,23 @@ import net.threetag.palladium.util.PalladiumCodecs;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 public interface Condition {
 
     Codec<Condition> DIRECT_CODEC = PalladiumRegistries.CONDITION_SERIALIZER.byNameCodec().dispatch(Condition::getSerializer, ConditionSerializer::codec);
 
     Codec<Condition> FALSE_TRUE_WRAPPED_CODEC = Codec.either(DIRECT_CODEC, Codec.BOOL).xmap(either -> either.map(
-                    left -> left,
+                    Function.identity(),
                     right -> right ? TrueCondition.INSTANCE : FalseCondition.INSTANCE),
             condition -> condition instanceof TrueCondition ? Either.right(true) : (condition instanceof FalseCondition ? Either.right(false) : Either.left(condition)));
 
-    Codec<Condition> CODEC = PalladiumCodecs.listOrPrimitive(FALSE_TRUE_WRAPPED_CODEC).xmap(AndCondition::new, condition -> condition instanceof AndCondition(
+    Codec<Condition> MOLANG_WRAPPED_CODEC = Codec.either(FALSE_TRUE_WRAPPED_CODEC, Codec.STRING).xmap(either -> either.map(
+                    Function.identity(),
+                    MoLangCondition::new),
+            condition -> condition instanceof MoLangCondition molang ? Either.right(molang.getMolang()) : Either.left(condition));
+
+    Codec<Condition> CODEC = PalladiumCodecs.listOrPrimitive(MOLANG_WRAPPED_CODEC).xmap(AndCondition::new, condition -> condition instanceof AndCondition(
             List<Condition> conditions
     ) ? conditions : Collections.singletonList(condition));
 
