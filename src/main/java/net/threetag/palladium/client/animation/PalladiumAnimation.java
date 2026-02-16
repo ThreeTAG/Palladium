@@ -24,6 +24,7 @@ public final class PalladiumAnimation implements EntityContext {
     private final Map<String, PartAnimation> animations;
     private Entity cachedEntity;
     private float cachedPartialTicks;
+    private Model<?> cachedModel;
 
     public PalladiumAnimation(Map<String, PartAnimation> animations) {
         this.animations = animations;
@@ -38,6 +39,7 @@ public final class PalladiumAnimation implements EntityContext {
         if (!this.animations.isEmpty()) {
             this.cachedEntity = context.getEntity();
             this.cachedPartialTicks = partialTick;
+            this.cachedModel = model;
 
             this.animations.forEach((bone, animation) -> {
                 var part = ModelUtil.getPartFromModel(model, bone);
@@ -57,6 +59,43 @@ public final class PalladiumAnimation implements EntityContext {
     @Override
     public float partialTick() {
         return this.cachedPartialTicks;
+    }
+
+    @Override
+    public float getModelValue(String boneName, String type) {
+        if (this.cachedModel != null) {
+            var bone = ModelUtil.getPartFromModel(this.cachedModel, boneName);
+
+            if (bone != null) {
+                if (type.equalsIgnoreCase("x")) {
+                    return bone.x;
+                } else if (type.equalsIgnoreCase("y")) {
+                    return bone.y;
+                } else if (type.equalsIgnoreCase("z")) {
+                    return bone.z;
+                } else if (type.equalsIgnoreCase("x_rot")) {
+                    return bone.xRot;
+                } else if (type.equalsIgnoreCase("y_rot")) {
+                    return bone.yRot;
+                } else if (type.equalsIgnoreCase("z_rot")) {
+                    return bone.zRot;
+                } else if (type.equalsIgnoreCase("x_rot_degrees")) {
+                    return (float) Math.toDegrees(bone.xRot);
+                } else if (type.equalsIgnoreCase("y_rot_degrees")) {
+                    return (float) Math.toDegrees(bone.yRot);
+                } else if (type.equalsIgnoreCase("z_rot_degrees")) {
+                    return (float) Math.toDegrees(bone.zRot);
+                } else if (type.equalsIgnoreCase("x_scale")) {
+                    return bone.xScale;
+                } else if (type.equalsIgnoreCase("y_scale")) {
+                    return bone.yScale;
+                } else if (type.equalsIgnoreCase("z_scale")) {
+                    return bone.zScale;
+                }
+            }
+        }
+
+        return 0F;
     }
 
     public enum PartAnimationType implements StringRepresentable {

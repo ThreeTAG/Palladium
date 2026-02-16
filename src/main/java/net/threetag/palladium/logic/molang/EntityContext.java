@@ -24,4 +24,8 @@ public interface EntityContext {
         return Palladium.PROXY.getCurrentPartialTick();
     }
 
+    default float getModelValue(String bone, String type) {
+        return 0F;
+    }
+
 }

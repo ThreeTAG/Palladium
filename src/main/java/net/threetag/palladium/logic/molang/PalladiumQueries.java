@@ -50,6 +50,8 @@ public class PalladiumQueries implements ObjectValue {
     public @NotNull Value get(@NonNull String name) {
         if (name.equals("get_animation_timer_eased")) {
             return (Function<?>) (ctx, args) -> Value.of(get_animation_timer_eased(args.next().toString()));
+        } else if (name.equals("model_property")) {
+            return (Function<?>) (ctx, args) -> Value.of(model_property(args.next().toString(), args.next().toString()));
         } else if (this.functions.containsKey(name)) {
             return Value.of(this.functions.get(name).get());
         }
@@ -77,6 +79,11 @@ public class PalladiumQueries implements ObjectValue {
     @Binding("horizontal_speed")
     public double horizontal_speed() {
         return context.entity().position().subtract(context.entity().oldPosition()).length();
+    }
+
+    @Binding("model_property")
+    public double model_property(String bone, String type) {
+        return this.context.getModelValue(bone, type);
     }
 
     @Binding("flight_pitch")
