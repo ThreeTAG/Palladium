@@ -6,4 +6,6 @@ import java.util.function.BooleanSupplier;
 
 public interface BooleanQuerySupplier extends MochaCompiledFunction, BooleanSupplier {
 
+    @Override
+    boolean getAsBoolean();
 }
