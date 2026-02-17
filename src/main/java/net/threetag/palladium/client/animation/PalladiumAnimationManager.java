@@ -15,27 +15,15 @@ public class PalladiumAnimationManager {
 
     public static void registerLayers(FMLClientSetupEvent e) {
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(CONTROLLER_MOVEMENT, 500,
-                player -> {
-                    var controller = new RenderLayerAwareAnimationController(player, (animationController, animationData, animationSetter) -> PlayState.STOP);
-                    ClientPlayerAnimationHandler.getHandler(player).setContainer(PalladiumAnimationLayer.MOVEMENT, new PackControllerAnimationContainer(PalladiumAnimationLayer.MOVEMENT, player, controller));
-                    return controller;
-                }
+                player -> new RenderLayerAwareAnimationController(player, new PackControllerAnimationContainer(PalladiumAnimationLayer.MOVEMENT, player))
         ));
 
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(CONTROLLER_FLIGHT, 1000,
-                player -> {
-                    var controller = new RenderLayerAwareAnimationController(player, (animationController, animationData, animationSetter) -> PlayState.STOP);
-                    ClientPlayerAnimationHandler.getHandler(player).setContainer(PalladiumAnimationLayer.FLIGHT, new FlightAnimationContainer(player, controller));
-                    return controller;
-                }
+                player -> new RenderLayerAwareAnimationController(player, new FlightAnimationContainer(player))
         ));
 
         e.enqueueWork(() -> PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(CONTROLLER_SPECIAL, 1500,
-                player -> {
-                    var controller = new RenderLayerAwareAnimationController(player, (animationController, animationData, animationSetter) -> PlayState.STOP);
-                    ClientPlayerAnimationHandler.getHandler(player).setContainer(PalladiumAnimationLayer.SPECIAL, new PackControllerAnimationContainer(PalladiumAnimationLayer.MOVEMENT, player, controller));
-                    return controller;
-                }
+                player -> new RenderLayerAwareAnimationController(player, new PackControllerAnimationContainer(PalladiumAnimationLayer.SPECIAL, player))
         ));
     }
 }

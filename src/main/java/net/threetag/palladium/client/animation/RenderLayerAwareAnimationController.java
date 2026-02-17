@@ -2,12 +2,15 @@ package net.threetag.palladium.client.animation;
 
 import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranimcore.animation.AnimationData;
+import com.zigythebird.playeranimcore.bones.PlayerAnimBone;
 import net.minecraft.world.entity.Avatar;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.DefaultPackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
+
+import java.util.Map;
 
 public class RenderLayerAwareAnimationController extends PlayerAnimationController {
 
@@ -33,5 +36,9 @@ public class RenderLayerAwareAnimationController extends PlayerAnimationControll
         if (dirty)
             forceAnimationReset();
         super.setupAnim(state);
+    }
+
+    public Map<String, PlayerAnimBone> getActiveBones(){
+        return this.activeBones;
     }
 }
