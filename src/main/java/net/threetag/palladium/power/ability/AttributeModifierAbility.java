@@ -1,6 +1,8 @@
 package net.threetag.palladium.power.ability;
 
-import com.mojang.serialization.Codec;
+import com.google.gson.JsonPrimitive;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -14,6 +16,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.documentation.SettingType;
+import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.logic.value.StaticValue;
+import net.threetag.palladium.logic.value.Value;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +33,7 @@ public class AttributeModifierAbility extends Ability {
     public static final MapCodec<AttributeModifierAbility> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
                     Attribute.CODEC.fieldOf("attribute").forGetter(ab -> ab.attribute),
-                    Codec.DOUBLE.fieldOf("amount").forGetter(ab -> ab.amount),
+                    Value.CODEC.fieldOf("amount").forGetter(ab -> ab.amount),
                     AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(ab -> ab.operation),
                     Identifier.CODEC.optionalFieldOf("id").forGetter(ab -> Optional.ofNullable(ab.id)),
                     propertiesCodec(), stateCodec(), energyBarUsagesCodec()
@@ -36,11 +41,11 @@ public class AttributeModifierAbility extends Ability {
                     new AttributeModifierAbility(att, amount, op, id.orElse(null), prop, state, bar)));
 
     public final Holder<Attribute> attribute;
-    public final double amount;
+    public final Value amount;
     public final AttributeModifier.Operation operation;
     public final @Nullable Identifier id;
 
-    public AttributeModifierAbility(Holder<Attribute> attribute, double amount, AttributeModifier.Operation operation, @Nullable Identifier id, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
+    public AttributeModifierAbility(Holder<Attribute> attribute, Value amount, AttributeModifier.Operation operation, @Nullable Identifier id, AbilityProperties properties, AbilityStateManager conditions, List<EnergyBarUsage> energyBarUsages) {
         super(properties, conditions, energyBarUsages);
         this.attribute = attribute;
         this.amount = amount;
@@ -73,13 +78,14 @@ public class AttributeModifierAbility extends Ability {
             AttributeModifier modifier = attributeInstance.getModifier(id);
 
             // Remove modifier if amount or operation dont match
-            if (modifier != null && (modifier.amount() != this.amount || modifier.operation() != this.operation)) {
+            double amount = this.amount.getAsDouble(DataContext.forAbility(entity, ability));
+            if (modifier != null && (modifier.amount() != amount || modifier.operation() != this.operation)) {
                 attributeInstance.removeModifier(id);
                 modifier = null;
             }
 
             if (modifier == null) {
-                modifier = new AttributeModifier(id, this.amount, this.operation);
+                modifier = new AttributeModifier(id, amount, this.operation);
                 attributeInstance.addTransientModifier(modifier);
             }
         } else {
@@ -116,7 +122,7 @@ public class AttributeModifierAbility extends Ability {
                     .add("amount", TYPE_DOUBLE, "The amount for the giving attribute modifier")
                     .add("operation", SettingType.enumList(AttributeModifier.Operation.values()), "The operation for the attribute modifier (More: https://minecraft.gamepedia.com/Attribute#Operations)")
                     .addOptional("id", TYPE_STRING, "Sets the unique identifier for this attribute modifier. Will fallback to a generated one based on the ability/power ID.")
-                    .addExampleObject(new AttributeModifierAbility(Attributes.ARMOR, 1D, AttributeModifier.Operation.ADD_VALUE, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
+                    .addExampleObject(new AttributeModifierAbility(Attributes.ARMOR, new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(1D))), AttributeModifier.Operation.ADD_VALUE, null, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }
 }
