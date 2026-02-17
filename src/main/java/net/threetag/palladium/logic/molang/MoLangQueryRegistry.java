@@ -11,7 +11,6 @@ import net.threetag.palladium.event.RegisterMoLangQueriesEvent;
 import team.unnamed.mocha.MochaEngine;
 import team.unnamed.mocha.parser.ParseException;
 import team.unnamed.mocha.runtime.binding.JavaObjectBinding;
-import team.unnamed.mocha.runtime.value.Function;
 import team.unnamed.mocha.runtime.value.ObjectValue;
 
 import java.util.ArrayList;
@@ -59,18 +58,6 @@ public class MoLangQueryRegistry {
                 engine.scope().set("q", binding);
             }
         }
-
-    }
-
-    public interface DoubleQueryHandler {
-
-        double get(EntityContext ctx, Function.Arguments args);
-
-    }
-
-    public interface BooleanQueryHandler {
-
-        boolean get(EntityContext ctx, Function.Arguments args);
 
     }
 

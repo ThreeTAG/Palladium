@@ -4,44 +4,47 @@
 		"flight.default": {
 			"bones": {
 				"body": {
-					"rotation": ["palladium.flight_pitch", "pal.disabled", "palladium.flight_roll"]
+					"rotation": ["palladium.flight_pitch()", "pal.disabled", "palladium.flight_roll()"]
 				},
 				"head": {
-					"rotation": ["query.head_x_rotation - palladium.flight_pitch", "pal.disabled", "pal.disabled"]
+					"rotation": ["query.head_x_rotation() - palladium.flight_pitch()", "pal.disabled", "pal.disabled"]
 				},
 				"right_arm": {
-					"rotation": ["palladium.flight_limb_pitch", "pal.disabled", "math.max(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.flight_limb_pitch()", "pal.disabled", "math.max(0, -palladium.flight_limb_roll())"]
 				},
 				"left_arm": {
-					"rotation": ["palladium.flight_limb_pitch", "pal.disabled", "math.min(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.flight_limb_pitch()", "pal.disabled", "math.min(0, -palladium.flight_limb_roll())"]
 				},
 				"right_leg": {
-					"rotation": ["palladium.flight_limb_pitch", "pal.disabled", "math.max(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.flight_limb_pitch()", "pal.disabled", "math.max(0, -palladium.flight_limb_roll())"]
 				},
 				"left_leg": {
-					"rotation": ["palladium.flight_limb_pitch", "pal.disabled", "math.min(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.flight_limb_pitch()", "pal.disabled", "math.min(0, -palladium.flight_limb_roll())"]
 				}
 			}
 		},
 		"swinging.default": {
+			"player_animation_library": {
+				"beginTick": 5
+			},
 			"bones": {
 				"body": {
-					"rotation": ["palladium.flight_pitch", "pal.disabled", "palladium.flight_yaw"]
+					"rotation": ["palladium.flight_pitch()", "pal.disabled", "palladium.flight_yaw()"]
 				},
 				"head": {
-					"rotation": ["query.head_x_rotation - palladium.flight_pitch", "pal.disabled", "pal.disabled"]
+					"rotation": ["query.head_x_rotation() - palladium.flight_pitch()", "pal.disabled", "pal.disabled"]
 				},
 				"right_arm": {
-					"rotation": ["palladium.swinging_right_arm_pitch", "pal.disabled", "math.max(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.swinging_right_arm_pitch()", "pal.disabled", "math.max(0, -palladium.flight_limb_roll())"]
 				},
 				"left_arm": {
-					"rotation": ["palladium.swinging_left_arm_pitch", "pal.disabled", "math.min(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.swinging_left_arm_pitch()", "pal.disabled", "math.min(0, -palladium.flight_limb_roll())"]
 				},
 				"right_leg": {
-					"rotation": ["palladium.flight_limb_pitch", "pal.disabled", "math.max(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.flight_limb_pitch()", "pal.disabled", "math.max(0, -palladium.flight_limb_roll())"]
 				},
 				"left_leg": {
-					"rotation": ["palladium.flight_limb_pitch", "pal.disabled", "math.min(0, -palladium.flight_limb_roll)"]
+					"rotation": ["palladium.flight_limb_pitch()", "pal.disabled", "math.min(0, -palladium.flight_limb_roll())"]
 				}
 			}
 		}

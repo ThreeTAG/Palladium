@@ -82,6 +82,11 @@ public class DataContext {
         return (T) this.values.get(type);
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getOrDefault(ContextKey<T> type, T fallback) {
+        return (T) this.values.getOrDefault(type, fallback);
+    }
+
     public boolean has(ContextKey<?> type) {
         return this.values.containsKey(type);
     }

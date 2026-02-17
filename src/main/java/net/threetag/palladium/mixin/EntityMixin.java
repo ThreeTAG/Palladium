@@ -58,7 +58,7 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
         this.palladium$dataMap = new HashMap<>();
 
         for (PalladiumEntityDataType<?> dataType : PalladiumRegistries.ENTITY_DATA_TYPE) {
-            if (dataType.getPredicate().test(entity)) {
+            if (dataType.predicate().test(entity)) {
                 var data = dataType.codec().parse(level.registryAccess().createSerializationContext(NbtOps.INSTANCE), new CompoundTag()).getOrThrow();
                 data.setEntity(entity);
                 this.palladium$dataMap.put(dataType, data);
@@ -91,7 +91,7 @@ public abstract class EntityMixin implements PalladiumEntityExtension {
         var entity = (Entity) (Object) this;
 
         for (PalladiumEntityDataType<?> dataType : PalladiumRegistries.ENTITY_DATA_TYPE) {
-            if (dataType.getPredicate().test(entity)) {
+            if (dataType.predicate().test(entity)) {
                 var id = PalladiumRegistries.ENTITY_DATA_TYPE.getKey(dataType);
                 palladiumTag.read(Objects.requireNonNull(id).toString(), dataType.codec()).ifPresent(data -> {
                     data.setEntity(entity);

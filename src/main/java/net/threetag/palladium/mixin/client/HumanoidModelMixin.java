@@ -4,7 +4,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.threetag.palladium.client.animation.BuiltinAnimations;
-import net.threetag.palladium.client.animation.PalladiumAnimation;
+import net.threetag.palladium.client.animation.ModelAnimationDefinition;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.logic.context.DataContext;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,7 +30,7 @@ public class HumanoidModelMixin<T extends HumanoidRenderState> {
         var animations = humanoidRenderState.getRenderData(PalladiumRenderStateKeys.ANIMATIONS);
 
         if (animations != null) {
-            for (Map.Entry<DataContext, PalladiumAnimation> entry : animations.entrySet()) {
+            for (Map.Entry<DataContext, ModelAnimationDefinition> entry : animations.entrySet()) {
                 entry.getValue().animate(model, entry.getKey(), humanoidRenderState.partialTick);
             }
         }

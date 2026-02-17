@@ -8,15 +8,14 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.animation.PalladiumAnimationLayer;
 import net.threetag.palladium.client.texture.TextureReference;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.energybar.EnergyBarConfiguration;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
-import net.threetag.palladium.util.PalladiumCodecs;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -32,15 +31,14 @@ public class Power {
                     Icon.CODEC.fieldOf("icon").forGetter(Power::getIcon),
                     Identifier.CODEC.optionalFieldOf("screen", DEFAULT_POWER_SCREEN).forGetter(p -> p.screen),
                     TextureReference.CODEC.optionalFieldOf("ability_bar_texture").forGetter(p -> Optional.ofNullable(p.abilityBar)),
-                    PalladiumCodecs.COLOR_CODEC.optionalFieldOf("primary_color", new Color(210, 112, 49)).forGetter(Power::getPrimaryColor),
-                    PalladiumCodecs.COLOR_CODEC.optionalFieldOf("secondary_color", new Color(126, 97, 86)).forGetter(Power::getSecondaryColor),
                     Codec.BOOL.optionalFieldOf("persistent_data", false).forGetter(Power::hasPersistentData),
                     Codec.BOOL.optionalFieldOf("hidden", false).forGetter(Power::isHidden),
+                    Codec.unboundedMap(PalladiumAnimationLayer.CODEC, Identifier.CODEC).optionalFieldOf("animation_controller", Collections.emptyMap()).forGetter(p -> p.animationControllers),
                     Codec.unboundedMap(Codec.STRING, Ability.CODEC).optionalFieldOf("abilities", Collections.emptyMap()).forGetter(Power::getAbilities),
                     Codec.unboundedMap(Codec.STRING, EnergyBarConfiguration.CODEC).optionalFieldOf("energy_bars", Collections.emptyMap()).forGetter(Power::getEnergyBars)
             )
-            .apply(instance, (parent, name, icon, screen, barTexture, primColor, secondColor, persistentData, hidden, abilities, energyBars) ->
-                    new Power(parent.orElse(null), name, icon, screen, barTexture.orElse(null), primColor, secondColor, persistentData, hidden, abilities, energyBars)));
+            .apply(instance, (parent, name, icon, screen, barTexture, persistentData, hidden, animationController, abilities, energyBars) ->
+                    new Power(parent.orElse(null), name, icon, screen, barTexture.orElse(null), persistentData, hidden, animationController, abilities, energyBars)));
 
     public static final Codec<Holder<Power>> HOLDER_CODEC = RegistryFixedCodec.create(PalladiumRegistryKeys.POWER);
 
@@ -52,20 +50,20 @@ public class Power {
     private final Map<String, EnergyBarConfiguration> energyBars;
     private final Identifier screen;
     private final TextureReference abilityBar;
-    private final Color primaryColor, secondaryColor;
     private final boolean persistentData;
     private final boolean hidden;
+    private final Map<PalladiumAnimationLayer, Identifier> animationControllers;
 
-    public Power(@Nullable Identifier parentId, Component name, Icon icon, Identifier screen, TextureReference abilityBar, Color primaryColor, Color secondaryColor, boolean persistentData, boolean hidden, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
+    @SuppressWarnings("deprecation")
+    public Power(@Nullable Identifier parentId, Component name, Icon icon, Identifier screen, TextureReference abilityBar, boolean persistentData, boolean hidden, Map<PalladiumAnimationLayer, Identifier> animationControllers, Map<String, Ability> abilities, Map<String, EnergyBarConfiguration> energyBars) {
         this.parentId = parentId;
         this.name = name;
         this.icon = icon;
         this.screen = screen;
         this.abilityBar = abilityBar;
-        this.primaryColor = primaryColor;
-        this.secondaryColor = secondaryColor;
         this.persistentData = persistentData;
         this.hidden = hidden;
+        this.animationControllers = animationControllers;
         this.abilities = abilities;
         this.energyBars = energyBars;
 
@@ -106,14 +104,6 @@ public class Power {
         return this.abilityBar;
     }
 
-    public Color getPrimaryColor() {
-        return this.primaryColor;
-    }
-
-    public Color getSecondaryColor() {
-        return this.secondaryColor;
-    }
-
     public boolean hasPersistentData() {
         return this.persistentData;
     }
@@ -122,4 +112,8 @@ public class Power {
         return this.hidden;
     }
 
+    @Nullable
+    public Identifier getAnimationController(PalladiumAnimationLayer layer) {
+        return this.animationControllers.get(layer);
+    }
 }

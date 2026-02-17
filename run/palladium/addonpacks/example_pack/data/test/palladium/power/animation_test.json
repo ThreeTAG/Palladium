@@ -1,7 +1,22 @@
 {
   "name": "Render Layer Test",
   "icon": "minecraft:bread",
+  "animation_controller": {
+    "movement": "test:test_controller"
+  },
   "abilities": {
-
+    "attack": {
+      "type": "palladium:dummy",
+      "properties": {
+        "title": "Attack!"
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action",
+          "cooldown": 40
+        }
+      }
+    }
   }
 }

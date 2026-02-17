@@ -3,6 +3,7 @@ package net.threetag.palladium.entity.data;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.animation.PlayerAnimationHandler;
 import net.threetag.palladium.client.renderer.entity.layer.pack.EntityRenderLayers;
 import net.threetag.palladium.client.trail.EntityTrailHandler;
 import net.threetag.palladium.customization.EntityCustomizationHandler;
@@ -27,6 +28,9 @@ public class PalladiumEntityDataTypes {
 
     public static final DeferredHolder<PalladiumEntityDataType<?>, PalladiumEntityDataType<EntityRenderLayers>> RENDER_LAYERS =
             DATA_TYPES.register("render_layers", () -> new PalladiumEntityDataType<>(EntityRenderLayers.CODEC, PalladiumEntityDataType.FILTER_LIVING));
+
+    public static final DeferredHolder<PalladiumEntityDataType<?>, PalladiumEntityDataType<PlayerAnimationHandler>> ANIMATIONS =
+            DATA_TYPES.register("animations", () -> new PalladiumEntityDataType<>(PlayerAnimationHandler.CODEC, PalladiumEntityDataType.FILTER_AVATAR));
 
     public static final DeferredHolder<PalladiumEntityDataType<?>, PalladiumEntityDataType<EntityCustomizationHandler>> CUSTOMIZATION_HANDLER =
             DATA_TYPES.register("customizations", () -> new PalladiumEntityDataType<>(EntityCustomizationHandler.CODEC, PalladiumEntityDataType.FILTER_LIVING));

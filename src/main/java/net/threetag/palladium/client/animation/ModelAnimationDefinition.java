@@ -16,21 +16,21 @@ import team.unnamed.mocha.MochaEngine;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class PalladiumAnimation implements EntityContext {
+public final class ModelAnimationDefinition implements EntityContext {
 
-    public static final Codec<PalladiumAnimation> CODEC = Codec.unboundedMap(Codec.STRING, PartAnimation.CODEC)
-            .xmap(PalladiumAnimation::new, palladiumAnimation -> palladiumAnimation.animations);
-    public static final PalladiumAnimation EMPTY = new PalladiumAnimation(Map.of());
+    public static final Codec<ModelAnimationDefinition> CODEC = Codec.unboundedMap(Codec.STRING, PartAnimation.CODEC)
+            .xmap(ModelAnimationDefinition::new, modelAnimationDefinition -> modelAnimationDefinition.animations);
+    public static final ModelAnimationDefinition EMPTY = new ModelAnimationDefinition(Map.of());
     private final Map<String, PartAnimation> animations;
     private Entity cachedEntity;
     private float cachedPartialTicks;
     private Model<?> cachedModel;
 
-    public PalladiumAnimation(Map<String, PartAnimation> animations) {
+    public ModelAnimationDefinition(Map<String, PartAnimation> animations) {
         this.animations = animations;
 
         if (!this.animations.isEmpty()) {
-            MochaEngine<PalladiumAnimation> mocha = MoLangQueryRegistry.create(this);
+            MochaEngine<ModelAnimationDefinition> mocha = MoLangQueryRegistry.create(this);
             this.animations.values().forEach(partAnimation -> partAnimation.build(mocha));
         }
     }

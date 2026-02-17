@@ -28,4 +28,8 @@ public interface EntityContext {
         return 0F;
     }
 
+    default boolean hasAnimationFinished() {
+        return false;
+    }
+
 }

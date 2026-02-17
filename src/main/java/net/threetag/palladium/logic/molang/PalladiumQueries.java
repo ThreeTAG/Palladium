@@ -1,5 +1,7 @@
 package net.threetag.palladium.logic.molang;
 
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -21,6 +23,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static net.threetag.palladium.logic.molang.VanillaQueries.HEAD_X_ROTATION;
+import static net.threetag.palladium.logic.molang.VanillaQueries.HEAD_Y_ROTATION;
+
 @EventBusSubscriber(modid = Palladium.MOD_ID)
 public class PalladiumQueries implements ObjectValue {
 
@@ -34,6 +39,8 @@ public class PalladiumQueries implements ObjectValue {
 
     public PalladiumQueries(EntityContext context) {
         this.context = context;
+        this.functions.put(HEAD_X_ROTATION, this::head_x_rotation);
+        this.functions.put(HEAD_Y_ROTATION, this::head_y_rotation);
         this.functions.put("tick_count", this::tick_count);
         this.functions.put("horizontal_speed", this::horizontal_speed);
         this.functions.put("flight_pitch", this::flight_pitch);
@@ -44,6 +51,7 @@ public class PalladiumQueries implements ObjectValue {
         this.functions.put("flight_limb_yaw", this::flight_limb_yaw);
         this.functions.put("swinging_right_arm_pitch", this::swinging_right_arm_pitch);
         this.functions.put("swinging_left_arm_pitch", this::swinging_left_arm_pitch);
+        this.functions.put("any_animation_finished", this::swinging_left_arm_pitch);
     }
 
     @Override
@@ -56,6 +64,22 @@ public class PalladiumQueries implements ObjectValue {
             return Value.of(this.functions.get(name).get());
         }
         return Value.nil();
+    }
+
+    @Binding(HEAD_X_ROTATION)
+    public double head_x_rotation() {
+        return context.entity().getViewXRot(context.partialTick());
+    }
+
+    @Binding(HEAD_Y_ROTATION)
+    public double head_y_rotation() {
+        if (context.entity() instanceof LivingEntity living) {
+            float f = Mth.rotLerp(context.partialTick(), living.yHeadRotO, living.yHeadRot);
+            float bodyRot = LivingEntityRenderer.solveBodyRot(living, f, context.partialTick());
+            return Mth.wrapDegrees(f - bodyRot);
+        }
+
+        return context.entity().getViewYRot(context.partialTick());
     }
 
     @Binding("tick_count")
@@ -152,6 +176,11 @@ public class PalladiumQueries implements ObjectValue {
         return animation instanceof SwingingFlightType.AnimationHandler swinging
                 ? swinging.getLeftArmPitch(context.partialTick())
                 : 0;
+    }
+
+    @Binding("any_animation_finished")
+    public boolean any_animation_finished() {
+        return this.context.hasAnimationFinished();
     }
 
     @Override

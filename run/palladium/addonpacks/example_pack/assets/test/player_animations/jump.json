@@ -1,0 +1,30 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"jump": {
+			"bones": {
+				"head": {
+					"rotation": ["palladium.head_x_rotation() + 3", "palladium.head_y_rotation()", 0]
+				},
+				"right_arm": {
+					"rotation": [30, -3, 115],
+					"position": [-1, 0, 0]
+				},
+				"left_leg": {
+					"rotation": [32, -7, -7.5]
+				},
+				"left_arm": {
+					"rotation": [30, -3, -115],
+					"position": [1, 0, 0]
+				},
+				"right_leg": {
+					"rotation": [35, 3, 5],
+					"position": [0, 0, -6]
+				},
+				"body": {
+					"rotation": [-3, 0, 0]
+				}
+			}
+		}
+	}
+}

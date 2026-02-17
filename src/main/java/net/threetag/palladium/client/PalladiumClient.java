@@ -19,6 +19,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.client.animation.PackAnimationControllerManager;
 import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.beam.BeamRendererSerializer;
@@ -142,6 +143,7 @@ public class PalladiumClient {
         e.addListener(ModelLayerManager.ID, ModelLayerManager.INSTANCE);
         e.addListener(DynamicTextureManager.ID, DynamicTextureManager.INSTANCE);
         e.addListener(PackRenderLayerManager.ID, PackRenderLayerManager.INSTANCE);
+        e.addListener(PackAnimationControllerManager.ID, PackAnimationControllerManager.INSTANCE);
         e.addListener(ParticleEmitterManager.ID, ParticleEmitterManager.INSTANCE);
         e.addListener(BeamManager.ID, BeamManager.INSTANCE);
         e.addListener(TrailManager.ID, TrailManager.INSTANCE);

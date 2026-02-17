@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.Entity;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.logic.context.DataContext;
+import net.threetag.palladium.logic.context.DataContextKeys;
 import net.threetag.palladium.logic.molang.EntityContext;
 import net.threetag.palladium.logic.molang.MoLangQueryRegistry;
 import net.threetag.palladium.util.molang.BooleanQuerySupplier;
@@ -28,6 +29,7 @@ public class MoLangCondition implements Condition, EntityContext {
     public final String molang;
     public final BooleanQuerySupplier supplier;
     private Entity cachedEntity;
+    private boolean cachedAnimationFinished = false;
 
     public MoLangCondition(String molang) {
         this.molang = molang;
@@ -42,7 +44,8 @@ public class MoLangCondition implements Condition, EntityContext {
     @Override
     public boolean test(DataContext context) {
         this.cachedEntity = context.getEntity();
-        return this.cachedEntity != null && this.supplier.getAsBoolean();
+        this.cachedAnimationFinished = context.getOrDefault(DataContextKeys.ANY_ANIMATION_FINISHED, false);
+        return this.cachedEntity != null && this.supplier != null && this.supplier.getAsBoolean();
     }
 
     @Override
@@ -51,8 +54,13 @@ public class MoLangCondition implements Condition, EntityContext {
     }
 
     @Override
+    public boolean hasAnimationFinished() {
+        return this.cachedAnimationFinished;
+    }
+
+    @Override
     public ConditionSerializer<?> getSerializer() {
-        return null;
+        return ConditionSerializers.MOLANG.get();
     }
 
     public static class Serializer extends ConditionSerializer<MoLangCondition> {

@@ -9,9 +9,9 @@ import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 
-public class PalladiumAnimationController extends PlayerAnimationController {
+public class RenderLayerAwareAnimationController extends PlayerAnimationController {
 
-    public PalladiumAnimationController(Avatar avatar, AnimationStateHandler animationHandler) {
+    public RenderLayerAwareAnimationController(Avatar avatar, AnimationStateHandler animationHandler) {
         super(avatar, animationHandler);
     }
 

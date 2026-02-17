@@ -24,7 +24,7 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
-import net.threetag.palladium.client.animation.PalladiumAnimation;
+import net.threetag.palladium.client.animation.ModelAnimationDefinition;
 import net.threetag.palladium.client.model.ModelLayerLocationCodec;
 import net.threetag.palladium.client.renderer.RenderTypeFunction;
 import net.threetag.palladium.client.renderer.RenderTypeRegistry;
@@ -49,7 +49,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             SkinTypedValue.codec(PackRenderLayerTexture.CODEC).fieldOf("texture").forGetter(l -> l.textures),
             RenderTypeRegistry.CODEC.optionalFieldOf("render_type", RenderTypeRegistry.ENTITY_TRANSLUCENT).forGetter(l -> l.renderType),
             ExtraCodecs.intRange(0, 15).optionalFieldOf("light_emission", 0).forGetter(l -> l.lightEmission),
-            PalladiumAnimation.CODEC.optionalFieldOf("overrides").forGetter(l -> Optional.ofNullable(l.overrides)),
+            ModelAnimationDefinition.CODEC.optionalFieldOf("overrides").forGetter(l -> Optional.ofNullable(l.overrides)),
             propertiesCodec(), conditionsCodec()
     ).apply(instance, (modelLayers, textures, renderType, lightEmission, overrides, properties, conditions) -> {
         return new DefaultPackRenderLayer(modelLayers.orElse(null), textures, renderType, lightEmission, overrides.orElse(null), properties, conditions);
@@ -61,9 +61,9 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
     private final SkinTypedValue<PackRenderLayerTexture> textures;
     private final RenderTypeFunction renderType;
     private final int lightEmission;
-    private final PalladiumAnimation overrides;
+    private final ModelAnimationDefinition overrides;
 
-    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, PalladiumAnimation overrides, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
+    public DefaultPackRenderLayer(@Nullable SkinTypedValue<ModelLayerLocationCodec> modelLayers, SkinTypedValue<PackRenderLayerTexture> textures, RenderTypeFunction renderType, int lightEmission, ModelAnimationDefinition overrides, PackRenderLayerProperties properties, PerspectiveAwareConditions conditions) {
         super(properties, conditions);
 
         this.modelLayers = modelLayers;

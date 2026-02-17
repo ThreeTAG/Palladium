@@ -1,0 +1,33 @@
+{
+  "initial_state": "default",
+  "states": {
+    "default": {
+      "transitions": {
+        "jumping": "query.is_on_ground() == false && query.is_sprinting()",
+        "running": "query.is_sprinting() && query.is_on_ground()",
+        "attack": {
+          "type": "palladium:ability_enabled",
+          "ability": "test:animation_test#attack"
+        }
+      }
+    },
+    "running": {
+      "animation": "test:running",
+      "transitions": {
+        "default": "query.is_sprinting() == false || query.is_on_ground() == false"
+      }
+    },
+    "jumping": {
+      "animation": "test:jump",
+      "transitions": {
+        "default": "query.is_on_ground()"
+      }
+    },
+    "attack": {
+      "animation": "test:attack",
+      "transitions": {
+        "default": "palladium.any_animation_finished()"
+      }
+    }
+  }
+}

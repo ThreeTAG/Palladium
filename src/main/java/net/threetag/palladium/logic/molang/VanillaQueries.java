@@ -486,6 +486,7 @@ public class VanillaQueries implements ObjectValue {
 
     @Binding(HEAD_X_ROTATION)
     public double head_x_rotation() {
+        System.out.println("hallo x-head-rot");
         return context.entity().getViewXRot(context.partialTick());
     }
 

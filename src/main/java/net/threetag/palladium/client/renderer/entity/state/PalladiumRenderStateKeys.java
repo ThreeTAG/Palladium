@@ -17,7 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.renderstate.RegisterRenderStateModifiersEvent;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.animation.PalladiumAnimation;
+import net.threetag.palladium.client.animation.ModelAnimationDefinition;
 import net.threetag.palladium.client.renderer.entity.layer.pack.ClientEntityRenderLayers;
 import net.threetag.palladium.client.renderer.entity.layer.pack.PackRenderLayer;
 import net.threetag.palladium.client.renderer.entity.layer.pack.VibrationPackRenderLayer;
@@ -43,7 +43,7 @@ public class PalladiumRenderStateKeys {
     public static ContextKey<Set<String>> HIDDEN_MODEL_PARTS = create("hidden_model_parts");
     public static ContextKey<Float[]> AIM = create("aim");
     public static ContextKey<Float> SHRINK_OVERLAY = create("shrink_player_overlay");
-    public static ContextKey<Map<DataContext, PalladiumAnimation>> ANIMATIONS = create("animations");
+    public static ContextKey<Map<DataContext, ModelAnimationDefinition>> ANIMATIONS = create("animations");
     public static ContextKey<Float> IN_FLIGHT = create("in_flight");
     public static ContextKey<Float> OPACITY = create("opacity");
     public static ContextKey<Integer> TINT = create("tint");
@@ -91,7 +91,7 @@ public class PalladiumRenderStateKeys {
             }
 
             // Animations
-            Map<DataContext, PalladiumAnimation> animations = new HashMap<>();
+            Map<DataContext, ModelAnimationDefinition> animations = new HashMap<>();
             state.setRenderData(ANIMATIONS, animations);
         });
     }
