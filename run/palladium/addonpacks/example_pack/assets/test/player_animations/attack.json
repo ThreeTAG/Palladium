@@ -119,9 +119,7 @@
 					}
 				},
 				"head": {
-					"rotation": {
-						"vector": [-17.5, 0, 0]
-					}
+					"rotation": ["palladium.head_x_rotation() - 17.5", "palladium.head_y_rotation()", 0]
 				},
 				"rightArm": {
 					"rotation": {
