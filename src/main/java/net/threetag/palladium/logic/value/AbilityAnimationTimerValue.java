@@ -50,7 +50,7 @@ public class AbilityAnimationTimerValue extends IntegerValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, AbilityAnimationTimerValue> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Animation Timer Value").setDescription("Returns the value of the animation timer for the specified ability. Defaults to 0 if no ability or animation timer was found.")
-                    .add("ability", TYPE_ABILITY_REFERENCE, "The ability to get the animation timer for. Defined in this syntax: <power_id>#<ability_key>")
+                    .add("ability", TYPE_ABILITY_REFERENCE, "The ability to get the animation timer for. Defined in this syntax: &lt;power_namespace&gt;:&lt;power_name&gt;#&lt;ability_key&gt;")
                     .addExampleObject(new AbilityAnimationTimerValue(AbilityReference.parse("namespace:example_power#ability_key"), ""));
         }
     }

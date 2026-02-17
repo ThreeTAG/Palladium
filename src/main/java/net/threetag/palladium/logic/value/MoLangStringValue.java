@@ -39,7 +39,7 @@ public class MoLangStringValue extends StringValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoLangStringValue> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang String").setDescription("Allows MoLang usage to assemble a string")
-                    .addExampleObject(new MoLangStringValue("query.day ? 'day' : 'night'"));
+                    .addExampleObject(new MoLangStringValue("query.day() ? 'day' : 'night'"));
         }
     }
 }

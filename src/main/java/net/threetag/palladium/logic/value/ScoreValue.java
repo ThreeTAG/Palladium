@@ -43,7 +43,7 @@ public class ScoreValue extends IntegerValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, ScoreValue> builder, HolderLookup.Provider provider) {
             builder.setName("Score").setDescription("Returns the score of the entity for the given objective.")
-                    .addExampleObject(new ScoreValue("objective_name", "value * 2"));
+                    .addExampleObject(new ScoreValue("objective_name", "this * 2"));
         }
     }
 }

@@ -58,7 +58,8 @@ public abstract class IntegerValue extends Value implements EntityContext {
 
         @Override
         public CodecDocumentationBuilder<Value, T> getDocumentation(HolderLookup.Provider provider) {
-            return super.getDocumentation(provider).addOptional("modify", TYPE_MOLANG, "MoLang function to modify the value.");
+            return super.getDocumentation(provider)
+                    .addOptional("modify", TYPE_MOLANG, "MoLang function to modify the value.");
         }
     }
 }

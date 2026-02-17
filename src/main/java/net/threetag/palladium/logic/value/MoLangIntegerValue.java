@@ -37,7 +37,7 @@ public class MoLangIntegerValue extends IntegerValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoLangIntegerValue> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang Integer").setDescription("Allows MoLang usage to calculate an integer")
-                    .addExampleObject(new MoLangIntegerValue("query.day ? 1 : 0"));
+                    .addExampleObject(new MoLangIntegerValue("query.ground_speed() * 2"));
         }
     }
 }

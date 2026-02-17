@@ -37,7 +37,7 @@ public class MoLangFloatValue extends FloatValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoLangFloatValue> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang Float").setDescription("Allows MoLang usage to calculate an float")
-                    .addExampleObject(new MoLangFloatValue("query.day ? 1.0 : 0.0"));
+                    .addExampleObject(new MoLangFloatValue("query.ground_speed() * 2.5"));
         }
     }
 }
