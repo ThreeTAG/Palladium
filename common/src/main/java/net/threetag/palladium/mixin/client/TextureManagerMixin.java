@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +36,7 @@ public abstract class TextureManagerMixin {
 
     @Inject(method = "preload", at = @At("RETURN"))
     private void preload(ResourceLocation path, Executor backgroundExecutor, CallbackInfoReturnable<CompletableFuture<Void>> cir) {
-        List<ResourceLocation> toRemove =this.byPath.entrySet().stream()
+        List<ResourceLocation> toRemove = this.byPath.entrySet().stream()
                 .filter(e -> e.getValue() instanceof TransformedTexture)
                 .map(Map.Entry::getKey)
                 .toList();

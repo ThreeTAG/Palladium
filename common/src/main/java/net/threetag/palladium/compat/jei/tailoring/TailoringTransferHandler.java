@@ -21,7 +21,9 @@ import net.threetag.palladium.network.PalladiumNetwork;
 import net.threetag.palladium.network.TailoringJeiTransferMessage;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class TailoringTransferHandler implements IRecipeTransferHandler<TailoringMenu, TailoringRecipe> {
 

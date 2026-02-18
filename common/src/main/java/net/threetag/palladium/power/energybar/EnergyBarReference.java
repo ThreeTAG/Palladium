@@ -13,17 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
-public class EnergyBarReference {
-
-    @Nullable
-    private final ResourceLocation powerId;
-    @NotNull
-    private final String energyBarName;
-
-    public EnergyBarReference(@Nullable ResourceLocation powerId, @NotNull String energyBarName) {
-        this.powerId = powerId;
-        this.energyBarName = energyBarName;
-    }
+public record EnergyBarReference(@Nullable ResourceLocation powerId, @NotNull String energyBarName) {
 
     public static EnergyBarReference fromString(String parse) {
         String[] s = parse.split("#", 2);
@@ -33,16 +23,6 @@ public class EnergyBarReference {
         } else {
             return new EnergyBarReference(new ResourceLocation(s[0]), s[1]);
         }
-    }
-
-    @Nullable
-    public ResourceLocation getPowerId() {
-        return this.powerId;
-    }
-
-    @NotNull
-    public String getEnergyBarName() {
-        return this.energyBarName;
     }
 
     @Nullable
@@ -89,11 +69,6 @@ public class EnergyBarReference {
             return this.energyBarName;
         }
         return this.powerId + "#" + this.energyBarName;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.powerId, this.energyBarName);
     }
 
     @Override

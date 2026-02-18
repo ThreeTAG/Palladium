@@ -6,7 +6,6 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.model.animation.FlightAnimation;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
@@ -109,7 +108,7 @@ public class CapeTextureVariable extends AbstractFloatTextureVariable {
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
             builder.setTitle("Cape");
-            
+
             builder.addProperty("bobbing", Boolean.class)
                     .description("Determines of bobbing should be taken into account when doing the calculation")
                     .fallback(true).exampleJson(new JsonPrimitive(true));

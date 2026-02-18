@@ -38,11 +38,14 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
     @Shadow
     public abstract AttributeMap getAttributes();
 
-    @Shadow public abstract void indicateDamage(double xDistance, double zDistance);
+    @Shadow
+    public abstract void indicateDamage(double xDistance, double zDistance);
 
-    @Shadow public abstract void setHealth(float health);
+    @Shadow
+    public abstract void setHealth(float health);
 
-    @Shadow public abstract boolean removeAllEffects();
+    @Shadow
+    public abstract boolean removeAllEffects();
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void init(EntityType entityType, Level level, CallbackInfo ci) {
@@ -61,7 +64,7 @@ public abstract class LivingEntityMixin implements PalladiumLivingEntityExtensio
     @SuppressWarnings("ConstantValue")
     @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
     private void checkTotemDeathProtection(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-        if(!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && AbilityUtil.isTypeEnabled((LivingEntity) (Object) this, Abilities.IMMORTALITY.get())) {
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && AbilityUtil.isTypeEnabled((LivingEntity) (Object) this, Abilities.IMMORTALITY.get())) {
             this.setHealth(1.0F);
             this.removeAllEffects();
             cir.setReturnValue(true);

@@ -197,10 +197,9 @@ public class SemanticVersionImpl implements SemanticVersion {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof SemanticVersionImpl)) {
+        if (!(o instanceof SemanticVersionImpl other)) {
             return false;
         } else {
-            SemanticVersionImpl other = (SemanticVersionImpl) o;
 
             if (!equalsComponentsExactly(other)) {
                 return false;
@@ -243,11 +242,9 @@ public class SemanticVersionImpl implements SemanticVersion {
 
     @Override
     public int compareTo(Version other) {
-        if (!(other instanceof SemanticVersion)) {
+        if (!(other instanceof SemanticVersion o)) {
             return 1;
         }
-
-        SemanticVersion o = (SemanticVersion) other;
 
         for (int i = 0; i < Math.max(getVersionComponentCount(), o.getVersionComponentCount()); i++) {
             int first = getVersionComponent(i);

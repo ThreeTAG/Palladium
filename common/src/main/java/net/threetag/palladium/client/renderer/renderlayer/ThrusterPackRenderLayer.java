@@ -20,7 +20,6 @@ import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.PalladiumRenderTypes;
 import net.threetag.palladium.util.SkinTypedValue;
 import net.threetag.palladium.util.context.DataContext;
-import net.threetag.palladium.util.json.GsonUtil;
 
 import java.awt.*;
 

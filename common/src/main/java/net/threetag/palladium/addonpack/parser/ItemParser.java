@@ -47,7 +47,7 @@ public class ItemParser extends AddonParser<Item> {
             json.addProperty("type", "palladium:block_item");
             json.addProperty("block", id.toString());
             JsonArray jsonArray = new JsonArray();
-            if(this.autoRegisteredBlockItems.get(id) != null) {
+            if (this.autoRegisteredBlockItems.get(id) != null) {
                 for (PlacedTabPlacement tabPlacement : this.autoRegisteredBlockItems.get(id)) {
                     jsonArray.add(tabPlacement.toJson());
                 }
@@ -114,7 +114,7 @@ public class ItemParser extends AddonParser<Item> {
                 ResourceLocation mobEffect = GsonUtil.getAsResourceLocation(effect, "mob_effect");
 
                 if (!BuiltInRegistries.MOB_EFFECT.containsKey(mobEffect)) {
-                    throw new JsonParseException("Mob effect type '" + mobEffect.toString() + "' does not exist");
+                    throw new JsonParseException("Mob effect type '" + mobEffect + "' does not exist");
                 }
 
                 int duration = GsonHelper.getAsInt(effect, "duration", 0);

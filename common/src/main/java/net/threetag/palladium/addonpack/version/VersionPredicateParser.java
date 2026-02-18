@@ -43,8 +43,7 @@ public final class VersionPredicateParser {
 
             Version version = VersionParser.parse(s, true);
 
-            if (version instanceof SemanticVersion) {
-                SemanticVersion semVer = (SemanticVersion) version;
+            if (version instanceof SemanticVersion semVer) {
 
                 if (semVer.hasWildcard()) { // .x version -> replace with conventional version by replacing the operator
                     if (operator != VersionComparisonOperator.EQUAL) {
@@ -149,8 +148,7 @@ public final class VersionPredicateParser {
 
         @Override
         public VersionInterval getInterval() {
-            if (refVersion instanceof SemanticVersion) {
-                SemanticVersion version = (SemanticVersion) refVersion;
+            if (refVersion instanceof SemanticVersion version) {
 
                 return new VersionIntervalImpl(operator.minVersion(version), operator.isMinInclusive(),
                         operator.maxVersion(version), operator.isMaxInclusive());
@@ -171,8 +169,7 @@ public final class VersionPredicateParser {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof VersionPredicateParser.SingleVersionPredicate) {
-                VersionPredicateParser.SingleVersionPredicate o = (VersionPredicateParser.SingleVersionPredicate) obj;
+            if (obj instanceof SingleVersionPredicate o) {
 
                 return operator == o.operator && refVersion.equals(o.refVersion);
             } else {
@@ -229,8 +226,7 @@ public final class VersionPredicateParser {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof VersionPredicateParser.MultiVersionPredicate) {
-                VersionPredicateParser.MultiVersionPredicate o = (VersionPredicateParser.MultiVersionPredicate) obj;
+            if (obj instanceof MultiVersionPredicate o) {
 
                 return predicates.equals(o.predicates);
             } else {

@@ -12,7 +12,8 @@ import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AttributeModifierAbility extends Ability {

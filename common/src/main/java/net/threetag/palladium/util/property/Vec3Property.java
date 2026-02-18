@@ -66,6 +66,6 @@ public class Vec3Property extends PalladiumProperty<Vec3> {
 
     @Override
     public String getString(Vec3 value) {
-        return value != null ? "[" + value.x + " / " + value.y+ " / " + value.z + "]" : null;
+        return value != null ? "[" + value.x + " / " + value.y + " / " + value.z + "]" : null;
     }
 }

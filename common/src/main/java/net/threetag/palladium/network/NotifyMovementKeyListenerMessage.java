@@ -1,7 +1,6 @@
 package net.threetag.palladium.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.threetag.palladium.util.property.BooleanProperty;
 import net.threetag.palladium.util.property.PalladiumProperties;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladiumcore.network.MessageC2S;
@@ -45,7 +44,7 @@ public class NotifyMovementKeyListenerMessage extends MessageC2S {
             case 4 -> property = PalladiumProperties.BACKWARDS_KEY_DOWN;
         }
 
-        if(property != null) {
+        if (property != null) {
             property.set(context.getPlayer(), this.active);
         }
     }

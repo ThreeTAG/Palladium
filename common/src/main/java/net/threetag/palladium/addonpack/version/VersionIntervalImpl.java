@@ -25,9 +25,9 @@ public record VersionIntervalImpl(Version min, boolean minInclusive,
     public VersionIntervalImpl(Version min, boolean minInclusive,
                                Version max, boolean maxInclusive) {
         this.min = min;
-        this.minInclusive = min != null ? minInclusive : false;
+        this.minInclusive = min != null && minInclusive;
         this.max = max;
-        this.maxInclusive = max != null ? maxInclusive : false;
+        this.maxInclusive = max != null && maxInclusive;
 
         assert min != null || !minInclusive;
         assert max != null || !maxInclusive;
@@ -64,8 +64,7 @@ public record VersionIntervalImpl(Version min, boolean minInclusive,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof VersionInterval) {
-            VersionInterval o = (VersionInterval) obj;
+        if (obj instanceof VersionInterval o) {
 
             return Objects.equals(min, o.getMin()) && minInclusive == o.isMinInclusive()
                     && Objects.equals(max, o.getMax()) && maxInclusive == o.isMaxInclusive();

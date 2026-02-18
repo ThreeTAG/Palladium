@@ -56,7 +56,7 @@ public class EnergyBarTextureVariable extends AbstractIntegerTextureVariable {
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
             builder.setTitle("Energy Bar");
-            
+
             builder.addProperty("power", ResourceLocation.class)
                     .description("ID of the power the energy bar is in.")
                     .required().exampleJson(new JsonPrimitive("example:power_id"));

@@ -66,22 +66,22 @@ public class ArmorRendererData {
     public static List<IPackRenderLayer> parseRenderLayers(JsonElement jsonElement) {
         List<IPackRenderLayer> layers = new ArrayList<>();
 
-        if(jsonElement.isJsonPrimitive()) {
+        if (jsonElement.isJsonPrimitive()) {
             var layerId = GsonUtil.convertToResourceLocation(jsonElement, "render_layers");
             var layer = PackRenderLayerManager.getInstance().getLayer(layerId);
 
-            if(layer != null) {
+            if (layer != null) {
                 layers.add(layer);
             } else {
                 AddonPackLog.warning("Unknown render layer '" + layerId + "'");
             }
-        } else if(jsonElement.isJsonArray()) {
+        } else if (jsonElement.isJsonArray()) {
             var array = GsonHelper.convertToJsonArray(jsonElement, "render_layers");
 
             for (JsonElement element : array) {
                 layers.addAll(parseRenderLayers(element));
             }
-        } else if(jsonElement.isJsonObject()) {
+        } else if (jsonElement.isJsonObject()) {
             layers.add(PackRenderLayerManager.parseLayer(jsonElement.getAsJsonObject()));
         }
 

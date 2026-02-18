@@ -69,7 +69,7 @@ public class AbilityIntegerPropertyVariable extends AbstractIntegerTextureVariab
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
             builder.setTitle("Ability Integer-Property");
-            
+
             builder.addProperty("power", ResourceLocation.class)
                     .description("ID of the power the ability is in.")
                     .required().exampleJson(new JsonPrimitive("example:power_id"));

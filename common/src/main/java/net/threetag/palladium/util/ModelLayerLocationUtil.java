@@ -5,23 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModelLayerLocationUtil {
-
-    private final ResourceLocation model;
-    private final String layer;
-
-    public ModelLayerLocationUtil(ResourceLocation model, String layer) {
-        this.model = model;
-        this.layer = layer;
-    }
-
-    public ResourceLocation getModel() {
-        return this.model;
-    }
-
-    public String getLayer() {
-        return this.layer;
-    }
+public record ModelLayerLocationUtil(ResourceLocation model, String layer) {
 
     @Environment(EnvType.CLIENT)
     public ModelLayerLocation toModelLayer() {
@@ -32,19 +16,11 @@ public class ModelLayerLocationUtil {
     public boolean equals(Object object) {
         if (this == object) {
             return true;
-        } else if (!(object instanceof ModelLayerLocationUtil)) {
+        } else if (!(object instanceof ModelLayerLocationUtil modelLayerLocation)) {
             return false;
         } else {
-            ModelLayerLocationUtil modelLayerLocation = (ModelLayerLocationUtil) object;
             return this.model.equals(modelLayerLocation.model) && this.layer.equals(modelLayerLocation.layer);
         }
-    }
-
-    @Override
-    public int hashCode() {
-        int i = this.model.hashCode();
-        i = 31 * i + this.layer.hashCode();
-        return i;
     }
 
     @Override

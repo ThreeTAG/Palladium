@@ -1,6 +1,5 @@
 package net.threetag.palladium.client.dynamictexture;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.threetag.palladium.client.dynamictexture.transformer.TransformedTexture;

@@ -2,10 +2,8 @@ package net.threetag.palladium.util.icon;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -18,16 +16,10 @@ import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemIcon implements IIcon {
-
-    public final ItemStack stack;
-
-    public ItemIcon(ItemStack stack) {
-        this.stack = stack;
-    }
+public record ItemIcon(ItemStack stack) implements IIcon {
 
     public ItemIcon(ItemLike itemLike) {
-        this.stack = new ItemStack(itemLike);
+        this(new ItemStack(itemLike));
     }
 
     @Override
@@ -45,7 +37,7 @@ public class ItemIcon implements IIcon {
         if (item.isEmpty()) {
             var contextItem = context.getItem();
 
-            if(!contextItem.isEmpty()) {
+            if (!contextItem.isEmpty()) {
                 item = contextItem;
             } else {
                 item = new ItemStack(Items.BARRIER);

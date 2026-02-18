@@ -158,7 +158,7 @@ public class HumanoidModelOverlayAccessory extends OverlayAccessory {
         public DefaultAccessory parse(JsonObject json) {
             SkinTypedValue<TextureReference> texture = SkinTypedValue.fromJSON(json.get("texture"), j -> TextureReference.parse(j.getAsString()));
             SkinTypedValue<ModelLayerLocationUtil> modelLayer = SkinTypedValue.fromJSON(json.get("model_layer"), j -> GsonUtil.convertToModelLayerLocationUtil(j, "model_layer"));
-            var accessory = new HumanoidModelOverlayAccessory(modelLayer::getNormal, modelLayer::getSlim, texture.getNormal(), texture.getSlim());
+            var accessory = new HumanoidModelOverlayAccessory(modelLayer::normal, modelLayer::slim, texture.normal(), texture.slim());
 
             if (GsonHelper.getAsBoolean(json, "glowing", false)) {
                 accessory.glowing();

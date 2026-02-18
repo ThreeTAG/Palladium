@@ -129,7 +129,7 @@ public class PropertyManager {
     public CompoundTag toNBT(boolean toDisk) {
         CompoundTag nbt = new CompoundTag();
         for (PalladiumProperty property : this.values.keySet()) {
-            if(!toDisk || property.isPersistent()) {
+            if (!toDisk || property.isPersistent()) {
                 if (this.values.get(property) == null) {
                     nbt.put(property.getKey(), StringTag.valueOf("null"));
                 } else {

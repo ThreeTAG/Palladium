@@ -120,7 +120,7 @@ public class ExtendedCubeListBuilder extends CubeListBuilder {
 
         @Override
         public ModelPart.Cube bake(int texWidth, int texHeight) {
-            return new PerFaceUVCube(this.uvMap, this.origin.x, this.origin.y, this.origin.z, this.dimensions.x, this.dimensions.y, this.dimensions.z, this.grow.growX, this.grow.growY, this.grow.growZ, this.mirror, (float)texWidth * this.texScale.u(), (float)texHeight * this.texScale.v());
+            return new PerFaceUVCube(this.uvMap, this.origin.x, this.origin.y, this.origin.z, this.dimensions.x, this.dimensions.y, this.dimensions.z, this.grow.growX, this.grow.growY, this.grow.growZ, this.mirror, (float) texWidth * this.texScale.u(), (float) texHeight * this.texScale.v());
         }
     }
 

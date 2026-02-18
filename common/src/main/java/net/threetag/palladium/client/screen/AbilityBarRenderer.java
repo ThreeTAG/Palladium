@@ -273,7 +273,7 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
             guiGraphics.blit(texture, x, 0, 153, 0, 9, 104);
 
             int height = (int) ((energyBar.get() / (float) energyBar.getMax()) * 98);
-            var color = energyBar.getConfiguration().getColor();
+            var color = energyBar.getConfiguration().color();
             RenderSystem.setShaderColor(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 1F);
             guiGraphics.blit(texture, x + 2, 3 + 98 - height, 162, 98 - height, 4, height);
             RenderSystem.setShaderColor(1F, 1F, 1F, 1F);

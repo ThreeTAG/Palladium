@@ -20,16 +20,16 @@ public class EnergyBar {
     }
 
     public void tick(LivingEntity entity) {
-        if (this.configuration.getSyncedValue() != null) {
-            var synced = this.configuration.getSyncedValue().get(entity);
+        if (this.configuration.syncedValue() != null) {
+            var synced = this.configuration.syncedValue().get(entity);
 
             if (this.value != synced) {
                 this.set(synced);
             }
         } else {
-            int increase = this.configuration.getAutoIncrease();
+            int increase = this.configuration.autoIncrease();
 
-            if (increase != 0 && entity.tickCount % this.configuration.getAutoIncreaseInterval() == 0) {
+            if (increase != 0 && entity.tickCount % this.configuration.autoIncreaseInterval() == 0) {
                 this.add(increase);
             }
         }
@@ -39,7 +39,7 @@ public class EnergyBar {
                 this.setMax(this.overriddenMaxValue);
             }
         } else {
-            var syncedMax = this.configuration.getMaxValue().get(entity);
+            var syncedMax = this.configuration.maxValue().get(entity);
             if (this.maxValue != syncedMax) {
                 this.setMax(syncedMax);
             }
@@ -102,7 +102,7 @@ public class EnergyBar {
 
     private void sync() {
         if (!this.powerHolder.getEntity().level().isClientSide) {
-            var msg = new SetEnergyBarMessage(this.powerHolder.getEntity().getId(), new EnergyBarReference(this.powerHolder.getPower().getId(), this.configuration.getName()), this.value, this.maxValue);
+            var msg = new SetEnergyBarMessage(this.powerHolder.getEntity().getId(), new EnergyBarReference(this.powerHolder.getPower().getId(), this.configuration.name()), this.value, this.maxValue);
 
             if (this.powerHolder.getEntity() instanceof ServerPlayer player) {
                 msg.sendToTrackingAndSelf(player);

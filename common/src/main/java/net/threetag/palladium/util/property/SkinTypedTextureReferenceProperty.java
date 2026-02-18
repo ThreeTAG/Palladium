@@ -36,8 +36,8 @@ public class SkinTypedTextureReferenceProperty extends PalladiumProperty<SkinTyp
     @Override
     public Tag toNBT(SkinTypedValue<TextureReference> value) {
         CompoundTag tag = new CompoundTag();
-        tag.putString("Normal", value.getNormal().toString());
-        tag.putString("Slim", value.getSlim().toString());
+        tag.putString("Normal", value.normal().toString());
+        tag.putString("Slim", value.slim().toString());
         return tag;
     }
 
@@ -50,7 +50,7 @@ public class SkinTypedTextureReferenceProperty extends PalladiumProperty<SkinTyp
     @Override
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         SkinTypedValue<TextureReference> val = (SkinTypedValue<TextureReference>) value;
-        val.getNormal().toBuffer(buf);
-        val.getSlim().toBuffer(buf);
+        val.normal().toBuffer(buf);
+        val.slim().toBuffer(buf);
     }
 }

@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface VersionInterval {
-    
+
     VersionInterval INFINITE = new VersionIntervalImpl(null, false, null, false);
 
     /**

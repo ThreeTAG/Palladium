@@ -15,7 +15,7 @@ public class SplashManagerMixin {
     public void getSplash(CallbackInfoReturnable<SplashRenderer> ci) {
         var splash = SplashTextUtil.getPossibleOverrideSplash();
 
-        if(splash != null) {
+        if (splash != null) {
             ci.setReturnValue(new SplashRenderer(splash));
         }
     }

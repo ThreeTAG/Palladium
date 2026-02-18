@@ -26,9 +26,9 @@ public class SuitSetPowerProvider extends PowerProvider {
     public record Validator(SuitSet suitSet) implements IPowerValidator {
 
         @Override
-            public boolean stillValid(LivingEntity entity, Power power) {
-                return this.suitSet.isWearing(entity);
-            }
+        public boolean stillValid(LivingEntity entity, Power power) {
+            return this.suitSet.isWearing(entity);
         }
+    }
 
 }

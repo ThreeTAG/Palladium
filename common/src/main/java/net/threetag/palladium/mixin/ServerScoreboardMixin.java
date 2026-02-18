@@ -29,7 +29,8 @@ public abstract class ServerScoreboardMixin {
     @Shadow
     public abstract List<Packet<?>> getStopTrackingPackets(Objective objective);
 
-    @Shadow public abstract void startTrackingObjective(Objective objective);
+    @Shadow
+    public abstract void startTrackingObjective(Objective objective);
 
     @Inject(method = "setDisplayObjective", at = @At("HEAD"))
     public void setDisplayObjective(int objectiveSlot, @Nullable Objective objective, CallbackInfo ci) {

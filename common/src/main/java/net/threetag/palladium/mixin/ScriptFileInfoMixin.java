@@ -12,7 +12,7 @@ import java.util.Set;
 public interface ScriptFileInfoMixin {
 
     @Accessor(remap = false)
-    Map<String, List<String>>  getProperties();
+    Map<String, List<String>> getProperties();
 
     @Accessor(remap = false)
     int getPriority();

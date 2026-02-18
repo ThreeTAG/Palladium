@@ -14,7 +14,6 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.condition.Condition;
 import net.threetag.palladium.condition.ConditionSerializer;
 import net.threetag.palladium.entity.BodyPart;
-import net.threetag.palladium.power.ability.AbilityReference;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladiumcore.util.Platform;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +41,7 @@ public class AccessorySlot {
     private boolean multiple = false;
     private EquipmentSlot equipmentSlot;
     private ResourceLocation icon;
-    private List<Condition> visible = new ArrayList<>();
+    private final List<Condition> visible = new ArrayList<>();
     private int sortIndex = 20;
 
     private AccessorySlot(ResourceLocation name) {

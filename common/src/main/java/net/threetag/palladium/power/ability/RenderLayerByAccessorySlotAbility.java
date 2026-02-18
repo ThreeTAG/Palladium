@@ -31,12 +31,12 @@ public class RenderLayerByAccessorySlotAbility extends Ability implements Render
     public IPackRenderLayer getRenderLayer(AbilityInstance entry, LivingEntity entity, PackRenderLayerManager manager) {
         AtomicReference<ResourceLocation> layerId = new AtomicReference<>(entry.getProperty(DEFAULT));
 
-        if(entity instanceof Player player) {
+        if (entity instanceof Player player) {
             Accessory.getPlayerData(player).ifPresent(data -> {
                 var slot = entry.getProperty(SLOT);
                 var slots = data.getSlots();
 
-                if(slot != null && slots.containsKey(slot)) {
+                if (slot != null && slots.containsKey(slot)) {
                     slots.get(slot).stream().filter(a -> a instanceof RenderLayerAccessory).findFirst().ifPresent(a -> {
                         layerId.set(((RenderLayerAccessory) a).renderLayerId);
                     });

@@ -10,13 +10,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.documentation.JsonDocumentationBuilder;
-import net.threetag.palladium.item.Openable;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
-import net.threetag.palladium.util.property.ItemProperty;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ItemModelPropertyVariable extends AbstractFloatTextureVariable {
     private final ResourceLocation modelProperty;

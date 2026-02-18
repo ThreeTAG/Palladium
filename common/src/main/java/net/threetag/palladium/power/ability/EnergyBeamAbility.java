@@ -65,7 +65,6 @@ public class EnergyBeamAbility extends Ability implements AnimationTimer, Comman
                 .withProperty(SMELT_BLOCKS, false)
                 .withProperty(COMMANDS_ON_BLOCK_HIT, new CommandFunctionProperty.CommandFunctionParsing(Collections.emptyList()))
                 .withProperty(COMMANDS_ON_ENTITY_HIT, new CommandFunctionProperty.CommandFunctionParsing(Collections.emptyList()));
-        ;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class ConditionTextureVariable extends AbstractBooleanTextureVariable {
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
             builder.setTitle("Condition");
-            
+
             var example = new JsonArray();
             var crouching = new JsonObject();
             crouching.addProperty("type", ConditionSerializers.CROUCHING.getId().toString());

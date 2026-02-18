@@ -38,11 +38,11 @@ public abstract class LegacySupportJsonReloadListener extends SimplePreparableRe
         Map<ResourceLocation, JsonElement> map = Maps.newHashMap();
         boolean foundLegacy = false;
 
-        for(int m = 0; m < 2; m++) {
+        for (int m = 0; m < 2; m++) {
             String path = m == 0 ? this.legacyDirectory : this.directory;
             int i = path.length() + 1;
             for (Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(path, (p_215600_) -> p_215600_.getPath().endsWith(PATH_SUFFIX)).entrySet()) {
-                if(m == 0) {
+                if (m == 0) {
                     foundLegacy = true;
                 }
                 ResourceLocation resourcelocation = entry.getKey();
@@ -83,7 +83,7 @@ public abstract class LegacySupportJsonReloadListener extends SimplePreparableRe
             }
         }
 
-        if(foundLegacy) {
+        if (foundLegacy) {
             AddonPackLog.warning("Files were found in deprecated folder: '" + this.legacyDirectory + "'. Please switch to '" + this.directory + "'!");
         }
 

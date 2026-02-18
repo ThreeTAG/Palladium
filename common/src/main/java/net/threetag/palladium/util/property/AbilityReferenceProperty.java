@@ -44,8 +44,8 @@ public class AbilityReferenceProperty extends PalladiumProperty<AbilityReference
     @Override
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         var ref = (AbilityReference) value;
-        buf.writeResourceLocation(ref.getPowerId());
-        buf.writeUtf(ref.getAbilityId());
+        buf.writeResourceLocation(ref.powerId());
+        buf.writeUtf(ref.abilityId());
     }
 
     @Override

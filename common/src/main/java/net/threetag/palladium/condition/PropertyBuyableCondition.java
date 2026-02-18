@@ -56,7 +56,7 @@ public class PropertyBuyableCondition extends BuyableCondition {
             if (property instanceof IntegerProperty integerProperty) {
                 int value = handler.get(integerProperty);
                 if (value >= this.amount) {
-                    handler.set(integerProperty, (int) (value - this.amount));
+                    handler.set(integerProperty, value - this.amount);
                     result.set(true);
                 }
             }

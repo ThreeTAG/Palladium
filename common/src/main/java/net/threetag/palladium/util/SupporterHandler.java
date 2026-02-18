@@ -61,7 +61,7 @@ public class SupporterHandler {
     }
 
     public static void loadPlayerData(UUID uuid) {
-        CompletableFuture.runAsync(() ->  {
+        CompletableFuture.runAsync(() -> {
             try {
                 JsonObject json = readJsonFromUrl(BASE_URL + "player/" + uuid.toString());
                 PlayerData data = new PlayerData(uuid, GsonHelper.getAsJsonObject(json, "data"));

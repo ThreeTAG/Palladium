@@ -1,7 +1,6 @@
 package net.threetag.palladium.addonpack.builder;
 
 import com.google.gson.JsonParseException;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.village.poi.PoiType;

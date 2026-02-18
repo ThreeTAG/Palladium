@@ -6,7 +6,6 @@ import net.minecraft.util.Mth;
 import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.client.dynamictexture.DynamicTextureManager;
 import net.threetag.palladium.client.dynamictexture.variable.ITextureVariable;
-import net.threetag.palladium.network.SyncAbilityStateMessage;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 import org.jetbrains.annotations.Nullable;

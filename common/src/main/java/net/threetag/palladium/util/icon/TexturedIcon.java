@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.api.EnvType;
@@ -25,20 +24,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class TexturedIcon implements IIcon {
+public record TexturedIcon(TextureReference texture, Color tint) implements IIcon {
 
     public static final ResourceLocation LOCK = new ResourceLocation(Palladium.MOD_ID, "textures/icons/lock.png");
 
-    public final TextureReference texture;
-    public final Color tint;
-
     public TexturedIcon(TextureReference texture) {
         this(texture, null);
-    }
-
-    public TexturedIcon(TextureReference texture, Color tint) {
-        this.texture = texture;
-        this.tint = tint;
     }
 
     public TexturedIcon(ResourceLocation texture) {

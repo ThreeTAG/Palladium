@@ -1,6 +1,5 @@
 package net.threetag.palladium.power.ability;
 
-import net.minecraft.ResourceLocationException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,17 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AbilityReference {
-
-    @Nullable
-    private final ResourceLocation powerId;
-    @NotNull
-    private final String abilityId;
-
-    public AbilityReference(@Nullable ResourceLocation powerId, @NotNull String abilityId) {
-        this.powerId = powerId;
-        this.abilityId = abilityId;
-    }
+public record AbilityReference(@Nullable ResourceLocation powerId, @NotNull String abilityId) {
 
     public static AbilityReference fromString(String parse) {
         String[] s = parse.split("#", 2);
@@ -44,16 +33,6 @@ public class AbilityReference {
         } else {
             return ResourceLocation.isValidResourceLocation(s[0]);
         }
-    }
-
-    @Nullable
-    public ResourceLocation getPowerId() {
-        return powerId;
-    }
-
-    @NotNull
-    public String getAbilityId() {
-        return abilityId;
     }
 
     @Nullable
@@ -100,11 +79,6 @@ public class AbilityReference {
             return this.abilityId;
         }
         return this.powerId + "#" + this.abilityId;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.powerId, this.abilityId);
     }
 
     @Override

@@ -10,12 +10,12 @@ public class ScriptableCondition extends Condition {
 
     public final ConditionBuilder builder;
     public final ConditionSerializer serializer;
-	public final Map<String, Object> extraProperties;
+    public final Map<String, Object> extraProperties;
 
     public ScriptableCondition(ConditionBuilder builder, ConditionSerializer serializer, Map<String, Object> extraProperties) {
         this.builder = builder;
         this.serializer = serializer;
-	    this.extraProperties = extraProperties;
+        this.extraProperties = extraProperties;
     }
 
     @Override

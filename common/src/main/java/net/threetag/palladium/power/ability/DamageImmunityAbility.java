@@ -48,7 +48,7 @@ public class DamageImmunityAbility extends Ability {
 
         for (Field field : allFields) {
             try {
-                if(field.get(null) instanceof TagKey<?> tag) {
+                if (field.get(null) instanceof TagKey<?> tag) {
                     list.add(tag);
                 }
             } catch (IllegalAccessException e) {

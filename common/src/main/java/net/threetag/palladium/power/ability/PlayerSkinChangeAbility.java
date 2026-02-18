@@ -1,15 +1,16 @@
 package net.threetag.palladium.power.ability;
 
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinFetcher;
+import net.threetag.palladium.client.renderer.entity.PlayerSkinHandler;
 import net.threetag.palladium.client.renderer.entity.PlayerSkinInfo;
-import net.threetag.palladium.util.property.*;
+import net.threetag.palladium.util.property.EntityPropertyHandler;
+import net.threetag.palladium.util.property.IntegerProperty;
+import net.threetag.palladium.util.property.PalladiumProperty;
+import net.threetag.palladium.util.property.StringProperty;
 
 import java.util.concurrent.atomic.AtomicReference;
 

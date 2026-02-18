@@ -1,11 +1,7 @@
 package net.threetag.palladium.mixin.client;
 
-import com.mojang.blaze3d.Blaze3D;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.util.SmoothDouble;
 import net.threetag.palladium.client.screen.AbilityWheelRenderer;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

@@ -36,7 +36,7 @@ public class MultiversalExtrapolatorCloningRecipe extends CustomRecipe {
                     }
                 } else if (stack.is(PalladiumItems.VIBRANIUM_CIRCUIT.get())) {
                     circuits++;
-                } else if(stack.is(Items.DIAMOND)) {
+                } else if (stack.is(Items.DIAMOND)) {
                     diamonds++;
                 }
             }

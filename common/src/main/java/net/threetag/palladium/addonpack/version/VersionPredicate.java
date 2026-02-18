@@ -37,6 +37,7 @@ public interface VersionPredicate extends Predicate<Version> {
 
     interface PredicateTerm {
         VersionComparisonOperator getOperator();
+
         Version getReferenceVersion();
     }
 

@@ -39,7 +39,7 @@ public class UpdatePowersMessage extends MessageS2C {
         if (opt.isPresent()) {
             for (IPowerHolder holder : opt.get().getPowerHolders().values()) {
                 for (EnergyBar energyBar : holder.getEnergyBars().values()) {
-                    this.energyBars.add(Triple.of(new EnergyBarReference(holder.getPower().getId(), energyBar.getConfiguration().getName()), energyBar.get(), energyBar.getMax()));
+                    this.energyBars.add(Triple.of(new EnergyBarReference(holder.getPower().getId(), energyBar.getConfiguration().name()), energyBar.get(), energyBar.getMax()));
                 }
             }
         }

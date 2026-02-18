@@ -5,7 +5,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.CrossbowAttackMob;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -27,8 +26,7 @@ public class CrossbowItemMixin {
             if (ammoStack.getItem() instanceof AddonProjectileItem projectileItem) {
                 var projectile = projectileItem.createProjectile(level, ammoStack, shooter);
 
-                if (shooter instanceof CrossbowAttackMob) {
-                    CrossbowAttackMob crossbowAttackMob = (CrossbowAttackMob) shooter;
+                if (shooter instanceof CrossbowAttackMob crossbowAttackMob) {
                     crossbowAttackMob.shootCrossbowProjectile(crossbowAttackMob.getTarget(), crossbowStack, projectile, projectileAngle);
                 } else {
                     Vec3 vec3 = shooter.getUpVector(1.0F);

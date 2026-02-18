@@ -39,7 +39,7 @@ public class EnergyBarCommand {
             var manager = PowerManager.getPowerHandler(living).orElse(new PowerHandler(living));
 
             for (IPowerHolder holder : manager.getPowerHolders().values()) {
-                if(!holder.getEnergyBars().isEmpty()) {
+                if (!holder.getEnergyBars().isEmpty()) {
                     powers.add(holder.getPower().getId());
                 }
             }
@@ -59,7 +59,7 @@ public class EnergyBarCommand {
 
         if (power != null) {
             for (EnergyBarConfiguration energyBar : power.getEnergyBars()) {
-                energyBars.add(energyBar.getName());
+                energyBars.add(energyBar.name());
             }
         }
 

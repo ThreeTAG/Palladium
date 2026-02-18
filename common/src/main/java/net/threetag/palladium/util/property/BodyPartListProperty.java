@@ -25,7 +25,7 @@ public class BodyPartListProperty extends PalladiumProperty<List<BodyPart>> {
         if (jsonElement.isJsonPrimitive()) {
             var name = jsonElement.getAsString();
 
-            if(name.equalsIgnoreCase("all")) {
+            if (name.equalsIgnoreCase("all")) {
                 return Arrays.asList(BodyPart.values());
             } else {
                 return Collections.singletonList(BodyPart.fromJson(name));

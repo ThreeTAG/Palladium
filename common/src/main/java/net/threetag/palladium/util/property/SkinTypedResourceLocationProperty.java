@@ -36,8 +36,8 @@ public class SkinTypedResourceLocationProperty extends PalladiumProperty<SkinTyp
     @Override
     public Tag toNBT(SkinTypedValue<ResourceLocation> value) {
         CompoundTag tag = new CompoundTag();
-        tag.putString("Normal", value.getNormal().toString());
-        tag.putString("Slim", value.getSlim().toString());
+        tag.putString("Normal", value.normal().toString());
+        tag.putString("Slim", value.slim().toString());
         return tag;
     }
 
@@ -50,7 +50,7 @@ public class SkinTypedResourceLocationProperty extends PalladiumProperty<SkinTyp
     @Override
     public void toBuffer(FriendlyByteBuf buf, Object value) {
         SkinTypedValue<ResourceLocation> val = (SkinTypedValue<ResourceLocation>) value;
-        buf.writeResourceLocation(val.getNormal());
-        buf.writeResourceLocation(val.getSlim());
+        buf.writeResourceLocation(val.normal());
+        buf.writeResourceLocation(val.slim());
     }
 }

@@ -58,7 +58,7 @@ public class AnimationTimerAbilityVariable extends AbstractIntegerTextureVariabl
         @Override
         public void addDocumentationFields(JsonDocumentationBuilder builder) {
             builder.setTitle("Animation Timer Ability");
-            
+
             builder.addProperty("power", ResourceLocation.class)
                     .description("ID of the power the ability is in.")
                     .required().exampleJson(new JsonPrimitive("example:power_id"));

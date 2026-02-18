@@ -35,7 +35,7 @@ public class DefaultPowerHolder implements IPowerHolder {
 
         final Map<String, EnergyBar> energyBars = new LinkedHashMap<>();
         for (EnergyBarConfiguration energyBar : this.getPower().getEnergyBars()) {
-            energyBars.put(energyBar.getName(), new EnergyBar(this, energyBar));
+            energyBars.put(energyBar.name(), new EnergyBar(this, energyBar));
         }
         this.energyBars = ImmutableMap.copyOf(energyBars);
     }

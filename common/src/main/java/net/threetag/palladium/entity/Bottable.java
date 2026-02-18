@@ -87,7 +87,7 @@ public interface Bottable {
     static <T extends LivingEntity & Bottable> Optional<InteractionResult> bottleMobPickup(Player player, InteractionHand interactionHand, T livingEntity) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (itemStack.getItem() == Items.GLASS_BOTTLE && livingEntity.isAlive()) {
-            if(livingEntity.getPickupSound() != null) {
+            if (livingEntity.getPickupSound() != null) {
                 livingEntity.playSound(livingEntity.getPickupSound(), 1.0F, 1.0F);
             }
             ItemStack itemStack2 = livingEntity.getBottleItemStack();

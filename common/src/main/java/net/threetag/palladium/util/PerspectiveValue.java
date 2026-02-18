@@ -12,30 +12,14 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class PerspectiveValue<T> {
-
-    private final T firstPerson;
-    private final T thirdPerson;
+public record PerspectiveValue<T>(T firstPerson, T thirdPerson) {
 
     public PerspectiveValue(T value) {
-        this.firstPerson = this.thirdPerson = value;
-    }
-
-    public PerspectiveValue(T firstPerson, T thirdPerson) {
-        this.firstPerson = firstPerson;
-        this.thirdPerson = thirdPerson;
-    }
-
-    public T getFirstPerson() {
-        return this.firstPerson;
-    }
-
-    public T getThirdPerson() {
-        return this.thirdPerson;
+        this(value, value);
     }
 
     public T get(boolean firstPerson) {
-        return firstPerson ? this.getFirstPerson() : this.getThirdPerson();
+        return firstPerson ? this.firstPerson() : this.thirdPerson();
     }
 
     @Environment(EnvType.CLIENT)
@@ -62,11 +46,6 @@ public class PerspectiveValue<T> {
         if (this == o) return true;
         if (!(o instanceof PerspectiveValue<?> that)) return false;
         return Objects.equals(firstPerson, that.firstPerson) && Objects.equals(thirdPerson, that.thirdPerson);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstPerson, thirdPerson);
     }
 
     @Override

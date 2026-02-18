@@ -25,7 +25,7 @@ public class IngredientProperty extends PalladiumProperty<Ingredient> {
 
     @Override
     public Ingredient fromNBT(Tag tag, Ingredient defaultValue) {
-        if(tag instanceof StringTag stringTag) {
+        if (tag instanceof StringTag stringTag) {
             return Ingredient.fromJson(GsonHelper.parse(stringTag.getAsString()));
         }
         return defaultValue;
@@ -43,7 +43,7 @@ public class IngredientProperty extends PalladiumProperty<Ingredient> {
 
     @Override
     public void toBuffer(FriendlyByteBuf buf, Object value) {
-        buf.writeUtf(((Ingredient)value).toJson().toString());
+        buf.writeUtf(((Ingredient) value).toJson().toString());
     }
 
     @Override

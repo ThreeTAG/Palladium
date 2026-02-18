@@ -38,13 +38,13 @@ public class LevitationAnimation extends PalladiumAnimation {
                     .setXRotShortestDegrees(0F)
                     .setYRotShortestDegrees(0F)
                     .setZRotShortestDegrees(10F)
-                    .animate(Easing.INOUTCUBIC, anim);;
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_ARM)
                     .setXRotShortestDegrees(0F)
                     .setYRotShortestDegrees(0F)
                     .setZRotShortestDegrees(-10F)
-                    .animate(Easing.INOUTCUBIC, anim);;
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_LEG)
                     .resetX()
@@ -53,7 +53,7 @@ public class LevitationAnimation extends PalladiumAnimation {
                     .setXRotShortestDegrees(10F)
                     .setYRotShortestDegrees(0F)
                     .setZRotShortestDegrees(2.5F)
-                    .animate(Easing.INOUTCUBIC, anim);;
+                    .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_LEG)
                     .resetX()
@@ -62,7 +62,7 @@ public class LevitationAnimation extends PalladiumAnimation {
                     .setXRotShortestDegrees(5F)
                     .setYRotShortestDegrees(0F)
                     .setZRotShortestDegrees(-2.5F)
-                    .animate(Easing.INOUTCUBIC, anim);;
+                    .animate(Easing.INOUTCUBIC, anim);
         }
     }
 }

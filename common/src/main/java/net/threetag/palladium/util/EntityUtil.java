@@ -74,10 +74,7 @@ public class EntityUtil {
             return false;
         } else if (entity instanceof TrailSegmentEntity<?>) {
             return false;
-        } else if (entity instanceof EffectEntity) {
-            return false;
-        }
-        return true;
+        } else return !(entity instanceof EffectEntity);
     }
 
 }

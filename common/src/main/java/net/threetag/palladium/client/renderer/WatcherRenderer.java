@@ -7,12 +7,19 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.util.Easing;
 import net.threetag.palladiumcore.event.ClientTickEvents;
 import org.joml.Matrix4f;
+
+import java.util.Calendar;
+import java.util.Objects;
 
 public class WatcherRenderer implements ClientTickEvents.ClientLevelTick {
 
@@ -73,8 +80,9 @@ public class WatcherRenderer implements ClientTickEvents.ClientLevelTick {
             this.ticksTilOccurrence--;
 
             if (this.ticksTilOccurrence <= 0) {
-                if (Math.random() < OCCURRENCE_CHANCE) {
+                if (Math.random() < getWatcherChance()) {
                     this.visibleTicks = OCCURRENCE_DURATION;
+                    sendMessage();
                 }
 
                 this.ticksTilOccurrence = (int) (OCCURRENCE_INTERVAL * (1 + Math.random()));
@@ -90,6 +98,49 @@ public class WatcherRenderer implements ClientTickEvents.ClientLevelTick {
         } else if (this.visibility > 0) {
             this.visibility--;
         }
+    }
+
+    public static float getWatcherChance() {
+        Calendar calendar = Calendar.getInstance();
+
+        if (calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1) {
+            return 0.5F;
+        }
+
+        return OCCURRENCE_CHANCE;
+    }
+
+    // If you see this, don't spoil the surprise. DM me tho!
+    private static void sendMessage() {
+        String[] messages = new String[]{
+                "What the hell is %s doing?",
+                "I can see you...",
+                "%s, such a naive creature.",
+                "April fools!",
+                "Don't look up...I'm not here...",
+                "I observe all that transpires here, but I do not, cannot, will not interfere. For I am the Watcher.",
+                "I have seen everything that has ever happened. Ever will happen. Ever could happen. And yet, what the hell is this?",
+                "I am The Watcher. I see all, I observe all, I-- What the hell is this?!",
+                "%s?",
+                "What-?!",
+                "%s doesn't seem prepared for what destiny has planned for them...this World is going to need it's Finest.",
+                "If you can see this, don't.",
+                "Let's pretend this never happened.",
+                "Hey %s, do you have any Aspirin?",
+                "I know what you did last summer.",
+                "This place is gonna need the Worlds' Finest.",
+                "I observe all that transpires here, but I do not, cannot, will not interfere. Unless you break grass with a pickaxe.",
+                "Time. Space. Reality. It's more than a linear path.",
+                "%s can't see me, right?",
+                "%s can't hear me, right?",
+                "What team was %s part of again? Avengers? X-Men? Enhanced?",
+        };
+
+        var player = Objects.requireNonNull(Minecraft.getInstance().player);
+        RandomSource random = RandomSource.create();
+        Component name = Component.literal("The Watcher").withStyle(Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("I'm up here"))));
+        Component message = Component.literal(String.format(messages[random.nextInt(messages.length)], player.getDisplayName().getString()));
+        player.displayClientMessage(Component.translatable("chat.type.text", name, message), false);
     }
 
     public float getVisibility(float partialTick) {

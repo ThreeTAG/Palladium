@@ -90,7 +90,7 @@ public class PalladiumAttributes {
                     vec3 = vec3.add(vec3.x * mul, 0, vec3.z * mul);
                     entity.setDeltaMovement(vec3);
 
-                    if(entity instanceof ServerPlayer player) {
+                    if (entity instanceof ServerPlayer player) {
                         player.connection.send(new ClientboundSetEntityMotionPacket(player));
                     }
                 }

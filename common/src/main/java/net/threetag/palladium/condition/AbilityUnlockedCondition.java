@@ -30,7 +30,7 @@ public class AbilityUnlockedCondition extends Condition {
 
     @Override
     public List<String> getDependentAbilities() {
-        return List.of(this.ability.getAbilityId());
+        return List.of(this.ability.abilityId());
     }
 
     @Override

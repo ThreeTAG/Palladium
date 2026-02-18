@@ -46,7 +46,7 @@ public class MultiversalIteratorBlock extends HorizontalDirectionalBlock {
             var suitStand = entities.isEmpty() ? null : (ArmorStand) entities.get(0);
 
 
-            if(suitStand == null) {
+            if (suitStand == null) {
                 player.openMenu(state.getMenuProvider(level, pos));
             } else {
                 PalladiumMenuTypes.openExtendedMenu((ServerPlayer) player, new ExtendedMenuProvider() {

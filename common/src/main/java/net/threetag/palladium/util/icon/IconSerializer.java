@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +31,7 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
 
             if (input.endsWith(".png")) {
                 return new TexturedIcon(new ResourceLocation(input));
-            } else if(input.startsWith("#")) {
+            } else if (input.startsWith("#")) {
                 return new TexturedIcon(TextureReference.parse(input));
             } else {
                 ResourceLocation id = new ResourceLocation(json.getAsString());
@@ -59,10 +58,10 @@ public abstract class IconSerializer<T extends IIcon> implements IDocumentedConf
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static JsonElement serializeJSON(IIcon icon) {
-        if (icon instanceof ItemIcon itemIcon && itemIcon.stack.getCount() == 1) {
-            return new JsonPrimitive(BuiltInRegistries.ITEM.getKey(itemIcon.stack.getItem()).toString());
-        } else if (icon instanceof TexturedIcon texturedIcon && texturedIcon.tint == null) {
-            return new JsonPrimitive(texturedIcon.texture.toString());
+        if (icon instanceof ItemIcon itemIcon && itemIcon.stack().getCount() == 1) {
+            return new JsonPrimitive(BuiltInRegistries.ITEM.getKey(itemIcon.stack().getItem()).toString());
+        } else if (icon instanceof TexturedIcon texturedIcon && texturedIcon.tint() == null) {
+            return new JsonPrimitive(texturedIcon.texture().toString());
         } else {
             IconSerializer serializer = icon.getSerializer();
             JsonObject json = serializer.toJSON(icon);

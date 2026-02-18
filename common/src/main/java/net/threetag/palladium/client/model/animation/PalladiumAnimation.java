@@ -511,7 +511,7 @@ public class PalladiumAnimation {
 
     public enum PartOperationType {
 
-        ADD, ADD_INITIAL, SET, SET_SHORTEST, RESET;
+        ADD, ADD_INITIAL, SET, SET_SHORTEST, RESET
 
     }
 

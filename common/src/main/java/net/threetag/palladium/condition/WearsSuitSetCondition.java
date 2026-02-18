@@ -1,9 +1,8 @@
 package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
-import net.threetag.palladium.util.context.DataContext;
-import net.threetag.palladium.util.context.DataContextType;
 import net.threetag.palladium.item.SuitSet;
+import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.property.PalladiumProperty;
 import net.threetag.palladium.util.property.SuitSetPropertyPalladium;
 

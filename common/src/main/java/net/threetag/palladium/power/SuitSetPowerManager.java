@@ -41,7 +41,7 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
                 if (jsonObject.get("power").isJsonPrimitive()) {
                     var power = PowerManager.getInstance(null).getPower(new ResourceLocation(jsonObject.get("power").getAsString()));
 
-                    if(power == null) {
+                    if (power == null) {
                         AddonPackLog.warning("Unknown power used for suit set '" + jsonObject.get("power").getAsString() + "'");
                     } else {
                         powers.add(power);
@@ -50,7 +50,7 @@ public class SuitSetPowerManager extends SimpleJsonResourceReloadListener {
                     for (JsonElement jsonElement : GsonHelper.getAsJsonArray(jsonObject, "power")) {
                         var power = PowerManager.getInstance(null).getPower(new ResourceLocation(jsonElement.getAsString()));
 
-                        if(power == null) {
+                        if (power == null) {
                             AddonPackLog.warning("Unknown power used for suit set '" + jsonElement.getAsString() + "'");
                         } else {
                             powers.add(power);

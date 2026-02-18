@@ -51,7 +51,7 @@ public class CuriosTrinketsUtil {
         for (int i = 0; i < inv.getSlots(); i++) {
             var stack = inv.getStackInSlot(i);
 
-            if(!stack.isEmpty()) {
+            if (!stack.isEmpty()) {
                 items.add(stack);
             }
         }
@@ -64,7 +64,7 @@ public class CuriosTrinketsUtil {
     }
 
     public CuriosTrinketsSlotInv getSlot(LivingEntity entity, Slot slot) {
-        return this.getSlot(entity, (Platform.isForge() ? slot.getForge() : slot.getFabric()).location().getPath());
+        return this.getSlot(entity, (Platform.isForge() ? slot.forge() : slot.fabric()).location().getPath());
     }
 
     public boolean equipItem(Player user, ItemStack stack) {
@@ -88,21 +88,11 @@ public class CuriosTrinketsUtil {
         // nothing
     }
 
-    public static class Slot {
-
-        private final TagKey<Item> forge, fabric;
+    public record Slot(TagKey<Item> forge, TagKey<Item> fabric) {
 
         public Slot(String forge, String fabric) {
-            this.forge = TagKey.create(Registries.ITEM, new ResourceLocation("curios:" + forge));
-            this.fabric = TagKey.create(Registries.ITEM, new ResourceLocation("trinkets:" + fabric));
-        }
-
-        public TagKey<Item> getFabric() {
-            return fabric;
-        }
-
-        public TagKey<Item> getForge() {
-            return forge;
+            this(TagKey.create(Registries.ITEM, new ResourceLocation("curios:" + forge)),
+                    TagKey.create(Registries.ITEM, new ResourceLocation("trinkets:" + fabric)));
         }
     }
 

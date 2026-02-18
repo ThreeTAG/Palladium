@@ -50,7 +50,7 @@ public class AbilityConfiguration {
     }
 
     public String getId() {
-        return this.reference.getAbilityId();
+        return this.reference.abilityId();
     }
 
     public Ability getAbility() {
@@ -293,7 +293,7 @@ public class AbilityConfiguration {
 
     public enum KeyType {
 
-        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR, SCROLL_UP, SCROLL_DOWN, SCROLL_EITHER;
+        KEY_BIND, LEFT_CLICK, RIGHT_CLICK, SPACE_BAR, SCROLL_UP, SCROLL_DOWN, SCROLL_EITHER
 
     }
 

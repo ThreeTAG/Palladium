@@ -14,7 +14,7 @@ public class AccessoryBuilder extends AddonBuilder<Accessory> {
 
     private final JsonObject json;
     private AccessoryParser.TypeSerializer typeSerializer = null;
-    private List<AccessorySlot> slots = new ArrayList<>();
+    private final List<AccessorySlot> slots = new ArrayList<>();
 
     public AccessoryBuilder(ResourceLocation id, JsonObject json) {
         super(id);

@@ -25,10 +25,10 @@ public class ObjectiveScoreTextureVariable extends AbstractIntegerTextureVariabl
         var level = context.getLevel();
         var entity = context.getEntity();
 
-        if(level != null && entity != null) {
+        if (level != null && entity != null) {
             var objective = level.getScoreboard().getObjective(this.objectiveName);
 
-            if(objective != null) {
+            if (objective != null) {
                 if (level.getScoreboard().hasPlayerScore(entity.getScoreboardName(), objective)) {
                     return level.getScoreboard().getOrCreatePlayerScore(entity.getScoreboardName(), objective).getScore();
                 }

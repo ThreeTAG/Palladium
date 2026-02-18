@@ -9,8 +9,6 @@ import net.threetag.palladium.client.renderer.DynamicColor;
 import net.threetag.palladium.client.renderer.entity.TrailSegmentEntityRenderer;
 import net.threetag.palladium.entity.TrailSegmentEntity;
 
-import java.awt.*;
-
 public abstract class TrailRenderer<T extends TrailRenderer.SegmentCache> {
 
     @Environment(EnvType.CLIENT)

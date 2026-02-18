@@ -15,7 +15,10 @@ import net.threetag.palladium.util.icon.ItemIcon;
 import net.threetag.palladium.util.property.*;
 import net.threetag.palladiumcore.registry.PalladiumRegistry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Ability implements IDefaultDocumentedConfigurable {

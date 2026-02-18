@@ -44,10 +44,10 @@ public class ScoreboardScoreBuyableCondition extends BuyableCondition {
         if (entity instanceof Player player) {
             var objective = player.getScoreboard().getObjective(this.objective);
 
-            if(objective != null) {
+            if (objective != null) {
                 var score = player.getScoreboard().getOrCreatePlayerScore(player.getScoreboardName(), objective);
 
-                if(score.getScore() >= this.amount) {
+                if (score.getScore() >= this.amount) {
                     score.setScore(score.getScore() - this.amount);
                     return true;
                 }

@@ -48,12 +48,12 @@ public class ArmorModelData {
 
     public void buildModels(ModelTypes.Model modelType, EntityModelSet modelSet) {
         this.modelByKey.forEach((key, layer) -> {
-            HumanoidModel<?> normal = (HumanoidModel<?>) modelType.getModel(modelSet.bakeLayer(layer.getNormal()));
+            HumanoidModel<?> normal = (HumanoidModel<?>) modelType.getModel(modelSet.bakeLayer(layer.normal()));
 
-            if (layer.getNormal().equals(layer.getSlim())) {
+            if (layer.normal().equals(layer.slim())) {
                 this.generatedByKey.put(key, new SkinTypedValue<>(normal));
             } else {
-                HumanoidModel<?> slim = (HumanoidModel<?>) modelType.getModel(modelSet.bakeLayer(layer.getSlim()));
+                HumanoidModel<?> slim = (HumanoidModel<?>) modelType.getModel(modelSet.bakeLayer(layer.slim()));
                 this.generatedByKey.put(key, new SkinTypedValue<>(normal, slim));
             }
 

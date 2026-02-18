@@ -22,7 +22,7 @@ public class TailoringResultContainer implements Container, RecipeHolder {
 
     @Override
     public boolean isEmpty() {
-        for(ItemStack itemStack : this.itemStacks) {
+        for (ItemStack itemStack : this.itemStacks) {
             if (!itemStack.isEmpty()) {
                 return false;
             }

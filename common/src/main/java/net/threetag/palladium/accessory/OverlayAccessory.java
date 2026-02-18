@@ -128,7 +128,7 @@ public class OverlayAccessory extends DefaultAccessory {
         @Override
         public DefaultAccessory parse(JsonObject json) {
             SkinTypedValue<TextureReference> texture = SkinTypedValue.fromJSON(json.get("texture"), j -> TextureReference.parse(j.getAsString()));
-            var accessory = new OverlayAccessory(texture.getNormal(), texture.getSlim());
+            var accessory = new OverlayAccessory(texture.normal(), texture.slim());
 
             if (GsonHelper.getAsBoolean(json, "glowing", false)) {
                 accessory.glowing();

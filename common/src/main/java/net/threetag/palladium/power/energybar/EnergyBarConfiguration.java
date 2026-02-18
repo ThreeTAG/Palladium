@@ -10,49 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-public class EnergyBarConfiguration {
-
-    private final String name;
-    private final Color color;
-    @Nullable
-    private final EntityDependentInteger syncedValue;
-    private final EntityDependentInteger maxValue;
-    private final int autoIncrease;
-    private final int autoIncreaseInterval;
-
-    public EnergyBarConfiguration(String name, Color color, @Nullable EntityDependentInteger syncedValue, EntityDependentInteger maxValue, int autoIncrease, int autoIncreaseInterval) {
-        this.name = name;
-        this.color = color;
-        this.syncedValue = syncedValue;
-        this.maxValue = maxValue;
-        this.autoIncrease = autoIncrease;
-        this.autoIncreaseInterval = autoIncreaseInterval;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Color getColor() {
-        return this.color;
-    }
-
-    @Nullable
-    public EntityDependentInteger getSyncedValue() {
-        return this.syncedValue;
-    }
-
-    public EntityDependentInteger getMaxValue() {
-        return this.maxValue;
-    }
-
-    public int getAutoIncrease() {
-        return this.autoIncrease;
-    }
-
-    public int getAutoIncreaseInterval() {
-        return this.autoIncreaseInterval;
-    }
+public record EnergyBarConfiguration(String name, Color color, @Nullable EntityDependentInteger syncedValue,
+                                     EntityDependentInteger maxValue, int autoIncrease, int autoIncreaseInterval) {
 
     public static EnergyBarConfiguration fromJson(String name, JsonObject json) {
         return new EnergyBarConfiguration(

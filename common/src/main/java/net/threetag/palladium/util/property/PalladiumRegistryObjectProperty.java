@@ -27,7 +27,7 @@ public class PalladiumRegistryObjectProperty<T> extends PalladiumProperty<T> {
         if (this.registry.get(id) != null) {
             return this.registry.get(id);
         } else {
-            throw new JsonParseException("Unknown " + this.registry.getRegistryKey().location().toString() + " '" + id + "'");
+            throw new JsonParseException("Unknown " + this.registry.getRegistryKey().location() + " '" + id + "'");
         }
     }
 

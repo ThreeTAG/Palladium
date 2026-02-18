@@ -50,10 +50,10 @@ public class PalladiumConfig {
                 } else if (ResourceLocation.isValidResourceLocation(s)) {
                     var powerId = ResourceLocation.tryParse(s);
 
-                    if (reference.getPowerId() != null && reference.getPowerId().equals(powerId)) {
+                    if (reference.powerId() != null && reference.powerId().equals(powerId)) {
                         return true;
                     }
-                } else if (reference.getPowerId() != null && reference.getPowerId().getNamespace().equals(s)) {
+                } else if (reference.powerId() != null && reference.powerId().getNamespace().equals(s)) {
                     return true;
                 }
             }

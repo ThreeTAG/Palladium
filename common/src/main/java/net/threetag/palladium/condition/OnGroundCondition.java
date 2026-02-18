@@ -2,7 +2,6 @@ package net.threetag.palladium.condition;
 
 import com.google.gson.JsonObject;
 import net.threetag.palladium.util.context.DataContext;
-import net.threetag.palladium.util.context.DataContextType;
 
 public class OnGroundCondition extends Condition {
 

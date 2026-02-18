@@ -19,7 +19,6 @@ import net.threetag.palladium.entity.TrailSegmentEntity;
 import net.threetag.palladium.util.context.DataContext;
 import net.threetag.palladium.util.json.GsonUtil;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Random;
 

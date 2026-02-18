@@ -32,7 +32,7 @@ public class ItemBuyableCondition extends BuyableCondition {
             component.append(stacks[i].getItem().getName(stacks[i]));
 
             if (i < stacks.length - 1) {
-                if(i == stacks.length - 2) {
+                if (i == stacks.length - 2) {
                     component.append(" ").append(Component.translatable("gui.palladium.powers.buy_ability.or")).append(" ");
                 } else {
                     component.append(", ");

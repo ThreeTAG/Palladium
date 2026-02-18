@@ -60,10 +60,10 @@ public record OverlayTextureTransformer(String overlayLocation, boolean ignoreBl
                 t = 1.0F;
             }
 
-            int u = (int)(q * 255.0F);
-            int v = (int)(r * 255.0F);
-            int w = (int)(s * 255.0F);
-            int z = (int)(t * 255.0F);
+            int u = (int) (q * 255.0F);
+            int v = (int) (r * 255.0F);
+            int w = (int) (s * 255.0F);
+            int z = (int) (t * 255.0F);
             texture.setPixelRGBA(x, y, FastColor.ABGR32.color(u, v, w, z));
         }
     }

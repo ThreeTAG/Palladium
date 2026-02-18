@@ -48,7 +48,7 @@ public class PackRenderLayer extends AbstractPackRenderLayer {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public PackRenderLayer(SkinTypedValue<ModelTypes.Model> model, SkinTypedValue<DynamicModelLayerLocation> modelLayerLocation, SkinTypedValue<DynamicTexture> texture, RenderTypeFunction renderType, DynamicColor tint, List<Condition> enchantmentGlint) {
         this.modelLookup = model;
-        this.model = new SkinTypedValue(new ModelCache(modelLayerLocation.getNormal()), new ModelCache(modelLayerLocation.getSlim()));
+        this.model = new SkinTypedValue(new ModelCache(modelLayerLocation.normal()), new ModelCache(modelLayerLocation.slim()));
         this.texture = texture;
         this.renderType = renderType;
         this.tint = tint;

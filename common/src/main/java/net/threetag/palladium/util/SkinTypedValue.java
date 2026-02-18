@@ -9,30 +9,14 @@ import net.minecraft.world.entity.player.Player;
 import java.util.Objects;
 import java.util.function.Function;
 
-public class SkinTypedValue<T> {
-
-    private final T normal;
-    private final T slim;
+public record SkinTypedValue<T>(T normal, T slim) {
 
     public SkinTypedValue(T value) {
-        this.normal = this.slim = value;
-    }
-
-    public SkinTypedValue(T normal, T slim) {
-        this.normal = normal;
-        this.slim = slim;
-    }
-
-    public T getNormal() {
-        return this.normal;
-    }
-
-    public T getSlim() {
-        return this.slim;
+        this(value, value);
     }
 
     public T get(boolean slim) {
-        return slim ? this.getSlim() : this.getNormal();
+        return slim ? this.slim() : this.normal();
     }
 
     public T get(Entity entity) {
@@ -44,11 +28,6 @@ public class SkinTypedValue<T> {
         if (this == o) return true;
         if (!(o instanceof SkinTypedValue<?> that)) return false;
         return Objects.equals(normal, that.normal) && Objects.equals(slim, that.slim);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(normal, slim);
     }
 
     @Override
