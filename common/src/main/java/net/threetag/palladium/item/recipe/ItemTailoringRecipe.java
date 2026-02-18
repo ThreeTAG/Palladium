@@ -72,6 +72,10 @@ public class ItemTailoringRecipe extends TailoringRecipe {
                 throw new JsonParseException("Valid tool ingredient required");
             }
 
+            if (!serializedRecipe.has("title")) {
+                throw new JsonParseException("Missing 'title'");
+            }
+
             var title = Component.Serializer.fromJson(serializedRecipe.get("title"));
 
             return new ItemTailoringRecipe(

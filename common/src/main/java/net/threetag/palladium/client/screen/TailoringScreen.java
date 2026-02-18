@@ -18,6 +18,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.entity.SuitStand;
 import net.threetag.palladium.item.recipe.SizedIngredient;
 import net.threetag.palladium.item.recipe.TailoringRecipe;
@@ -320,21 +321,27 @@ public class TailoringScreen extends AbstractContainerScreen<TailoringMenu> {
     public static void setAvailableRecipes(List<TailoringRecipe> recipes) {
         AVAILABLE_RECIPES = recipes.stream()
                 .sorted((o1, o2) -> {
-                    var category1 = TailoringRecipe.getCategoryTitle(o1.getCategoryId());
-                    var category2 = TailoringRecipe.getCategoryTitle(o2.getCategoryId());
+                    try {
+                        var category1 = TailoringRecipe.getCategoryTitle(o1.getCategoryId());
+                        var category2 = TailoringRecipe.getCategoryTitle(o2.getCategoryId());
 
-                    if (category1 != null && category2 == null) {
-                        return -1;
-                    } else if (category1 == null && category2 != null) {
-                        return 1;
-                    } else if (category1 != null) {
-                        if (category1.getString().equals(category2.getString())) {
-                            return o1.getTitle().getString().compareToIgnoreCase(o2.getTitle().getString());
+                        if (category1 != null && category2 == null) {
+                            return -1;
+                        } else if (category1 == null && category2 != null) {
+                            return 1;
+                        } else if (category1 != null) {
+                            if (category1.getString().equals(category2.getString())) {
+                                return o1.getTitle().getString().compareToIgnoreCase(o2.getTitle().getString());
+                            } else {
+                                return category1.getString().compareToIgnoreCase(category2.getString());
+                            }
                         } else {
-                            return category1.getString().compareToIgnoreCase(category2.getString());
+                            return o1.getTitle().getString().compareToIgnoreCase(o2.getTitle().getString());
                         }
-                    } else {
-                        return o1.getTitle().getString().compareToIgnoreCase(o2.getTitle().getString());
+                    } catch (Exception e) {
+                        AddonPackLog.error("Error while sorting tailoring recipes: " + e.getMessage());
+                        e.printStackTrace();
+                        return 0;
                     }
                 }).toList();
 
