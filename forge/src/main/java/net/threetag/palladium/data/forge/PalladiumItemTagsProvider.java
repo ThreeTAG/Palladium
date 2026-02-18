@@ -63,7 +63,7 @@ public class PalladiumItemTagsProvider extends IntrinsicHolderTagsProvider<Item>
         this.multiLoaderTagMetalItems(PalladiumItemTags.Forge.STORAGE_BLOCKS_LEAD, PalladiumItemTags.Fabric.STORAGE_BLOCKS_LEAD, PalladiumItems.LEAD_BLOCK.get());
         this.multiLoaderTagMetalItems(PalladiumItemTags.Forge.STORAGE_BLOCKS_TITANIUM, PalladiumItemTags.Fabric.STORAGE_BLOCKS_TITANIUM, PalladiumItems.TITANIUM_BLOCK.get());
         this.multiLoaderTagMetalItems(PalladiumItemTags.Forge.STORAGE_BLOCKS_VIBRANIUM, PalladiumItemTags.Fabric.STORAGE_BLOCKS_VIBRANIUM, PalladiumItems.VIBRANIUM_BLOCK.get());
-        this.tag(Tags.Items.STORAGE_BLOCKS).addTags(PalladiumItemTags.Forge.STORAGE_BLOCKS_LEAD,PalladiumItemTags.Forge.STORAGE_BLOCKS_TITANIUM, PalladiumItemTags.Forge.STORAGE_BLOCKS_VIBRANIUM);
+        this.tag(Tags.Items.STORAGE_BLOCKS).addTags(PalladiumItemTags.Forge.STORAGE_BLOCKS_LEAD, PalladiumItemTags.Forge.STORAGE_BLOCKS_TITANIUM, PalladiumItemTags.Forge.STORAGE_BLOCKS_VIBRANIUM);
 
         // Ingots
         this.multiLoaderTagMetalItems(PalladiumItemTags.Forge.INGOTS_LEAD, PalladiumItemTags.Fabric.INGOTS_LEAD, PalladiumItems.LEAD_INGOT.get());

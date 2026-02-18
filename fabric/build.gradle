@@ -75,7 +75,7 @@ dependencies {
 //    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
 
     // Trinkets
-    modImplementation ("dev.emi:trinkets:${rootProject.trinkets_version}")
+    modImplementation("dev.emi:trinkets:${rootProject.trinkets_version}")
 
     // Energy & TechReborn
     include modApi("teamreborn:energy:${rootProject.energy_version}") {

@@ -19,7 +19,7 @@ public class PlayerMixin {
     private void getDestroySpeed(BlockState state, CallbackInfoReturnable<Float> cir) {
         var player = (Player) (Object) this;
 
-        if(player.getAttributes().hasAttribute(PalladiumAttributes.DESTROY_SPEED.get())) {
+        if (player.getAttributes().hasAttribute(PalladiumAttributes.DESTROY_SPEED.get())) {
             cir.setReturnValue((float) (cir.getReturnValue() * player.getAttributeValue(PalladiumAttributes.DESTROY_SPEED.get())));
         }
     }

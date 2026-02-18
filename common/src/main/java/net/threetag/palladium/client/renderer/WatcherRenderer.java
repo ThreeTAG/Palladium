@@ -82,7 +82,10 @@ public class WatcherRenderer implements ClientTickEvents.ClientLevelTick {
             if (this.ticksTilOccurrence <= 0) {
                 if (Math.random() < getWatcherChance()) {
                     this.visibleTicks = OCCURRENCE_DURATION;
-                    sendMessage();
+
+                    if (isAprilFools()) {
+                        sendMessage();
+                    }
                 }
 
                 this.ticksTilOccurrence = (int) (OCCURRENCE_INTERVAL * (1 + Math.random()));
@@ -100,10 +103,13 @@ public class WatcherRenderer implements ClientTickEvents.ClientLevelTick {
         }
     }
 
-    public static float getWatcherChance() {
+    public static boolean isAprilFools() {
         Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1;
+    }
 
-        if (calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1) {
+    public static float getWatcherChance() {
+        if (isAprilFools()) {
             return 0.5F;
         }
 

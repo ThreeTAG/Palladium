@@ -52,7 +52,7 @@ public class CuriosCompat {
     @OnlyIn(Dist.CLIENT)
     public static void initClient() {
         PackRenderLayerManager.registerProvider((entity, layers) -> {
-            if(entity instanceof LivingEntity livingEntity) {
+            if (entity instanceof LivingEntity livingEntity) {
                 CuriosApi.getCuriosHelper().getCuriosHandler(livingEntity)
                         .ifPresent(handler -> handler.getCurios().forEach((id, stacksHandler) -> {
                             IDynamicStackHandler stackHandler = stacksHandler.getStacks();
