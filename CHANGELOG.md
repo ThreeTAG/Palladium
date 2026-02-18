@@ -1,1 +1,2 @@
-- Fixed server crash
+- Revert animation spinning fix, add setX/Y/ZShortest methods
+- Added safe checks so one can break the tailoring recipe list 👀
