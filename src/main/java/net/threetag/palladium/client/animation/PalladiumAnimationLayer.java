@@ -5,6 +5,7 @@ import net.minecraft.util.StringRepresentable;
 
 public enum PalladiumAnimationLayer implements StringRepresentable {
 
+    IDLE("idle"),
     MOVEMENT("movement"),
     FLIGHT("flight"),
     SPECIAL("special");
