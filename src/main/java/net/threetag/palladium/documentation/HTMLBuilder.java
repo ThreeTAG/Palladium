@@ -260,11 +260,11 @@ public class HTMLBuilder {
         Path folder = FMLPaths.GAMEDIR.get().resolve(CodecDocumentationBuilder.DOCUMENTATION_FOLDER)
                 .resolve(this.id.getNamespace());
 
-        var file = folder.toFile();
-        if (!file.exists() && !file.mkdirs())
+        var file = folder.resolve(this.id.getPath() + ".html").toFile();
+
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
             throw new RuntimeException("Could not create palladium documentation directory! Please create the directory yourself, or make sure the name is not taken by a file and you have permission to create directories.");
 
-        file = folder.resolve(this.id.getPath() + ".html").toFile();
         return file;
     }
 

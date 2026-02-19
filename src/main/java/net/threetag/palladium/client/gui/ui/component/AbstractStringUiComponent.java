@@ -2,6 +2,7 @@ package net.threetag.palladium.client.gui.ui.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.client.gui.TextAlignment;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
@@ -11,6 +12,7 @@ import net.threetag.palladium.client.gui.ui.screen.UiScreen;
 import net.threetag.palladium.client.gui.widget.StringWidget;
 import net.threetag.palladium.client.util.RenderUtil;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
+import net.threetag.palladium.util.PalladiumCodecs;
 
 public abstract class AbstractStringUiComponent extends UiComponent {
 
@@ -79,7 +81,7 @@ public abstract class AbstractStringUiComponent extends UiComponent {
         @Override
         public CodecDocumentationBuilder<UiComponent, T> getDocumentation(HolderLookup.Provider provider) {
             return super.getDocumentation(provider)
-                    .addOptional("color", TYPE_COLOR, "Color of this text", RenderUtil.DEFAULT_GRAY_COLOR)
+                    .addOptional("color", TYPE_COLOR, "Color of this text", PalladiumCodecs.COLOR_CODEC.encodeStart(JsonOps.INSTANCE, RenderUtil.DEFAULT_GRAY_COLOR).getOrThrow().toString())
                     .addOptional("shadow", TYPE_BOOLEAN, "Whether or not this text has a shadow", false)
                     .addOptional("alignment", TYPE_TEXT_ALIGNMENT, "Alignment of this text", "left")
                     .addOptional("overflow", TYPE_TEXT_OVERFLOW, "How to behave if the text is longer than the component width", "clamped");

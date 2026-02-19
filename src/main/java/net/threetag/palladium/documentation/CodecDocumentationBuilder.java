@@ -226,11 +226,11 @@ public class CodecDocumentationBuilder<T, R extends T> {
 
     private static @NotNull BufferedWriter getBufferedWriter(String path, String filename) throws IOException {
         Path folder = FMLPaths.GAMEDIR.get().resolve(FOLDER).resolve(path);
-        var file = folder.toFile();
-        if (!file.exists() && !file.mkdirs())
+        var file = folder.resolve(filename + ".paldoc").toFile();
+
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
             throw new RuntimeException("Could not create palladium export directory! Please create the directory yourself, or make sure the name is not taken by a file and you have permission to create directories.");
 
-        file = folder.resolve(filename + ".paldoc").toFile();
         return new BufferedWriter(new FileWriter(file));
     }
 
