@@ -11,8 +11,6 @@ import com.zigythebird.playeranimcore.easing.EasingType;
 import com.zigythebird.playeranimcore.enums.PlayState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Avatar;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +35,11 @@ public abstract class AnimationContainer implements AnimationController.Animatio
         }
 
         if (!Objects.equals(animationId, this.currentAnimation)) {
-            if(!Objects.equals(PalladiumAnimationManager.EMPTY_ANIMATION, this.currentAnimation) && animationController instanceof RenderLayerAwareAnimationController controller){
+            if (animationController instanceof RenderLayerAwareAnimationController controller) {
                 AbstractFadeModifier fadeModifier = AbstractFadeModifier.standardFadeIn(blendTransition, EasingType.EASE_IN_OUT_SINE);
                 Map<String, AdvancedBoneSnapshot> snapshots = new HashMap<>();
 
-                for(PlayerAnimBone bone : controller.getActiveBones().values()) {
+                for (PlayerAnimBone bone : controller.getActiveBones().values()) {
                     snapshots.put(bone.getName(), new AdvancedBoneSnapshot(bone));
                 }
 
