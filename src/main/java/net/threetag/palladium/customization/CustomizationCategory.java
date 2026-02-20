@@ -1,6 +1,7 @@
 package net.threetag.palladium.customization;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -22,15 +23,22 @@ public record CustomizationCategory(int sortIndex, CustomizationPreview preview,
 
     public static final CustomizationPreview DEFAULT_PREVIEW = new CustomizationPreview(1, Vec3.ZERO, new Vec3(15, 40, 0));
 
-    public static final Codec<CustomizationCategory> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    private static final Codec<CustomizationCategory> UNVALIDATED_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("sort_index", 100).forGetter(CustomizationCategory::sortIndex),
             CustomizationPreview.CODEC.optionalFieldOf("preview", DEFAULT_PREVIEW).forGetter(CustomizationCategory::preview),
             Codec.BOOL.optionalFieldOf("requires_selection", false).forGetter(CustomizationCategory::requiresSelection),
             ResourceKey.codec(PalladiumRegistryKeys.CUSTOMIZATION).optionalFieldOf("default").forGetter(CustomizationCategory::defaultValue),
-            EquipmentSlot.CODEC.optionalFieldOf("hidden_by_equipment").forGetter(s -> Optional.ofNullable(s.hiddenByEquipment)),
+            EquipmentSlot.CODEC.optionalFieldOf("hidden_by_equipment").forGetter(c -> Optional.ofNullable(c.hiddenByEquipment)),
             Condition.CODEC.optionalFieldOf("visibility").forGetter(c -> Optional.ofNullable(c.visibility))
     ).apply(instance, (s, p, rs, dv, h, v)
             -> new CustomizationCategory(s, p, rs, dv, h.orElse(null), v.orElse(null))));
+    public static final Codec<CustomizationCategory> CODEC = UNVALIDATED_CODEC.validate(category -> {
+        if (category.requiresSelection() && category.defaultValue().isEmpty()) {
+            return DataResult.error(() -> "Category needs a default if requires_selection is set to true!");
+        } else {
+            return DataResult.success(category);
+        }
+    });
 
     public static final Codec<Holder<CustomizationCategory>> HOLDER_CODEC = RegistryFixedCodec.create(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY);
 

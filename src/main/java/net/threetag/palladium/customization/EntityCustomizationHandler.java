@@ -68,7 +68,13 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
 
             if (this.isSelected(customizationHolder)) {
                 this.getEntity().registryAccess().lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION_CATEGORY)
-                        .get(customizationHolder.value().getCategoryKey()).ifPresent(this::unselect);
+                        .get(customizationHolder.value().getCategoryKey()).ifPresent(holder -> {
+                            if (holder.value().requiresSelection()) {
+                                this.select(holder.value().getDefaultValue(this.registryAccess()));
+                            } else {
+                                this.unselect(holder);
+                            }
+                        });
             }
 
             return true;
