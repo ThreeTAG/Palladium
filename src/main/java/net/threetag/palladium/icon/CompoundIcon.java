@@ -2,10 +2,15 @@ package net.threetag.palladium.icon;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Items;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
+import java.util.Arrays;
 import java.util.List;
 
 public record CompoundIcon(List<Icon> icons) implements Icon {
@@ -34,5 +39,11 @@ public record CompoundIcon(List<Icon> icons) implements Icon {
             return STREAM_CODEC;
         }
 
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<Icon, CompoundIcon> builder, HolderLookup.Provider provider) {
+            builder.setName("Compound").setDescription("Fits multiple icons into one")
+                    .add("icons", TYPE_ICON_LIST, "Array of icons that will be displayed")
+                    .addExampleObject(new CompoundIcon(Arrays.asList(new ItemIcon(Items.APPLE), new SpriteIcon(Identifier.fromNamespaceAndPath("example", "sprite")))));
+        }
     }
 }

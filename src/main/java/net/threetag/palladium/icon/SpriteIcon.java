@@ -2,9 +2,11 @@ package net.threetag.palladium.icon;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import org.jspecify.annotations.NonNull;
 
 public record SpriteIcon(Identifier sprite) implements Icon {
@@ -40,6 +42,13 @@ public record SpriteIcon(Identifier sprite) implements Icon {
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, SpriteIcon> streamCodec() {
             return STREAM_CODEC;
+        }
+
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<Icon, SpriteIcon> builder, HolderLookup.Provider provider) {
+            builder.setName("Sprite").setDescription("Renders a sprite as an icon (sprites are located under 'textures/gui/sprites/)")
+                    .add("sprite", TYPE_IDENTIFIER, "The ID of the sprite that will be rendered")
+                    .addExampleObject(new SpriteIcon(Identifier.fromNamespaceAndPath("example", "my_cool_icon")));
         }
     }
 }

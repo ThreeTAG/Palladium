@@ -60,7 +60,10 @@ public class PalladiumCodecs {
             Ingredient.CODEC,
             Item.CODEC.xmap(itemHolder -> Ingredient.of(itemHolder.value()), ingredient -> ingredient.items().toList().getFirst())
     );
-    public static final Codec<ItemStack> SIMPLE_ITEM_STACK = Codec.withAlternative(ItemStack.CODEC, ItemStack.SIMPLE_ITEM_CODEC);
+    public static final Codec<ItemStack> SIMPLE_ITEM_STACK = Codec.either(ItemStack.CODEC, ItemStack.SIMPLE_ITEM_CODEC).xmap(
+            either -> either.map(Function.identity(), Function.identity()),
+            stack -> stack.getCount() == 1 && stack.getComponents().isEmpty() ? Either.right(stack) : Either.left(stack)
+    );
 
     public static final Codec<Vec2> VEC2_CODEC = Codec.FLOAT.listOf().comapFlatMap((list) -> Util.fixedSize(list, 2).map((floats) -> new Vec2(floats.getFirst(), floats.get(1))), (vec2) -> List.of(vec2.x, vec2.y));
     public static final StreamCodec<ByteBuf, Vec2> VEC2_STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.FLOAT, v -> v.x, ByteBufCodecs.FLOAT, v -> v.y, Vec2::new);

@@ -52,6 +52,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_NUMBER_COMPARATOR = SettingType.enumList(NumberComparator.values());
     SettingType TYPE_INGREDIENT = SettingType.simple("Ingredient / Item");
     SettingType TYPE_ICON = SettingType.simple("Icon definition");
+    SettingType TYPE_ICON_LIST = SettingType.simple("Icon definition array");
     SettingType TYPE_UI_LAYOUTS = SettingType.simple("UI Layouts");
     SettingType TYPE_UI_PROPERTIES = SettingType.simple("UI Properties");
     SettingType TYPE_UI_BACKGROUND = SettingType.simple("UI Background");

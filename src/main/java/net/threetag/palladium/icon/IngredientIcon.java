@@ -3,9 +3,15 @@ package net.threetag.palladium.icon;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 
 public record IngredientIcon(Ingredient ingredient) implements Icon {
 
@@ -40,6 +46,13 @@ public record IngredientIcon(Ingredient ingredient) implements Icon {
             return STREAM_CODEC;
         }
 
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<Icon, IngredientIcon> builder, HolderLookup.Provider provider) {
+            builder.setName("Ingredient").setDescription("An icon that will display all items of an ingredient by cycling through them")
+                    .add("ingredient", TYPE_INGREDIENT, "The ingredient (check vanilla recipes for how to define ingredients)")
+                    .addExampleObject(new IngredientIcon(Ingredient.of(Items.APPLE, Items.BREAD)))
+                    .addExampleObject(new IngredientIcon(Ingredient.of(provider.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.PLANKS))));
+        }
     }
 
 }

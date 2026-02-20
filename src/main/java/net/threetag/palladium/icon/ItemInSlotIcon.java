@@ -2,8 +2,11 @@ package net.threetag.palladium.icon;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.entity.PlayerSlot;
 
 public record ItemInSlotIcon(PlayerSlot slot) implements Icon {
@@ -37,6 +40,12 @@ public record ItemInSlotIcon(PlayerSlot slot) implements Icon {
             return STREAM_CODEC;
         }
 
+        @Override
+        public void addDocumentation(CodecDocumentationBuilder<Icon, ItemInSlotIcon> builder, HolderLookup.Provider provider) {
+            builder.setName("Item in Slot").setDescription("Renders an item that's currently in the slot of the player")
+                    .add("slot", TYPE_PLAYER_SLOT, "The slot that will be have its item displayed")
+                    .addExampleObject(new ItemInSlotIcon(PlayerSlot.get(EquipmentSlot.CHEST)));
+        }
     }
 
 }

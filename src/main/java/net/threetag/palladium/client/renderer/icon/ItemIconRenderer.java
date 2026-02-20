@@ -19,7 +19,7 @@ public class ItemIconRenderer implements IconRenderer<ItemIcon> {
             guiGraphics.pose().scale(s / 16F, s / 16F);
         }
 
-        var item = icon.stack;
+        var item = icon.stack();
 
         if (item.isEmpty()) {
             var contextItem = context.getItem();

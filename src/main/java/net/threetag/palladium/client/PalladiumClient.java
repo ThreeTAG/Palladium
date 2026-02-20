@@ -197,6 +197,7 @@ public class PalladiumClient {
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.ABILITY_SERIALIZER, PalladiumRegistries.ABILITY_SERIALIZER, "Abilities", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.CONDITION_SERIALIZER, PalladiumRegistries.CONDITION_SERIALIZER, "Conditions", clientLevel.registryAccess()).save();
         HTMLBuilder.documentedPage(PalladiumRegistryKeys.FLIGHT_TYPE_SERIALIZERS, PalladiumRegistries.FLIGHT_TYPE_SERIALIZERS, "Flight Types", clientLevel.registryAccess()).save();
+        HTMLBuilder.documentedPage(PalladiumRegistryKeys.ICON_SERIALIZER, PalladiumRegistries.ICON_SERIALIZER, "Icons", clientLevel.registryAccess()).save();
         CodecDocumentationBuilder.createDocFiles();
     }
 

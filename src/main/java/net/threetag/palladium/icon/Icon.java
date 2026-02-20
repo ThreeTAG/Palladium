@@ -48,13 +48,12 @@ public interface Icon {
     }
 
     static String toSimpleString(Icon icon) {
-        if (icon instanceof ItemIcon itemIcon) {
-            return BuiltInRegistries.ITEM.getKey(itemIcon.stack.getItem()).toString();
-        } else if (icon instanceof TexturedIcon texturedIcon && texturedIcon.tint() == null) {
-            return texturedIcon.texture().toString();
-        } else {
-            return "invalid";
-        }
+        return switch (icon) {
+            case ItemIcon itemIcon -> BuiltInRegistries.ITEM.getKey(itemIcon.stack().getItem()).toString();
+            case TexturedIcon(TextureReference texture, java.awt.Color tint) when tint == null -> texture.toString();
+            case SpriteIcon(Identifier sprite) -> sprite.toString();
+            case null, default -> "invalid";
+        };
     }
 
     IconSerializer<?> getSerializer();
