@@ -104,7 +104,7 @@ public class CustomizationPreviewComponent extends AbstractWidget {
         this.renderBackground(guiGraphics);
         this.renderedTransform = CustomizationPreview.lerp(Easing.INOUTSINE.apply(1F - (Mth.lerp(partialTick, this.prevTransitionTicks, this.transitionTicks) / TRANSITION_TIME)),
                 this.prevTransform, this.targetTransform);
-        PlayerCustomizationScreen.renderEntity(guiGraphics, this.getX(), this.getY(), this.getRight(), this.getBottom(), 70, this.renderedTransform, this.playerPreviewState, null);
+        PlayerCustomizationScreen.renderEntity(guiGraphics, this.getX(), this.getY(), this.getRight(), this.getBottom(), 70, this.renderedTransform, this.playerPreviewState);
         this.renderSeparators(guiGraphics);
     }
 

@@ -6,6 +6,7 @@ import net.minecraft.client.entity.ClientAvatarEntity;
 import net.minecraft.client.entity.ClientMannequin;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.particles.ParticleOptions;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Input;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -27,6 +29,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.threetag.palladium.client.beam.BeamManager;
 import net.threetag.palladium.client.gui.screen.abilitybar.AbilityBar;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.client.gui.toast.CustomizationToast;
 import net.threetag.palladium.client.gui.ui.layout.UiLayoutManager;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.client.particleemitter.ParticleEmitterManager;
@@ -82,6 +85,13 @@ public class PalladiumClientProxy extends PalladiumProxy {
     @Override
     public void sendPacketToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
         ClientPacketDistributor.sendToServer(payload, payloads);
+    }
+
+    @Override
+    public void showCustomizationToast(Player player, Customization customization) {
+        if (player instanceof LocalPlayer) {
+            Minecraft.getInstance().getToastManager().addToast(new CustomizationToast(customization));
+        }
     }
 
     @Override

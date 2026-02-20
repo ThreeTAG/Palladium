@@ -13,6 +13,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
+import net.threetag.palladium.client.gui.toast.CustomizationToast;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
 import net.threetag.palladium.command.CustomizationCommand;
 import net.threetag.palladium.command.DataAttachmentCommand;
@@ -189,6 +190,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.UNLOCK_SUCCESS, "Successfully unlocked %s for %s");
             this.add(CustomizationCommand.LOCK_SUCCESS, "Successfully locked %s for %s");
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s can not be unlocked by commands");
+            this.add(CustomizationCommand.ERROR_ALREADY_UNLOCKED, "%s is already unlocked");
+            this.add(CustomizationCommand.ERROR_ALREADY_LOCKED, "%s is already locked");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "The given entity can not have customizations");
 
             this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Opened screen %s for %s");
@@ -209,6 +212,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
             this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "There doesn't seem to be anything here...");
             this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
+
+            // Toasts
+            this.add(CustomizationToast.TITLE_TEXT, "New Customization Unlocked!");
 
             // Customizations
             this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reactor");
@@ -325,6 +331,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.UNLOCK_SUCCESS, "%s wurde erfolgreich für %s freigeschaltet");
             this.add(CustomizationCommand.LOCK_SUCCESS, "%s wurde erfolgreich für %s gesperrt");
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kann nicht per Befehl freigeschaltet werden");
+            this.add(CustomizationCommand.ERROR_ALREADY_UNLOCKED, "%s ist bereits freigeschaltet");
+            this.add(CustomizationCommand.ERROR_ALREADY_LOCKED, "%s ist bereits gesperrt");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die angegebene Entität kann keine Anpassungen besitzen");
 
             this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Fenster %s für %s geöffnet");
@@ -345,6 +353,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
             this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "Hier scheint es nichts zu geben...");
             this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
+
+            // Toasts
+            this.add(CustomizationToast.TITLE_TEXT, "Neue Anpassung freigeschaltet!");
 
             // Customizations
             this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reaktor");
@@ -463,6 +474,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(CustomizationCommand.UNLOCK_SUCCESS, "%s is nu ordentlich für %s freigeschaltn");
             this.add(CustomizationCommand.LOCK_SUCCESS, "%s is nu ordentlich für %s gesperrt");
             this.add(CustomizationCommand.ERROR_NOT_UNLOCKABLE, "%s kannsch du mit Befehln nich freischaltn");
+            this.add(CustomizationCommand.ERROR_ALREADY_UNLOCKED, "%s is scho freigeschaldet");
+            this.add(CustomizationCommand.ERROR_ALREADY_LOCKED, "%s is scho gesperrt");
             this.add(CustomizationCommand.ERROR_CANT_HAVE_CUSTOMIZATIONS, "Die Geeschd kann kee Anpassungen habn");
 
             this.add(ScreenCommand.TRANS_SHOWED_SCREEN_SINGLE, "Fenster %s für %s uffgemacht");
@@ -483,6 +496,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
             this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "Hier scheind es nüschd zu gähm...");
             this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
+
+            // Toasts
+            this.add(CustomizationToast.TITLE_TEXT, "Neue Anpassung freigeschaldet!");
 
             // Customizations
             this.addCustomization(BuiltinCustomization.Type.LUCRAFT_ARC_REACTOR.getResourceKey(), "Lucraft Arc Reaktor");

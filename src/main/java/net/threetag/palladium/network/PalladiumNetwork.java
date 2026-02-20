@@ -38,6 +38,7 @@ public class PalladiumNetwork {
         registrar.playToClient(SyncEntityCustomizationPacket.TYPE, SyncEntityCustomizationPacket.STREAM_CODEC, SyncEntityCustomizationPacket::handle);
         registrar.playToClient(SyncEntityUnselectCustomizationPacket.TYPE, SyncEntityUnselectCustomizationPacket.STREAM_CODEC, SyncEntityUnselectCustomizationPacket::handle);
         registrar.playToClient(SyncUnlockedCustomizationsPacket.TYPE, SyncUnlockedCustomizationsPacket.STREAM_CODEC, SyncUnlockedCustomizationsPacket::handle);
+        registrar.playToClient(SyncUnlockedCustomizationPacket.TYPE, SyncUnlockedCustomizationPacket.STREAM_CODEC, SyncUnlockedCustomizationPacket::handle);
         registrar.playToClient(SyncSwingAnchorPacket.TYPE, SyncSwingAnchorPacket.STREAM_CODEC, SyncSwingAnchorPacket::handle);
         registrar.playToClient(SyncAvailableTailoringRecipesPacket.TYPE, SyncAvailableTailoringRecipesPacket.STREAM_CODEC, SyncAvailableTailoringRecipesPacket::handle);
         registrar.playToClient(OpenScreenPacket.TYPE, OpenScreenPacket.STREAM_CODEC, OpenScreenPacket::handle);

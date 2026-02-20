@@ -5,7 +5,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.gui.render.state.pip.GuiEntityRenderState;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.CommonComponents;
@@ -22,7 +21,6 @@ import org.joml.Vector3f;
 
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class PlayerCustomizationScreen extends Screen {
 
@@ -123,7 +121,7 @@ public class PlayerCustomizationScreen extends Screen {
 
     public static void renderEntity(
             GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, float baseScale,
-            CustomizationPreview transformation, LivingEntityRenderState entityRenderState, @Nullable Consumer<GuiEntityRenderState> stateConsumer
+            CustomizationPreview transformation, LivingEntityRenderState entityRenderState
     ) {
         var rotation = transformation.rotation();
         Quaternionf quaternionf = new Quaternionf().rotateZ((float) Math.PI).rotateY((float) Math.toRadians(180F));

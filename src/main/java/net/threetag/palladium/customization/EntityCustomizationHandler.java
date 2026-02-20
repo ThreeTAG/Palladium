@@ -9,11 +9,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.network.SyncEntityCustomizationPacket;
 import net.threetag.palladium.network.SyncEntityUnselectCustomizationPacket;
+import net.threetag.palladium.network.SyncUnlockedCustomizationPacket;
 import net.threetag.palladium.network.SyncUnlockedCustomizationsPacket;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
@@ -42,9 +44,17 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     }
 
     public boolean unlock(Holder<Customization> customizationHolder) {
-        if (this.getEntity() instanceof ServerPlayer serverPlayer && customizationHolder.value().unlockedBy() == Customization.UnlockedBy.COMMAND) {
+        if (this.isUnlocked(customizationHolder)) {
+            return false;
+        } else if (this.getEntity().level().isClientSide()) {
             this.unlocked.add(customizationHolder);
-            PacketDistributor.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationsPacket(this.unlocked));
+            if (this.getEntity() instanceof Player player) {
+                Palladium.PROXY.showCustomizationToast(player, customizationHolder.value());
+            }
+            return true;
+        } else if (this.getEntity() instanceof ServerPlayer serverPlayer && customizationHolder.value().unlockedBy() == Customization.UnlockedBy.COMMAND) {
+            this.unlocked.add(customizationHolder);
+            PacketDistributor.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationPacket(customizationHolder));
             return true;
         } else {
             return false;
@@ -53,7 +63,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
 
     public boolean lock(Holder<Customization> customizationHolder) {
         if (this.getEntity() instanceof ServerPlayer serverPlayer && customizationHolder.value().unlockedBy() == Customization.UnlockedBy.COMMAND) {
-            this.unlocked.remove(customizationHolder);
+            this.unlocked.remove(this.unlocked.stream().filter(holder -> holder.value() == customizationHolder.value()).findFirst().orElse(null));
             PacketDistributor.sendToPlayer(serverPlayer, new SyncUnlockedCustomizationsPacket(this.unlocked));
 
             if (this.isSelected(customizationHolder)) {
@@ -93,16 +103,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
     }
 
     public boolean isUnlocked(Holder<Customization> customizationHolder) {
-        if (!(this.getEntity() instanceof Player)) {
-            return true;
-        }
-
-        var type = customizationHolder.value().unlockedBy();
-        if (type == Customization.UnlockedBy.COMMAND || type == Customization.UnlockedBy.REWARD) {
-            return this.unlocked.contains(customizationHolder);
-        } else {
-            return true;
-        }
+        return this.isUnlocked(customizationHolder.value());
     }
 
     public boolean select(Holder<Customization> accessory) {
@@ -127,7 +128,7 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
             return;
         }
 
-        this.selected.remove(categoryHolder);
+        this.selected.remove(this.selected.keySet().stream().filter(holder -> holder.value() == categoryHolder.value()).findFirst().orElse(null));
 
         if (!this.getEntity().level().isClientSide()) {
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.getEntity(),

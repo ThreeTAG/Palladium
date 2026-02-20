@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.gui.render.state.pip.GuiEntityRenderState;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -18,7 +17,6 @@ import net.minecraft.util.ARGB;
 import net.minecraft.world.item.DyeColor;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.threetag.palladium.Palladium;
-import net.threetag.palladium.client.gui.pip.GuiMultiEntityRenderState;
 import net.threetag.palladium.client.gui.widget.FlatButton;
 import net.threetag.palladium.client.gui.widget.grid.AbstractSelectionGrid;
 import net.threetag.palladium.client.renderer.entity.state.SuitStandRenderState;
@@ -33,16 +31,12 @@ import net.threetag.palladium.network.SelectCustomizationPacket;
 import net.threetag.palladium.network.UnselectCustomizationPacket;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid.Entry> {
 
     public static final String NO_CUSTOMIZATIONS_LABEL = "gui.palladium.player_customizations.empty";
     public static final String VERY_SAD_LABEL = "gui.palladium.player_customizations.sad_label";
     private final Holder<CustomizationCategory> category;
     private final CustomizationPreview preview;
-    private final List<GuiEntityRenderState> drawnEntities = new ArrayList<>();
 
     public CustomizationsGrid(ScreenRectangle rectangle, Holder<CustomizationCategory> category, Minecraft minecraft) {
         super(minecraft, rectangle.left(), rectangle.top(), rectangle.width(), rectangle.height(), 50, 50, 4);
@@ -87,9 +81,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
 
     @Override
     protected void renderGridItems(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.drawnEntities.clear();
         super.renderGridItems(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiMultiEntityRenderState(this.drawnEntities));
 
         if (this.children().isEmpty()) {
             guiGraphics.drawCenteredString(this.minecraft.font, Component.translatable(NO_CUSTOMIZATIONS_LABEL), this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2) - 10, RenderUtil.FULL_WHITE);
@@ -196,11 +188,7 @@ public class CustomizationsGrid extends AbstractSelectionGrid<CustomizationsGrid
         @Override
         public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick) {
             super.render(guiGraphics, index, top, left, width, height, mouseX, mouseY, hovering, partialTick);
-            PlayerCustomizationScreen.renderEntity(guiGraphics, left, top, left + width, top + height, 20, CustomizationsGrid.this.preview, this.suitStandPreview, CustomizationsGrid.this.drawnEntities::add);
-
-//            if (!this.unlocked) {
-//                guiGraphics.blit(RenderPipelines.GUI_TEXTURED, LOCK_TEXTURE, left + width - 18, top + height - 18, 0, 0, 16, 16, 16, 16);
-//            }
+            PlayerCustomizationScreen.renderEntity(guiGraphics, left, top, left + width, top + height, 20, CustomizationsGrid.this.preview, this.suitStandPreview);
 
             if (hovering) {
                 guiGraphics.setTooltipForNextFrame(

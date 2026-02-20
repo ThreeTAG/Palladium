@@ -26,48 +26,50 @@ public class CustomizationCommand {
     public static final String LOCK_SUCCESS = "commands.palladium.customization.lock.success";
 
     public static final String ERROR_NOT_UNLOCKABLE = "commands.palladium.customization.error.not_unlockable";
+    public static final String ERROR_ALREADY_UNLOCKED = "commands.palladium.customization.error.already_unlocked";
+    public static final String ERROR_ALREADY_LOCKED = "commands.palladium.customization.error.already_locked";
     public static final String ERROR_CANT_HAVE_CUSTOMIZATIONS = "commands.palladium.customization.error.cant_have_customizations";
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> builder, CommandBuildContext context) {
         builder.then(Commands.literal("customization").requires(Commands.hasPermission(PERMISSION_CHECK))
-                        .then(Commands.literal("unlock")
-                                .then(Commands.argument("customization", ResourceArgument.resource(context, PalladiumRegistryKeys.CUSTOMIZATION))
+                .then(Commands.literal("unlock")
+                        .then(Commands.argument("customization", ResourceArgument.resource(context, PalladiumRegistryKeys.CUSTOMIZATION))
+                                .executes(c ->
+                                        unlock(
+                                                c.getSource(),
+                                                ResourceArgument.getResource(c, "customization", PalladiumRegistryKeys.CUSTOMIZATION),
+                                                null
+                                        )
+                                )
+                                .then(Commands.argument("entity", EntityArgument.entity())
                                         .executes(c ->
                                                 unlock(
                                                         c.getSource(),
                                                         ResourceArgument.getResource(c, "customization", PalladiumRegistryKeys.CUSTOMIZATION),
-                                                        null
+                                                        EntityArgument.getEntity(c, "entity")
                                                 )
-                                        )
-                                        .then(Commands.argument("entity", EntityArgument.entity())
-                                                .executes(c ->
-                                                        unlock(
-                                                                c.getSource(),
-                                                                ResourceArgument.getResource(c, "customization", PalladiumRegistryKeys.CUSTOMIZATION),
-                                                                EntityArgument.getEntity(c, "entity")
-                                                        )
-                                                ))
-                                )
+                                        ))
                         )
-                        .then(Commands.literal("lock")
-                                .then(Commands.argument("customization", ResourceArgument.resource(context, PalladiumRegistryKeys.CUSTOMIZATION))
+                )
+                .then(Commands.literal("lock")
+                        .then(Commands.argument("customization", ResourceArgument.resource(context, PalladiumRegistryKeys.CUSTOMIZATION))
+                                .executes(c ->
+                                        lock(
+                                                c.getSource(),
+                                                ResourceArgument.getResource(c, "customization", PalladiumRegistryKeys.CUSTOMIZATION),
+                                                null
+                                        )
+                                )
+                                .then(Commands.argument("entity", EntityArgument.entity())
                                         .executes(c ->
                                                 lock(
                                                         c.getSource(),
                                                         ResourceArgument.getResource(c, "customization", PalladiumRegistryKeys.CUSTOMIZATION),
-                                                        null
+                                                        EntityArgument.getEntity(c, "entity")
                                                 )
-                                        )
-                                        .then(Commands.argument("entity", EntityArgument.entity())
-                                                .executes(c ->
-                                                        lock(
-                                                                c.getSource(),
-                                                                ResourceArgument.getResource(c, "customization", PalladiumRegistryKeys.CUSTOMIZATION),
-                                                                EntityArgument.getEntity(c, "entity")
-                                                        )
-                                                ))
-                                )
+                                        ))
                         )
+                )
         );
     }
 
@@ -79,7 +81,10 @@ public class CustomizationCommand {
         if (entity instanceof LivingEntity living) {
             var handler = EntityCustomizationHandler.get(living);
 
-            if (handler.unlock(customization)) {
+            if (handler.isUnlocked(customization)) {
+                commandSource.sendFailure(Component.translatable(ERROR_ALREADY_UNLOCKED, customization.value().getTitle(commandSource.registryAccess())));
+                return 0;
+            } else if (handler.unlock(customization)) {
                 commandSource.sendSuccess(() -> Component.translatable(UNLOCK_SUCCESS, customization.value().getTitle(commandSource.registryAccess()), living.getDisplayName()), true);
                 return 1;
             } else {
@@ -100,7 +105,10 @@ public class CustomizationCommand {
         if (entity instanceof LivingEntity living) {
             var handler = EntityCustomizationHandler.get(living);
 
-            if (handler.lock(customization)) {
+            if (!handler.isUnlocked(customization)) {
+                commandSource.sendFailure(Component.translatable(ERROR_ALREADY_LOCKED, customization.value().getTitle(commandSource.registryAccess())));
+                return 0;
+            } else if (handler.lock(customization)) {
                 commandSource.sendSuccess(() -> Component.translatable(LOCK_SUCCESS, customization.value().getTitle(commandSource.registryAccess()), living.getDisplayName()), true);
                 return 1;
             } else {
