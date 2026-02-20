@@ -49,28 +49,28 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .resetXRot()
                 .resetYRot()
                 .resetZRot()
-                .setYRotDegrees(7.5F)
-                .setZRotDegrees(7.5F - hover * 2.5F)
+                .setYRotShortestDegrees(7.5F)
+                .setZRotShortestDegrees(7.5F - hover * 2.5F)
                 .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_ARM)
                 .resetXRot()
                 .resetYRot()
                 .resetZRot()
-                .setYRotDegrees(-7.5F)
-                .setZRotDegrees(-7.5F + hover * 2.5F)
+                .setYRotShortestDegrees(-7.5F)
+                .setZRotShortestDegrees(-7.5F + hover * 2.5F)
                 .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.RIGHT_LEG)
-                .setXRotDegrees(2.5F - hover * 5F)
-                .setYRotDegrees(7.5F)
-                .setZRotDegrees(2.5F)
+                .setXRotShortestDegrees(2.5F - hover * 5F)
+                .setYRotShortestDegrees(7.5F)
+                .setZRotShortestDegrees(2.5F)
                 .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_LEG)
-                .setXRotDegrees(-2.5F + hover * 5F)
-                .setYRotDegrees(-7.5F)
-                .setZRotDegrees(-2.5F)
+                .setXRotShortestDegrees(-2.5F + hover * 5F)
+                .setYRotShortestDegrees(-7.5F)
+                .setZRotShortestDegrees(-2.5F)
                 .animate(Easing.OUTCIRC, animationProgress);
     }
 
@@ -81,33 +81,33 @@ public class HoveringAnimation extends PalladiumAnimation {
                 .resetXRot()
                 .resetYRot()
                 .resetZRot()
-                .setXRotDegrees(-2.5F)
-                .setYRotDegrees(10F)
-                .setZRotDegrees(7.5F - hover * 2.5F)
+                .setXRotShortestDegrees(-2.5F)
+                .setYRotShortestDegrees(10F)
+                .setZRotShortestDegrees(7.5F - hover * 2.5F)
                 .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_ARM)
                 .resetXRot()
                 .resetYRot()
                 .resetZRot()
-                .setXRotDegrees(5F)
-                .setYRotDegrees(-10F)
-                .setZRotDegrees(-7.5F + hover * 2.5F)
+                .setXRotShortestDegrees(5F)
+                .setYRotShortestDegrees(-10F)
+                .setZRotShortestDegrees(-7.5F + hover * 2.5F)
                 .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.RIGHT_LEG)
                 .setX(-2.9F)
                 .setY(11F)
                 .setZ(-2F)
-                .setXRotDegrees(20F - hover * 5F)
-                .setYRotDegrees(15F)
-                .setZRotDegrees(-5F)
+                .setXRotShortestDegrees(20F - hover * 5F)
+                .setYRotShortestDegrees(15F)
+                .setZRotShortestDegrees(-5F)
                 .animate(Easing.OUTCIRC, animationProgress);
 
         builder.get(PlayerModelPart.LEFT_LEG)
-                .setXRotDegrees(2.5F + hover * 5F)
-                .setYRotDegrees(0F)
-                .setZRotDegrees(-2F)
+                .setXRotShortestDegrees(2.5F + hover * 5F)
+                .setYRotShortestDegrees(0F)
+                .setZRotShortestDegrees(-2F)
                 .animate(Easing.OUTCIRC, animationProgress);
     }
 

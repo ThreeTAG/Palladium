@@ -46,64 +46,64 @@ public class FlightAnimation extends PalladiumAnimation implements ViewportEvent
             var tilt = Mth.clamp(angleBetweenVector(vec1, vec2), -0.5F, 0.5F) * 90F * flight.getHorizontalSpeed(partialTicks);
 
             builder.get(PlayerModelPart.BODY)
-                    .setZRotDegrees((float) -tilt)
+                    .setZRotShortestDegrees((float) -tilt)
                     .setXRotShortestDegrees(-90.0F - player.getXRot())
                     .setY(0.2F * 16F)
                     .setY2(-1.8F / 2F * 16F)
                     .animate(Easing.INBACK, anim);
 
             builder.get(PlayerModelPart.HEAD)
-                    .setXRotDegrees(-90.0F)
-                    .setYRotDegrees((float) tilt)
+                    .setXRotShortestDegrees(-90.0F)
+                    .setYRotShortestDegrees((float) tilt)
                     .animate(Easing.INBACK, anim);
 
             builder.get(PlayerModelPart.CHEST)
-                    .setXRotDegrees(-5F)
-                    .setYRotDegrees(0F)
-                    .setZRotDegrees(0F)
+                    .setXRotShortestDegrees(-5F)
+                    .setYRotShortestDegrees(0F)
+                    .setZRotShortestDegrees(0F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_ARM)
-                    .setXRotDegrees(0F)
-                    .setYRotDegrees(17.5F)
-                    .setZRotDegrees(5F)
+                    .setXRotShortestDegrees(0F)
+                    .setYRotShortestDegrees(17.5F)
+                    .setZRotShortestDegrees(5F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_ARM)
-                    .setXRotDegrees(0F)
-                    .setYRotDegrees(-17.5F)
-                    .setZRotDegrees(-5F)
+                    .setXRotShortestDegrees(0F)
+                    .setYRotShortestDegrees(-17.5F)
+                    .setZRotShortestDegrees(-5F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.RIGHT_LEG)
                     .resetX()
                     .resetY()
                     .setZ(-1F)
-                    .setXRotDegrees(5F)
-                    .setYRotDegrees(2.5F)
-                    .setZRotDegrees(2.5F)
+                    .setXRotShortestDegrees(5F)
+                    .setYRotShortestDegrees(2.5F)
+                    .setZRotShortestDegrees(2.5F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             builder.get(PlayerModelPart.LEFT_LEG)
                     .resetX()
                     .resetY()
                     .setZ(-1F)
-                    .setXRotDegrees(5F)
-                    .setYRotDegrees(-2.5F)
-                    .setZRotDegrees(-2.5F)
+                    .setXRotShortestDegrees(5F)
+                    .setYRotShortestDegrees(-2.5F)
+                    .setZRotShortestDegrees(-2.5F)
                     .animate(Easing.INOUTCUBIC, anim);
 
             if (FlightHandler.getAnimationType(player) == FlightHandler.FlightAnimationType.HEROIC) {
                 if (player.getMainArm() == HumanoidArm.RIGHT) {
                     builder.get(PlayerModelPart.RIGHT_ARM)
-                            .setXRotDegrees(-180F)
-                            .setYRotDegrees(0F)
-                            .setZRotDegrees(-15F);
+                            .setXRotShortestDegrees(-180F)
+                            .setYRotShortestDegrees(0F)
+                            .setZRotShortestDegrees(-15F);
                 } else {
                     builder.get(PlayerModelPart.LEFT_ARM)
-                            .setXRotDegrees(-180F)
-                            .setYRotDegrees(0F)
-                            .setZRotDegrees(15F);
+                            .setXRotShortestDegrees(-180F)
+                            .setYRotShortestDegrees(0F)
+                            .setZRotShortestDegrees(15F);
                 }
             }
         }
