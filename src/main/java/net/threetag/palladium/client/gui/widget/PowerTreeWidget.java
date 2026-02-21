@@ -24,6 +24,7 @@ import net.threetag.palladium.client.gui.ui.background.UiBackground;
 import net.threetag.palladium.client.renderer.icon.IconRenderer;
 import net.threetag.palladium.client.util.GuiUtil;
 import net.threetag.palladium.client.util.RenderUtil;
+import net.threetag.palladium.config.PalladiumClientConfig;
 import net.threetag.palladium.icon.Icon;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.network.BuyAbilityPacket;
@@ -298,9 +299,20 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
             var font = this.minecraft.font;
             int textWidth = font.width(this.title);
             int padding = 3;
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_TITLE_BOX, x, y - 13,
-                    textWidth + 13 + (padding * 3), 26);
-            guiGraphics.drawString(font, this.title, x + 13 + padding, y - 4, RenderUtil.FULL_WHITE);
+
+            if (PalladiumClientConfig.DEV_MODE.getAsBoolean()) {
+                Component abilityRef = Component.literal(this.abilityInstance.getReference().toString());
+                int idWidth = font.width(abilityRef);
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_TITLE_BOX, x, y - 13,
+                        Math.max(idWidth, textWidth) + 13 + (padding * 3), 26 + 10);
+                guiGraphics.drawString(font, this.title, x + 13 + padding, y - 4, RenderUtil.FULL_WHITE);
+                guiGraphics.drawString(font, abilityRef, x + 13 + padding, y - 4 + 11, RenderUtil.DEFAULT_GRAY, false);
+            } else {
+                guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITE_TITLE_BOX, x, y - 13,
+                        textWidth + 13 + (padding * 3), 26);
+                guiGraphics.drawString(font, this.title, x + 13 + padding, y - 4, RenderUtil.FULL_WHITE);
+            }
+
             this.render(guiGraphics, x, y);
         }
 
