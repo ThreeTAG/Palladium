@@ -105,6 +105,7 @@
   "key.palladium.show_powers": "Gräfte",
   "palladium.configuration.ability_bar_alignment": "Ability Bar - Position",
   "palladium.configuration.ability_bar_key_bind_display": "Ability Bar - Anzeige der Tastenbelegung",
+  "palladium.configuration.dev_mode": "Addon Entwickler Modus",
   "palladium.configuration.hide_experimental_warning": "Singleplayer - Experimental Settings Warnung ausblenden",
   "palladium.configuration.max_superpower_sets": "Max. Anzahl an Superkraft-Sets",
   "palladium.configuration.scale_camera_fix": "Visuell - Kameraskalierung fixen"

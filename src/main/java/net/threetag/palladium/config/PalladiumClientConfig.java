@@ -8,6 +8,10 @@ public class PalladiumClientConfig {
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
+    public static final ModConfigSpec.BooleanValue DEV_MODE = BUILDER
+            .comment("Enabled additional utilities for addon developers")
+            .define("dev_mode", true);
+
     public static final ModConfigSpec.EnumValue<AbilityBarAlignment> ABILITY_BAR_ALIGNMENT = BUILDER
             .comment("Position of the ability bar on your screen")
             .defineEnum("ability_bar_alignment", AbilityBarAlignment.TOP_LEFT);

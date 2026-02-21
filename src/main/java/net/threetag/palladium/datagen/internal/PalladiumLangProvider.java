@@ -117,22 +117,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.RED_FABRIC, "Red Fabric");
             this.addItem(PalladiumItems.BLACK_FABRIC, "Black Fabric");
 
-            // Config
-            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Alignment");
-            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Key Bind Display");
-            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Hide Experimental Settings Warning");
-            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuals - Fix Camera Scale");
-            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. amount of superpower sets");
-
-            // Key Mappings
-            this.add("key.palladium.categories.powers", "Powers");
-            this.addKeyMapping("open_equipment", "Open/Close Equipment");
-            this.addKeyMapping("show_powers", "Powers");
-            this.addKeyMapping("rotate_ability_list", "Rotate through ability bar");
-            for (int i = 1; i <= 5; i++) {
-                this.addKeyMapping("ability_" + i, "Ability #" + i);
-            }
-
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Command");
@@ -160,6 +144,23 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FIRE_ASPECT, "Fire Aspect");
             this.addAbility(AbilitySerializers.PARTICLES, "Particles");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
+
+            // Config
+            this.addConfigEntry(PalladiumClientConfig.DEV_MODE, "Addon Developer Mode");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Alignment");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Key Bind Display");
+            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Hide Experimental Settings Warning");
+            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuals - Fix Camera Scale");
+            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. amount of superpower sets");
+
+            // Key Mappings
+            this.add("key.palladium.categories.powers", "Powers");
+            this.addKeyMapping("open_equipment", "Open/Close Equipment");
+            this.addKeyMapping("show_powers", "Powers");
+            this.addKeyMapping("rotate_ability_list", "Rotate through ability bar");
+            for (int i = 1; i <= 5; i++) {
+                this.addKeyMapping("ability_" + i, "Ability #" + i);
+            }
 
             // Commands
             this.add(SuperpowerCommand.ERROR_NO_LIVING_ENTITY, "%s is not a living entity");
@@ -258,22 +259,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.RED_FABRIC, "Roter Stoff");
             this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Stoff");
 
-            // Config
-            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
-            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
-            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
-            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuell - Kameraskalierung fixen");
-            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
-
-            // Key Mappings
-            this.add("key.palladium.categories.powers", "Kräfte");
-            this.addKeyMapping("open_equipment", "Ausrüstung öffnen/schließen");
-            this.addKeyMapping("show_powers", "Kräfte");
-            this.addKeyMapping("rotate_ability_list", "Durch Fähigkeitenleiste rotieren");
-            for (int i = 1; i <= 5; i++) {
-                this.addKeyMapping("ability_" + i, "Fähigkeit #" + i);
-            }
-
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Befehl");
@@ -301,6 +286,22 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FIRE_ASPECT, "Verbrennung");
             this.addAbility(AbilitySerializers.PARTICLES, "Partikel");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
+
+            // Config
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Addon Entwickler Modus");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
+            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuell - Kameraskalierung fixen");
+            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
+
+            // Key Mappings
+            this.add("key.palladium.categories.powers", "Kräfte");
+            this.addKeyMapping("open_equipment", "Ausrüstung öffnen/schließen");
+            this.addKeyMapping("show_powers", "Kräfte");
+            this.addKeyMapping("rotate_ability_list", "Durch Fähigkeitenleiste rotieren");
+            for (int i = 1; i <= 5; i++) {
+                this.addKeyMapping("ability_" + i, "Fähigkeit #" + i);
+            }
 
             // Commands
             this.add(SuperpowerCommand.ERROR_NO_LIVING_ENTITY, "%s ist kein lebendes Wesen");
@@ -401,22 +402,6 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.RED_FABRIC, "Roder Schdoff");
             this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Schdoff");
 
-            // Config
-            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
-            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
-            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
-            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuell - Kameraskalierung fixen");
-            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
-
-            // Key Mappings
-            this.add("key.palladium.categories.powers", "Gräfte");
-            this.addKeyMapping("open_equipment", "Ohsrüstung öffnen/schließen");
-            this.addKeyMapping("show_powers", "Gräfte");
-            this.addKeyMapping("rotate_ability_list", "Durch Fähischgehtlehste rotieren");
-            for (int i = 1; i <= 5; i++) {
-                this.addKeyMapping("ability_" + i, "Fähischgeht #" + i);
-            }
-
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
             this.addAbility(AbilitySerializers.COMMAND, "Befehl");
@@ -444,6 +429,23 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.FIRE_ASPECT, "Vorbrennung");
             this.addAbility(AbilitySerializers.PARTICLES, "Partikel");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
+
+            // Config
+            this.addConfigEntry(PalladiumClientConfig.DEV_MODE, "Addon Entwickler Modus");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_ALIGNMENT, "Ability Bar - Position");
+            this.addConfigEntry(PalladiumClientConfig.ABILITY_BAR_KEY_BIND_DISPLAY, "Ability Bar - Anzeige der Tastenbelegung");
+            this.addConfigEntry(PalladiumClientConfig.HIDE_EXPERIMENTAL_WARNING, "Singleplayer - Experimental Settings Warnung ausblenden");
+            this.addConfigEntry(PalladiumClientConfig.SCALE_CAMERA_FIX, "Visuell - Kameraskalierung fixen");
+            this.addConfigEntry(PalladiumServerConfig.MAX_SUPERPOWER_SETS, "Max. Anzahl an Superkraft-Sets");
+
+            // Key Mappings
+            this.add("key.palladium.categories.powers", "Gräfte");
+            this.addKeyMapping("open_equipment", "Ohsrüstung öffnen/schließen");
+            this.addKeyMapping("show_powers", "Gräfte");
+            this.addKeyMapping("rotate_ability_list", "Durch Fähischgehtlehste rotieren");
+            for (int i = 1; i <= 5; i++) {
+                this.addKeyMapping("ability_" + i, "Fähischgeht #" + i);
+            }
 
             // Commands
             this.add(SuperpowerCommand.ERROR_NO_LIVING_ENTITY, "%s is keen lebdisches Viech");

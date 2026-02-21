@@ -28,6 +28,7 @@
   "client": [
     "client.AbstractClientPlayerMixin",
     "client.AvatarRendererMixin",
+    "client.DatapackLoadFailureScreenMixin",
     "client.GameRendererMixin",
     "client.GuiGraphicsMixin",
     "client.HumanoidModelMixin",
@@ -40,6 +41,7 @@
     "client.ModelPartMixin",
     "client.MolangLoaderMixin",
     "client.PlayerAnimationControllerMixin",
+    "client.RegistryDataLoaderMixin",
     "client.RenderTypesMixin",
     "client.ScreenEffectRendererMixin",
     "client.ScreenMixin",
