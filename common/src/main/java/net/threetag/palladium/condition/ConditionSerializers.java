@@ -56,6 +56,7 @@ public class ConditionSerializers {
     public static final RegistrySupplier<ConditionSerializer> SPRINTING = CONDITION_SERIALIZERS.register("sprinting", SprintingCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> INTEGER_PROPERTY = CONDITION_SERIALIZERS.register("integer_property", IntegerPropertyCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> FLOAT_PROPERTY = CONDITION_SERIALIZERS.register("float_property", FloatPropertyCondition.Serializer::new);
+    public static final RegistrySupplier<ConditionSerializer> STRING_PROPERTY = CONDITION_SERIALIZERS.register("string_property", StringPropertyCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> DIMENSION = CONDITION_SERIALIZERS.register("dimension", DimensionCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_ON_FIRE = CONDITION_SERIALIZERS.register("is_on_fire", IsOnFireCondition.Serializer::new);
     public static final RegistrySupplier<ConditionSerializer> IS_SWIMMING = CONDITION_SERIALIZERS.register("is_swimming", IsSwimmingCondition.Serializer::new);

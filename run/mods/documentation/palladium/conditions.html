@@ -323,6 +323,10 @@ small_arms</a>
 sprinting</a>
 </li>
 <li>
+<a href="#palladium:string_property">
+string_property</a>
+</li>
+<li>
 <a href="#palladium:toggle">
 toggle</a>
 </li>
@@ -3447,6 +3451,74 @@ Checks if the entity is sprinting.<br><br>Applicable for: all</p>
 Example:</h3>
 <pre class="json-snippet">
 {"type":"palladium:sprinting"}</pre>
+</div>
+<hr>
+
+<div id="palladium:string_property">
+<h2>
+string_property</h2>
+<p>
+Checks if the entity has a string property that matches the given comparison.<br><br>Applicable for: all</p>
+<h3>
+Settings:</h3>
+<table>
+<thead>
+<tr>
+<th>
+Setting</th>
+<th>
+Type</th>
+<th>
+Description</th>
+<th>
+Required</th>
+<th>
+Fallback Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+property</td>
+<td>
+String</td>
+<td>
+Name of the float property in the entity</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+value</td>
+</tr>
+<tr>
+<td>
+comparator</td>
+<td>
+StringComparator</td>
+<td>
+The comparator type being used on the string property. Possible values: [equals, equals_ignore_case, starts_with, ends_with, contains, contains_ignore_case]</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+EQUALS</td>
+</tr>
+<tr>
+<td>
+compare_to</td>
+<td>
+String</td>
+<td>
+The string the property is compared to</td>
+<td style="background-color: lightcoral">
+false</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>
+Example:</h3>
+<pre class="json-snippet">
+{"type":"palladium:string_property","property":"value","comparator":"equals","compare_to":""}</pre>
 </div>
 <hr>
 
