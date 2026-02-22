@@ -1,2 +1,4 @@
-- Revert animation spinning fix, add setX/Y/ZShortest methods
-- Added safe checks so one can break the tailoring recipe list 👀
+- Fixed flight animations again
+- Added string_property condition
+- Added support to invert palladium.power command entity predicate
+- Add ability reference ID to ability descriptions if addon dev mode is enabled
