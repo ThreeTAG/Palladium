@@ -9,6 +9,12 @@
         "amount": 10,
         "operation": "add_value"
       },
+      "properties": {
+        "animation_timer": {
+          "easing": "in_out_cubic",
+          "max": 19
+        }
+      },
       "state": {
         "enabling": {
           "type": "palladium:key_bind",

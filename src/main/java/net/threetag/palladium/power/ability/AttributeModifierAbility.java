@@ -56,7 +56,7 @@ public class AttributeModifierAbility extends Ability {
     @SuppressWarnings("unchecked")
     @Override
     public boolean tick(LivingEntity entity, AbilityInstance<?> ability, boolean enabled) {
-        if (enabled && !entity.level().isClientSide()) {
+        if (!entity.level().isClientSide()) {
             int i = 0;
             for (DynamicModifier dynamicModifier : this.modifiers) {
                 AttributeInstance attributeInstance = entity.getAttribute(dynamicModifier.attribute());
@@ -69,25 +69,23 @@ public class AttributeModifierAbility extends Ability {
                 AttributeModifier modifier = attributeInstance.getModifier(id);
 
                 // Remove modifier if amount or operation don't match
-                double amount = dynamicModifier.amount().getAsDouble(DataContext.forAbility(entity, ability)) * ability.getAnimationTimerProgressEased(1F);
-                if (modifier != null && (modifier.amount() != amount || modifier.operation() != dynamicModifier.operation())) {
+                float scale = ability.getAnimationTimerProgressEased(1F);
+                double amount = dynamicModifier.amount().getAsDouble(DataContext.forAbility(entity, ability)) * scale;
+                if (scale <= 0.0F || (modifier != null && (modifier.amount() != amount || modifier.operation() != dynamicModifier.operation()))) {
                     attributeInstance.removeModifier(id);
                     modifier = null;
                 }
 
-                if (modifier == null) {
+                if (modifier == null && amount > 0.0F) {
                     modifier = new AttributeModifier(id, amount, dynamicModifier.operation());
                     attributeInstance.addTransientModifier(modifier);
                 }
 
                 i++;
             }
-
-            return true;
-        } else {
-            this.lastTick(entity, ability);
-            return super.tick(entity, ability, false);
         }
+
+        return super.tick(entity, ability, enabled);
     }
 
     @SuppressWarnings("unchecked")
