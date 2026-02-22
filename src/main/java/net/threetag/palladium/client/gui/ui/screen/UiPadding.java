@@ -35,4 +35,12 @@ public record UiPadding(int top, int bottom, int left, int right) {
         return new UiPadding(top, rest, rest, rest);
     }
 
+    public int horizontal() {
+        return this.left() + this.right();
+    }
+
+    public int vertical() {
+        return this.top() + this.bottom();
+    }
+
 }

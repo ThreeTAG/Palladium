@@ -6,6 +6,7 @@ public class UiLayoutSerializers {
 
     public static final UiLayoutSerializer<SimpleUiLayout> SIMPLE = register("simple", new SimpleUiLayout.Serializer());
     public static final UiLayoutSerializer<MultiColumnLayout> MULTI_COLUMN = register("multi_column", new MultiColumnLayout.Serializer());
+    public static final UiLayoutSerializer<DefaultPowerLayout> POWER_DEFAULT = register("power/default", new DefaultPowerLayout.Serializer());
 
     private static <T extends UiLayout> UiLayoutSerializer<T> register(String id, UiLayoutSerializer<T> serializer) {
         UiLayoutSerializer.register(Palladium.id(id), serializer);

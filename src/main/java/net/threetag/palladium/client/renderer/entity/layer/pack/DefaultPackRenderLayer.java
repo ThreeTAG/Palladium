@@ -105,10 +105,6 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             }
             mimicModelParts("root", parentModel.root(), model.root(), state, true);
 
-            if (this.overrides != null) {
-                this.overrides.animate(model, context, state.partialTick);
-            }
-
             if (state instanceof IAvatarAnimationState animationState) {
                 AvatarAnimManager emote = animationState.playerAnimLib$getAnimManager();
                 if (emote != null && emote.isActive()) {
@@ -116,6 +112,10 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                         animate(e.getValue(), e.getKey(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), emote);
                     }
                 }
+            }
+
+            if (this.overrides != null) {
+                this.overrides.animate(model, context, state.partialTick);
             }
 
             submitNodeCollector.submitModel(

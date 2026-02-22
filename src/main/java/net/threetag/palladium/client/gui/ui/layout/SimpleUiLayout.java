@@ -57,8 +57,8 @@ public final class SimpleUiLayout extends UiLayout {
         var rectangle = new ScreenRectangle(
                 x + this.padding().left(),
                 y + this.padding().top(),
-                this.getWidth() - this.padding().left() - this.padding().right(),
-                this.getHeight() - this.padding.top() - this.padding().bottom());
+                this.getWidth() - this.padding().horizontal(),
+                this.getHeight() - this.padding().vertical());
 
         for (UiComponent component : this.components) {
             var widget = component.buildWidget(screen, rectangle);
