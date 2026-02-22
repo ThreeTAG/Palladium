@@ -1,0 +1,15 @@
+{
+  "name": "Gliding Test",
+  "icon": "minecraft:feather",
+  "abilities": {
+    "levitation": {
+      "type": "palladium:gliding",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

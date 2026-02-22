@@ -143,6 +143,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk Immunity");
             this.addAbility(AbilitySerializers.FIRE_ASPECT, "Fire Aspect");
             this.addAbility(AbilitySerializers.PARTICLES, "Particles");
+            this.addAbility(AbilitySerializers.FLIGHT, "Flight");
+            this.addAbility(AbilitySerializers.GLIDING, "Gliding");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Config
@@ -285,6 +287,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
             this.addAbility(AbilitySerializers.FIRE_ASPECT, "Verbrennung");
             this.addAbility(AbilitySerializers.PARTICLES, "Partikel");
+            this.addAbility(AbilitySerializers.FLIGHT, "Flug");
+            this.addAbility(AbilitySerializers.GLIDING, "Gleiten");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Config
@@ -428,6 +432,8 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.SCULK_IMMUNITY, "Sculk-Immunität");
             this.addAbility(AbilitySerializers.FIRE_ASPECT, "Vorbrennung");
             this.addAbility(AbilitySerializers.PARTICLES, "Partikel");
+            this.addAbility(AbilitySerializers.FLIGHT, "Flug");
+            this.addAbility(AbilitySerializers.GLIDING, "Gleiden");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Config
