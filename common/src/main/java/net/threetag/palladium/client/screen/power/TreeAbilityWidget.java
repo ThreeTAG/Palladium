@@ -13,11 +13,13 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.threetag.palladium.PalladiumConfig;
 import net.threetag.palladium.power.IPowerHolder;
 import net.threetag.palladium.power.ability.Ability;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.util.context.DataContext;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class TreeAbilityWidget {
     public final AbilityInstance abilityInstance;
     private final FormattedCharSequence title;
     private final int width;
-    private final List<FormattedCharSequence> description;
+    private List<FormattedCharSequence> description;
     private final Minecraft minecraft;
     List<TreeAbilityWidget> parents = new LinkedList<>();
     List<TreeAbilityWidget> children = new LinkedList<>();
@@ -63,6 +65,11 @@ public class TreeAbilityWidget {
                 .getVisualOrder(
                         this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.get(this.abilityInstance.isUnlocked()).copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
                 );
+
+        if (PalladiumConfig.Client.ADDON_PACK_DEV_MODE.get()) {
+            this.description = new ArrayList<>(this.description);
+            this.description.add(Language.getInstance().getVisualOrder(Component.literal(abilityInstance.getReference().toString()).withStyle(ChatFormatting.GRAY)));
+        }
 
         for (FormattedCharSequence formattedCharSequence : this.description) {
             l = Math.max(l, minecraft.font.width(formattedCharSequence));
