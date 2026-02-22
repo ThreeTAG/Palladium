@@ -66,19 +66,19 @@ public class AttributeModifierAbility extends Ability {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> ability, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> ability, boolean enabled) {
         if (enabled) {
             AttributeInstance attributeInstance = entity.getAttribute(this.attribute);
             var id = getModifierId((AbilityInstance<AttributeModifierAbility>) ability);
 
             if (attributeInstance == null || entity.level().isClientSide()) {
-                return;
+                return false;
             }
 
             AttributeModifier modifier = attributeInstance.getModifier(id);
 
-            // Remove modifier if amount or operation dont match
-            double amount = this.amount.getAsDouble(DataContext.forAbility(entity, ability));
+            // Remove modifier if amount or operation don't match
+            double amount = this.amount.getAsDouble(DataContext.forAbility(entity, ability)) * ability.getAnimationTimerProgressEased(1F);
             if (modifier != null && (modifier.amount() != amount || modifier.operation() != this.operation)) {
                 attributeInstance.removeModifier(id);
                 modifier = null;
@@ -88,8 +88,11 @@ public class AttributeModifierAbility extends Ability {
                 modifier = new AttributeModifier(id, amount, this.operation);
                 attributeInstance.addTransientModifier(modifier);
             }
+
+            return true;
         } else {
             this.lastTick(entity, ability);
+            return super.tick(entity, ability, false);
         }
     }
 

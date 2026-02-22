@@ -77,7 +77,7 @@ public class BeamAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> instance, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> instance, boolean enabled) {
         HitResult hit = null;
         var timer = instance.getAnimationTimerProgressEased(1F);
         boolean hitTarget = timer >= 1F;
@@ -130,6 +130,8 @@ public class BeamAbility extends Ability {
                 }
             }
         }
+
+        return super.tick(entity, instance, enabled);
     }
 
     public HitResult updateTargetPos(LivingEntity living, AbilityInstance<?> instance, float partialTick) {

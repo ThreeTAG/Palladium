@@ -45,10 +45,12 @@ public class ParticleAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> instance, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled && entity.level().isClientSide()) {
             Palladium.PROXY.spawnParticleEmitter(entity, this.particleEmitterIds, this.particleTypeHolder, this.options);
         }
+
+        return super.tick(entity, abilityInstance, enabled);
     }
 
     public static class Serializer extends AbilitySerializer<ParticleAbility> {

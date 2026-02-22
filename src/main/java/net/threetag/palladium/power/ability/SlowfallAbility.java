@@ -26,11 +26,13 @@ public class SlowfallAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance entry, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled && !entity.onGround() && entity.getDeltaMovement().y() < 0D) {
             entity.setDeltaMovement(entity.getDeltaMovement().x, entity.getDeltaMovement().y * 0.6D, entity.getDeltaMovement().z);
             entity.fallDistance = 0F;
         }
+
+        return super.tick(entity, abilityInstance, enabled);
     }
 
     public static class Serializer extends AbilitySerializer<SlowfallAbility> {

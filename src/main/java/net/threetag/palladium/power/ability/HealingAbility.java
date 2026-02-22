@@ -35,12 +35,14 @@ public class HealingAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> entry, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled && !entity.level().isClientSide()) {
             if (entity.tickCount % this.frequency == 0) {
-                entity.heal(this.amount);
+                entity.heal(this.amount * abilityInstance.getAnimationTimerProgressEased(1F));
             }
         }
+
+        return super.tick(entity, abilityInstance, enabled);
     }
 
     public static class Serializer extends AbilitySerializer<HealingAbility> {

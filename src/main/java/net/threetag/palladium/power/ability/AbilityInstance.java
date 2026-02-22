@@ -117,17 +117,19 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
             }
 
             this.enabledTicks++;
-
-            for (EnergyBarUsage usage : this.ability.getEnergyBarUsages()) {
-                usage.consume(this.powerInstance);
-            }
         } else if (this.enabledTicks > 0) {
             this.enabledTicks--;
         }
 
         this.lifetime++;
-        this.ability.tick(entity, this, this.isEnabled());
+        boolean result = this.ability.tick(entity, this, this.isEnabled());
         this.ability.getStateManager().getEnablingHandler().tick(entity, this, this.isEnabled());
+
+        if (result) {
+            for (EnergyBarUsage usage : this.ability.getEnergyBarUsages()) {
+                usage.consume(this.powerInstance);
+            }
+        }
 
         if (this.animationTimer != null) {
             this.ability.animationTimerTick(entity, this, this.isEnabled(), this.animationTimer);

@@ -49,11 +49,13 @@ public class CommandAbility extends Ability implements CommandSource {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> entry, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> entry, boolean enabled) {
         if (enabled && entity.level().getServer() != null && entity.level() instanceof ServerLevel serverLevel) {
             var source = this.createCommandSourceStack(entity, serverLevel);
             Objects.requireNonNull(entity.level().getServer()).getFunctions().execute(this.commands.getCommandFunction(entity.level().getServer()), source.withSuppressedOutput().withMaximumPermission(PermissionSet.ALL_PERMISSIONS));
         }
+
+        return super.tick(entity, entry, enabled);
     }
 
     @Override

@@ -35,10 +35,12 @@ public class GeoLayerAnimationTriggerAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled && entity.level().isClientSide()) {
             GeckoLibCompat.ABILITY_HANDLER.triggerAnimation(entity, abilityInstance, this.renderLayer, this.controller, this.trigger);
         }
+
+        return super.tick(entity, abilityInstance, enabled);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class RestrictSlotsAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> entry, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled && !entity.level().isClientSide()) {
             for (PlayerSlot slot : this.slots) {
                 var items = slot.getItems(entity);
@@ -48,6 +48,8 @@ public class RestrictSlotsAbility extends Ability {
                 }
             }
         }
+
+        return super.tick(entity, abilityInstance, enabled);
     }
 
     public void drop(LivingEntity entity, ItemStack stack, PlayerSlot slot) {

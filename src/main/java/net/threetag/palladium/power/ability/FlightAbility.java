@@ -32,12 +32,14 @@ public class FlightAbility extends Ability {
     }
 
     @Override
-    public void tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
         if (enabled) {
             if (this.flightType == null) {
                 this.flightType = entity.registryAccess().get(this.flightTypeKey).orElse(null);
             }
         }
+
+        return super.tick(entity, abilityInstance, enabled);
     }
 
     @Override

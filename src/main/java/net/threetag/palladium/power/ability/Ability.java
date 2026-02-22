@@ -2,14 +2,10 @@ package net.threetag.palladium.power.ability;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.zigythebird.playeranim.animation.PlayerAnimationController;
-import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.LivingEntity;
-import net.threetag.palladium.client.animation.PalladiumAnimationManager;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.util.PalladiumCodecs;
@@ -17,7 +13,6 @@ import net.threetag.palladium.util.PalladiumCodecs;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public abstract class Ability {
 
@@ -71,8 +66,8 @@ public abstract class Ability {
         return title != null ? title : Component.translatable("ability." + Objects.requireNonNull(id).getNamespace() + "." + id.getPath());
     }
 
-    public void tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
-
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
+        return abilityInstance.getAnimationTimerProgress(1F) > 0.0F;
     }
 
     public void animationTimerTick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled, AnimationTimer animationTimer) {

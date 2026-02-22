@@ -3,6 +3,7 @@ package net.threetag.palladium.power.ability;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.documentation.CodecDocumentationBuilder;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
 
@@ -16,6 +17,11 @@ public class GlidingAbility extends Ability {
 
     public GlidingAbility(AbilityProperties properties, AbilityStateManager stateManager, List<EnergyBarUsage> energyBarUsages) {
         super(properties, stateManager, energyBarUsages);
+    }
+
+    @Override
+    public boolean tick(LivingEntity entity, AbilityInstance<?> abilityInstance, boolean enabled) {
+        return enabled && entity.isFallFlying();
     }
 
     @Override
