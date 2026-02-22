@@ -60,6 +60,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_UI_COMPONENTS = SettingType.simple("UI Components");
     SettingType TYPE_DIALOG_ACTION = SettingType.simple("Dialog Action");
     SettingType TYPE_ITEM_STACK = SettingType.simple("Item / ItemStack");
+    SettingType TYPE_ATTRIBUTE_MODIFIER = SettingType.simple("Attribute Modifier (attribute*, amount*, operation*, id)");
 
     SettingType TYPE_ATTRIBUTE = SettingType.simple("Attribute ID");
     SettingType TYPE_DAMAGE_TYPE = SettingType.simple("Damage Type ID");

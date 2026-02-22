@@ -4,9 +4,11 @@
   "abilities": {
     "armor": {
       "type": "palladium:attribute_modifier",
-      "attribute": "minecraft:armor",
-      "amount": 10,
-      "operation": "add_value",
+      "modifier": {
+        "attribute": "minecraft:armor",
+        "amount": 10,
+        "operation": "add_value"
+      },
       "state": {
         "enabling": {
           "type": "palladium:key_bind",
