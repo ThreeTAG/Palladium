@@ -6,9 +6,11 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.arguments.selector.EntitySelectorParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.mixin.EntitySelectorOptionsInvoker;
 import net.threetag.palladium.power.PowerManager;
+import net.threetag.palladium.power.PowerUtil;
 import net.threetag.palladiumcore.util.Platform;
 
 import java.util.Locale;
@@ -23,7 +25,10 @@ public class PalladiumEntitySelectorOptions {
     public static void init() {
         EntitySelectorOptionsInvoker.callRegister("palladium.power",
                 parser -> {
-                    cast(parser).palladium$setPower(parsePowerId(parser));
+                    boolean invert = parser.shouldInvertValue();
+                    var powerId = parsePowerId(parser);
+                    cast(parser).palladium$setPower(powerId);
+                    parser.addPredicate(entity -> entity instanceof LivingEntity living && (invert != PowerUtil.hasPower(living, powerId)));
                 },
                 parser -> cast(parser).palladium$getPower() == null,
                 POWER_DESCRIPTION);
