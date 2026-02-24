@@ -16,6 +16,7 @@ public class ValueSerializers {
     public static final DeferredHolder<ValueSerializer<?>, ConditionalValue.Serializer> CONDITIONAL = VALUE_SERIALIZERS.register("conditional", ConditionalValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, CrouchingValue.Serializer> CROUCHING = VALUE_SERIALIZERS.register("crouching", CrouchingValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, EntityTickCountValue.Serializer> ENTITY_TICK_COUNT = VALUE_SERIALIZERS.register("entity_tick_count", EntityTickCountValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, GlidingTickCountValue.Serializer> GLIDING_TICK_COUNT = VALUE_SERIALIZERS.register("gliding_tick_count", GlidingTickCountValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, EntityHealthValue.Serializer> ENTITY_HEALTH = VALUE_SERIALIZERS.register("entity_health", EntityHealthValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, ScoreValue.Serializer> SCORE = VALUE_SERIALIZERS.register("score", ScoreValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, WidePlayerModelValue.Serializer> WIDE_PLAYER_MODEL = VALUE_SERIALIZERS.register("wide_player_model", WidePlayerModelValue.Serializer::new);

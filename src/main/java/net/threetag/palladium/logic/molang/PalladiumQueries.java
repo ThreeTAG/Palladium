@@ -51,7 +51,8 @@ public class PalladiumQueries implements ObjectValue {
         this.functions.put("flight_limb_yaw", this::flight_limb_yaw);
         this.functions.put("swinging_right_arm_pitch", this::swinging_right_arm_pitch);
         this.functions.put("swinging_left_arm_pitch", this::swinging_left_arm_pitch);
-        this.functions.put("any_animation_finished", this::swinging_left_arm_pitch);
+        this.functions.put("any_animation_finished", this::any_animation_finished);
+        this.functions.put("gliding_tick_count", this::gliding_tick_count);
     }
 
     @Override
@@ -181,6 +182,11 @@ public class PalladiumQueries implements ObjectValue {
     @Binding("any_animation_finished")
     public boolean any_animation_finished() {
         return this.context.hasAnimationFinished();
+    }
+
+    @Binding("gliding_tick_count")
+    public double gliding_tick_count() {
+        return this.context.entity() instanceof LivingEntity living ? living.getFallFlyingTicks() : 0;
     }
 
     @Override
