@@ -1,6 +1,9 @@
 {
   "name": "Render Layer Test",
   "icon": "minecraft:bread",
+  "animation_controller": {
+    "idle": "test:halo_test"
+  },
   "abilities": {
     "overlay": {
       "type": "palladium:dummy",

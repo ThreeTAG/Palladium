@@ -1,0 +1,8 @@
+{
+  "initial_state": "default",
+  "states": {
+    "default": {
+      "animation": "test:halo_test"
+    }
+  }
+}

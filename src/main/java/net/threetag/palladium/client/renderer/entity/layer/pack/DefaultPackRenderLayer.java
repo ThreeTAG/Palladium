@@ -109,7 +109,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 AvatarAnimManager emote = animationState.playerAnimLib$getAnimManager();
                 if (emote != null && emote.isActive()) {
                     for (Map.Entry<String, ModelPart> e : model.root().children.entrySet()) {
-                        animate(e.getValue(), e.getKey(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), emote);
+                        animate(e.getValue(), e.getKey(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), emote);
                     }
                 }
             }
@@ -173,8 +173,8 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         }
     }
 
-    private void animate(ModelPart modelPart, String partName, String emoteBoneName, AvatarAnimManager emote) {
-        PlayerAnimBone bone = emote.get3DTransform(new PlayerAnimBone(emoteBoneName));
+    private void animate(ModelPart modelPart, String partName, String emoteBoneName, String singleName, AvatarAnimManager emote) {
+        PlayerAnimBone bone = emote.get3DTransform(new PlayerAnimBone(singleName));
         RenderUtil.copyVanillaPart(modelPart, bone);
         emote.updatePart(modelPart, bone);
 
@@ -182,7 +182,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
             ModelPart child = modelPart.getChild(name);
             var childName = partName.isBlank() ? name : partName + "." + name;
             var emoteChildName = emoteBoneName.isBlank() ? name : emoteBoneName + "." + name;
-            animate(child, childName, emoteChildName, emote);
+            animate(child, childName, name, emoteChildName, emote);
         }
     }
 
