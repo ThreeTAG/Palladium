@@ -109,7 +109,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 AvatarAnimManager emote = animationState.playerAnimLib$getAnimManager();
                 if (emote != null && emote.isActive()) {
                     for (Map.Entry<String, ModelPart> e : model.root().children.entrySet()) {
-                        animate(e.getValue(), e.getKey(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), emote);
+                        animate(e.getValue(), e.getKey().equalsIgnoreCase("body") ? "torso" : e.getKey(), emote);
                     }
                 }
             }
@@ -173,32 +173,35 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
         }
     }
 
-    private void animate(ModelPart modelPart, String partName, String emoteBoneName, String singleName, AvatarAnimManager emote) {
-        PlayerAnimBone bone = emote.get3DTransform(new PlayerAnimBone(singleName));
+    private void animate(ModelPart modelPart, String partName, AvatarAnimManager emote) {
+        PlayerAnimBone bone = emote.get3DTransform(new PlayerAnimBone(partName));
         RenderUtil.copyVanillaPart(modelPart, bone);
         emote.updatePart(modelPart, bone);
 
         for (String name : modelPart.children.keySet()) {
             ModelPart child = modelPart.getChild(name);
-            var childName = partName.isBlank() ? name : partName + "." + name;
-            var emoteChildName = emoteBoneName.isBlank() ? name : emoteBoneName + "." + name;
-            animate(child, childName, name, emoteChildName, emote);
+            animate(child, name, emote);
         }
     }
 
     public List<String> getPartNames(Entity entity) {
         List<String> list = new ArrayList<>();
-        if (model == null)
+
+        if (this.model == null) {
             buildModels();
-        if (model != null)
-            addPartNames(model.get(entity).root(), "", list);
+        }
+
+        if (this.model != null) {
+            this.addPartNames(this.model.get(entity).root(), list);
+        }
+
         return list;
     }
 
-    private void addPartNames(ModelPart m, String parents, List<String> list) {
+    private void addPartNames(ModelPart m, List<String> list) {
         for (String name : m.children.keySet()) {
-            list.add(parents + name);
-            addPartNames(m.getChild(name), parents + name + ".", list);
+            list.add(name);
+            addPartNames(m.getChild(name), list);
         }
     }
 

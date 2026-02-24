@@ -3,7 +3,7 @@
 	"animations": {
 		"halo_test": {
 			"bones": {
-				"head.halo": {
+				"halo": {
 					"position": ["pal.disabled", "math.sin(palladium.tick_count() * 10) + 4", "pal.disabled"]
 				}
 			}
