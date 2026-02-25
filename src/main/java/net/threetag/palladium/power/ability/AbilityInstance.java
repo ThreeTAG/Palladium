@@ -4,9 +4,11 @@ import net.minecraft.core.component.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.threetag.palladium.component.PalladiumDataComponents;
+import net.threetag.palladium.logic.triggers.PalladiumCriteriaTriggers;
 import net.threetag.palladium.network.SyncAbilityComponentPacket;
 import net.threetag.palladium.power.PowerInstance;
 import net.threetag.palladium.power.energybar.EnergyBarUsage;
@@ -105,6 +107,10 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
                 if (enabled) {
                     this.ability.firstTick(entity, this);
                     firstTicked = true;
+
+                    if (entity instanceof ServerPlayer serverPlayer) {
+                        PalladiumCriteriaTriggers.ABILITY_ENABLED.get().trigger(serverPlayer, this.reference);
+                    }
                 } else if (this.lifetime > 0) {
                     this.ability.lastTick(entity, this);
                 }
@@ -114,6 +120,10 @@ public class AbilityInstance<T extends Ability> implements DataComponentHolder {
         if (this.isEnabled()) {
             if (!firstTicked && this.lifetime == 0) {
                 this.ability.firstTick(entity, this);
+
+                if (entity instanceof ServerPlayer serverPlayer) {
+                    PalladiumCriteriaTriggers.ABILITY_ENABLED.get().trigger(serverPlayer, this.reference);
+                }
             }
 
             this.enabledTicks++;

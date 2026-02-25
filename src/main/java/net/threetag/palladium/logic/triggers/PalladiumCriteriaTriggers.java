@@ -12,4 +12,5 @@ public class PalladiumCriteriaTriggers {
 
     public static final DeferredHolder<CriterionTrigger<?>, PowerGainedTrigger> POWER_GAINED = CRITERIA_TRIGGERS.register("power_gained", PowerGainedTrigger::new);
     public static final DeferredHolder<CriterionTrigger<?>, PowerLostTrigger> POWER_LOST = CRITERIA_TRIGGERS.register("power_lost", PowerLostTrigger::new);
+    public static final DeferredHolder<CriterionTrigger<?>, AbilityEnabledTrigger> ABILITY_ENABLED = CRITERIA_TRIGGERS.register("ability_enabled", AbilityEnabledTrigger::new);
 }
