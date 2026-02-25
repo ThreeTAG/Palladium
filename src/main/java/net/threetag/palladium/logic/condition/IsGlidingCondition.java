@@ -44,8 +44,8 @@ public class IsGlidingCondition implements Condition {
 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsGlidingCondition> builder, HolderLookup.Provider provider) {
-            builder.setName("Is Elytra Flying")
-                    .setDescription("Checks if the entity is currently flying with an elytra.")
+            builder.setName("Is Gliding")
+                    .setDescription("Checks if the entity is currently gliding/flying with an elytra.")
                     .addExampleObject(new IsGlidingCondition());
         }
     }
