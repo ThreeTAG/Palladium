@@ -56,6 +56,9 @@ public class PalladiumQueries implements ObjectValue {
         this.functions.put("any_animation_finished", this::any_animation_finished);
         this.functions.put("gliding_tick_count", this::gliding_tick_count);
         this.functions.put("is_wall_climbing", this::is_wall_climbing);
+        this.functions.put("pos_x", this::pos_x);
+        this.functions.put("pos_y", this::pos_y);
+        this.functions.put("pos_z", this::pos_z);
     }
 
     @Override
@@ -195,6 +198,21 @@ public class PalladiumQueries implements ObjectValue {
     @Binding("is_wall_climbing")
     public boolean is_wall_climbing() {
         return this.context.entity() instanceof Player player && player.getData(PalladiumAttachments.IS_CLIMBING.get());
+    }
+
+    @Binding("pos_x")
+    public double pos_x() {
+        return this.context.entity().getX();
+    }
+
+    @Binding("pos_y")
+    public double pos_y() {
+        return this.context.entity().getY();
+    }
+
+    @Binding("pos_z")
+    public double pos_z() {
+        return this.context.entity().getZ();
     }
 
     @Override
