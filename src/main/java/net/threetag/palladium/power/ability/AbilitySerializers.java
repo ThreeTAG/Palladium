@@ -37,5 +37,6 @@ public class AbilitySerializers {
     public static final DeferredHolder<AbilitySerializer<?>, ParticleAbility.Serializer> PARTICLES = ABILITIES.register("particles", ParticleAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, FlightAbility.Serializer> FLIGHT = ABILITIES.register("flight", FlightAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, GlidingAbility.Serializer> GLIDING = ABILITIES.register("gliding", GlidingAbility.Serializer::new);
+    public static final DeferredHolder<AbilitySerializer<?>, WallClimbingAbility.Serializer> WALL_CLIMBING = ABILITIES.register("wall_climbing", WallClimbingAbility.Serializer::new);
 
 }

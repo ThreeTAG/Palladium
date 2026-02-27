@@ -47,6 +47,7 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, DimensionCondition.Serializer> DIMENSION = CONDITION_SERIALIZERS.register("dimension", DimensionCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsOnFireCondition.Serializer> IS_ON_FIRE = CONDITION_SERIALIZERS.register("is_on_fire", IsOnFireCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsSwimmingCondition.Serializer> IS_SWIMMING = CONDITION_SERIALIZERS.register("is_swimming", IsSwimmingCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, IsWallClimbingCondition.Serializer> IS_WALL_CLIMBING = CONDITION_SERIALIZERS.register("is_wall_climbing", IsWallClimbingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsGlidingCondition.Serializer> IS_GLIDING = CONDITION_SERIALIZERS.register("is_gliding", IsGlidingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsCreativeFlyingCondition.Serializer> IS_CREATIVE_FLYING = CONDITION_SERIALIZERS.register("is_creative_flying", IsCreativeFlyingCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, InWaterCondition.Serializer> IN_WATER = CONDITION_SERIALIZERS.register("in_water", InWaterCondition.Serializer::new);

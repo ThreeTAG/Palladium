@@ -3,9 +3,11 @@ package net.threetag.palladium.logic.molang;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.attachment.PalladiumAttachments;
 import net.threetag.palladium.entity.flight.EntityFlightHandler;
 import net.threetag.palladium.entity.flight.SwingingFlightType;
 import net.threetag.palladium.event.RegisterMoLangQueriesEvent;
@@ -53,6 +55,7 @@ public class PalladiumQueries implements ObjectValue {
         this.functions.put("swinging_left_arm_pitch", this::swinging_left_arm_pitch);
         this.functions.put("any_animation_finished", this::any_animation_finished);
         this.functions.put("gliding_tick_count", this::gliding_tick_count);
+        this.functions.put("is_wall_climbing", this::is_wall_climbing);
     }
 
     @Override
@@ -187,6 +190,11 @@ public class PalladiumQueries implements ObjectValue {
     @Binding("gliding_tick_count")
     public double gliding_tick_count() {
         return this.context.entity() instanceof LivingEntity living ? living.getFallFlyingTicks() : 0;
+    }
+
+    @Binding("is_wall_climbing")
+    public boolean is_wall_climbing() {
+        return this.context.entity() instanceof Player player && player.getData(PalladiumAttachments.IS_CLIMBING.get());
     }
 
     @Override

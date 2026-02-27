@@ -26,6 +26,7 @@
   "ability.palladium.size": "Größe",
   "ability.palladium.skin_change": "Skin Änderung",
   "ability.palladium.slowfall": "Langsamer Fall",
+  "ability.palladium.wall_climbing": "Wandklettern",
   "block.palladium.tailoring_bench": "Schneidertisch",
   "commands.palladium.customization.error.already_locked": "%s ist bereits gesperrt",
   "commands.palladium.customization.error.already_unlocked": "%s ist bereits freigeschaltet",

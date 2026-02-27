@@ -2,13 +2,16 @@ package net.threetag.palladium.power.ability;
 
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ServerChatEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.attachment.PalladiumAttachments;
 import net.threetag.palladium.component.PalladiumDataComponents;
 
 import java.util.ArrayList;
@@ -87,6 +90,15 @@ public class AbilityEventHandler {
                 e.setAmount(0);
                 e.setCanceled(true);
             }
+        }
+    }
+
+    @SubscribeEvent
+    static void onTick(EntityTickEvent.Pre e) {
+        if (e.getEntity() instanceof Player player && !player.level().isClientSide()) {
+            var abilityEnabled = AbilityUtil.isTypeEnabled(player, AbilitySerializers.WALL_CLIMBING.get());
+            var collision = player.level().findSupportingBlock(player, player.getBoundingBox().inflate(0.2F, -0.2F, 0.2F)).isPresent();
+            player.setData(PalladiumAttachments.IS_CLIMBING.get(), abilityEnabled && collision && (!player.onGround() || player.isCrouching()));
         }
     }
 

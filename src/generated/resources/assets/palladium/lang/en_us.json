@@ -26,6 +26,7 @@
   "ability.palladium.size": "Size",
   "ability.palladium.skin_change": "Skin Change",
   "ability.palladium.slowfall": "Slowfall",
+  "ability.palladium.wall_climbing": "Wall Climbing",
   "block.palladium.tailoring_bench": "Tailoring Bench",
   "commands.palladium.customization.error.already_locked": "%s is already locked",
   "commands.palladium.customization.error.already_unlocked": "%s is already unlocked",

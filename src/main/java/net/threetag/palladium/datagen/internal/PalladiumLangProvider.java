@@ -145,6 +145,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.PARTICLES, "Particles");
             this.addAbility(AbilitySerializers.FLIGHT, "Flight");
             this.addAbility(AbilitySerializers.GLIDING, "Gliding");
+            this.addAbility(AbilitySerializers.WALL_CLIMBING, "Wall Climbing");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Config
@@ -289,6 +290,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.PARTICLES, "Partikel");
             this.addAbility(AbilitySerializers.FLIGHT, "Flug");
             this.addAbility(AbilitySerializers.GLIDING, "Gleiten");
+            this.addAbility(AbilitySerializers.WALL_CLIMBING, "Wandklettern");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Config
@@ -434,6 +436,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.PARTICLES, "Partikel");
             this.addAbility(AbilitySerializers.FLIGHT, "Flug");
             this.addAbility(AbilitySerializers.GLIDING, "Gleiden");
+            this.addAbility(AbilitySerializers.WALL_CLIMBING, "Wandkleddern");
             this.addAbility(GeckoLibCompat.TRIGGER_LAYER_ANIMATION, "Geo Animation");
 
             // Config

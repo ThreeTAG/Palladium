@@ -9,6 +9,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.threetag.palladium.attachment.PalladiumAttachments;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.command.*;
 import net.threetag.palladium.compat.accessories.AccessoriesCompatImpl;
@@ -67,6 +68,7 @@ public final class Palladium {
         PalladiumDataComponents.DATA_COMPONENTS.register(modEventBus);
         PalladiumDialogActions.ACTIONS.register(modEventBus);
         PalladiumCriteriaTriggers.CRITERIA_TRIGGERS.register(modEventBus);
+        PalladiumAttachments.ATTACHMENT_TYPES.register(modEventBus);
         EntityEffects.EFFECTS.register(modEventBus);
         KeyBindTypeSerializers.KEY_BIND_TYPES.register(modEventBus);
         UnlockingHandlerSerializers.UNLOCKING_HANDLERS.register(modEventBus);

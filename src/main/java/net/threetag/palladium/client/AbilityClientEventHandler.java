@@ -1,14 +1,16 @@
 package net.threetag.palladium.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderHandEvent;
-import net.neoforged.neoforge.client.event.RenderLivingEvent;
-import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.attachment.PalladiumAttachments;
 import net.threetag.palladium.client.renderer.entity.state.PalladiumRenderStateKeys;
 import net.threetag.palladium.power.ability.AbilitySerializers;
 import net.threetag.palladium.power.ability.AbilityUtil;
@@ -19,6 +21,9 @@ public class AbilityClientEventHandler {
 
     public static float OVERRIDDEN_OPACITY = 1F;
     public static int OVERRIDDEN_TINT = -1;
+    private static int WALL_JUMP_TICKS = 0;
+    private static BlockPos WALL_JUMP_DIRECTION = null;
+    private static boolean CACHED_JUMP_KEY_PRESSED = false;
 
     @SubscribeEvent
     static void preRenderLiving(RenderLivingEvent.Pre<?, ?, ?> e) {
@@ -76,6 +81,42 @@ public class AbilityClientEventHandler {
                     e.setGreen(0F);
                     e.setBlue(0F);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    static void wallJumps(ClientTickEvent.Post e) {
+        var mc = Minecraft.getInstance();
+
+        if (mc.player != null) {
+            if (CACHED_JUMP_KEY_PRESSED != mc.options.keyJump.isDown()) {
+                if (!CACHED_JUMP_KEY_PRESSED && !mc.player.getAbilities().flying && mc.player.getData(PalladiumAttachments.IS_CLIMBING.get())) {
+                    float f = mc.player.getJumpPower(1F);
+                    if (!(f <= 1.0E-5F)) {
+                        mc.player.level().findSupportingBlock(mc.player, mc.player.getBoundingBox().inflate(0.2F, -0.2F, 0.2F)).ifPresent(blockPos -> {
+                            WALL_JUMP_DIRECTION = mc.player.blockPosition().subtract(blockPos);
+                            WALL_JUMP_TICKS = 10;
+
+                            mc.player.setYRot((float) Math.toDegrees(Math.atan2(WALL_JUMP_DIRECTION.getX(), WALL_JUMP_DIRECTION.getZ())));
+                            mc.options.keyUp.consumeClick();
+                            mc.player.needsSync = true;
+                            CommonHooks.onLivingJump(mc.player);
+                        });
+                    }
+                }
+                CACHED_JUMP_KEY_PRESSED = !CACHED_JUMP_KEY_PRESSED;
+            }
+
+
+            if (!mc.player.getAbilities().flying && WALL_JUMP_TICKS > 0) {
+                float f = mc.player.getJumpPower(1F);
+                float scale = WALL_JUMP_TICKS / 80F;
+                mc.player.addDeltaMovement(new Vec3(WALL_JUMP_DIRECTION.getX() * f * scale, f * scale, WALL_JUMP_DIRECTION.getZ() * f * scale));
+                WALL_JUMP_TICKS--;
+            } else {
+                WALL_JUMP_TICKS = 0;
+                WALL_JUMP_DIRECTION = null;
             }
         }
     }

@@ -1,0 +1,15 @@
+{
+  "name": "Wall Climbing Test",
+  "icon": "minecraft:ladder",
+  "abilities": {
+    "levitation": {
+      "type": "palladium:wall_climbing",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}
