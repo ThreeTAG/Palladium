@@ -15,6 +15,7 @@ public class PalladiumNetwork {
             if (entity instanceof LivingEntity livingEntity) {
                 consumer.accept(SyncEntityPowersPacket.create(livingEntity));
                 consumer.accept(SyncEntityCustomizationsPacket.create(livingEntity));
+                consumer.accept(SyncEntityEyeSelection.create(livingEntity));
             }
         });
     }
@@ -29,6 +30,7 @@ public class PalladiumNetwork {
         registrar.playToServer(UnselectCustomizationPacket.TYPE, UnselectCustomizationPacket.STREAM_CODEC, UnselectCustomizationPacket::handle);
         registrar.playToServer(ToggleEntityFlightPacket.TYPE, ToggleEntityFlightPacket.STREAM_CODEC, ToggleEntityFlightPacket::handle);
         registrar.playToServer(TailoringCraftPacket.TYPE, TailoringCraftPacket.STREAM_CODEC, TailoringCraftPacket::handle);
+        registrar.playToServer(SetPlayerEyeSelection.TYPE, SetPlayerEyeSelection.STREAM_CODEC, SetPlayerEyeSelection::handle);
 
         registrar.playToClient(SyncEntityPowersPacket.TYPE, SyncEntityPowersPacket.STREAM_CODEC, SyncEntityPowersPacket::handle);
         registrar.playToClient(SyncAbilityComponentPacket.TYPE, SyncAbilityComponentPacket.STREAM_CODEC, SyncAbilityComponentPacket::handle);
@@ -39,6 +41,7 @@ public class PalladiumNetwork {
         registrar.playToClient(SyncEntityUnselectCustomizationPacket.TYPE, SyncEntityUnselectCustomizationPacket.STREAM_CODEC, SyncEntityUnselectCustomizationPacket::handle);
         registrar.playToClient(SyncUnlockedCustomizationsPacket.TYPE, SyncUnlockedCustomizationsPacket.STREAM_CODEC, SyncUnlockedCustomizationsPacket::handle);
         registrar.playToClient(SyncUnlockedCustomizationPacket.TYPE, SyncUnlockedCustomizationPacket.STREAM_CODEC, SyncUnlockedCustomizationPacket::handle);
+        registrar.playToClient(SyncEntityEyeSelection.TYPE, SyncEntityEyeSelection.STREAM_CODEC, SyncEntityEyeSelection::handle);
         registrar.playToClient(SyncSwingAnchorPacket.TYPE, SyncSwingAnchorPacket.STREAM_CODEC, SyncSwingAnchorPacket::handle);
         registrar.playToClient(SyncAvailableTailoringRecipesPacket.TYPE, SyncAvailableTailoringRecipesPacket.STREAM_CODEC, SyncAvailableTailoringRecipesPacket::handle);
         registrar.playToClient(OpenScreenPacket.TYPE, OpenScreenPacket.STREAM_CODEC, OpenScreenPacket::handle);

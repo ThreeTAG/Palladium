@@ -10,6 +10,7 @@ import net.threetag.palladium.Palladium;
 public class PalladiumFeatureFlags {
 
     public static final FeatureFlag TAILORING = FeatureFlags.REGISTRY.getFlag(Palladium.id("tailoring"));
+    public static final FeatureFlag EYE_SELECTION = FeatureFlags.REGISTRY.getFlag(Palladium.id("eye_selection"));
 
     public static ICondition conditionTailoring() {
         return new FeatureFlagsEnabledCondition(FeatureFlagSet.of(TAILORING));

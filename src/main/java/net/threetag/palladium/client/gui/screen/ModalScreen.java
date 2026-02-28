@@ -3,7 +3,6 @@ package net.threetag.palladium.client.gui.screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -25,29 +24,23 @@ public class ModalScreen extends Screen {
     public static final int DEFAULT_WIDTH = 170;
     public static final int DEFAULT_HEIGHT = 120;
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    private int leftPos;
+    private int topPos;
+    private final int imageWidth;
+    private final int imageHeight;
     private Component headerText;
     private boolean renderBackground = true;
-    private List<Button> buttons = new ArrayList<>();
+    private final List<Button> buttons = new ArrayList<>();
+    private CloseButton closeButton;
 
-    public ModalScreen(ScreenRectangle screenRectangle, Component message) {
-        this(
-                screenRectangle.left() + (screenRectangle.width() / 2) - (DEFAULT_WIDTH / 2),
-                screenRectangle.top() + (screenRectangle.height() / 2) - (DEFAULT_HEIGHT / 2),
-                DEFAULT_WIDTH, DEFAULT_HEIGHT,
-                message
-        );
+    public ModalScreen(Component message) {
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, message);
     }
 
-    public ModalScreen(int x, int y, int width, int height, Component message) {
+    public ModalScreen(int imageWidth, int imageHeight, Component message) {
         super(message);
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
     }
 
     public ModalScreen setHeader(Component text) {
@@ -69,28 +62,34 @@ public class ModalScreen extends Screen {
     protected void init() {
         super.init();
 
+        this.leftPos = (this.width - this.imageWidth) / 2;
+        this.topPos = (this.height - this.imageHeight) / 2;
+
         int paddingSides = 7;
         int paddingTop = this.headerText != null ? 20 : paddingSides;
         int paddingBottom = this.buttons.isEmpty() ? paddingSides : 28;
+        int closeOffset = this.headerText != null ? 0 : 2;
 
-        this.addRenderableWidget(new CloseButton(this.getRight() - paddingSides - 7, this.getY() + paddingSides, button -> this.onClose()));
+        this.addRenderableWidget(this.closeButton = new CloseButton(this.getRight() - paddingSides - 7 - closeOffset, this.getTopPos() + paddingSides + closeOffset, button -> this.onClose()));
 
-        this.addRenderableWidget(new BackgroundlessTextBoxWidget(
-                this.getX() + paddingSides,
-                this.getY() + paddingTop,
-                this.getWidth() - paddingSides - paddingSides,
-                this.getHeight() - paddingTop - paddingBottom,
-                this.getTitle(),
-                this.minecraft.font
-        ));
+        if (!this.getTitle().getString().isBlank()) {
+            this.addRenderableWidget(new BackgroundlessTextBoxWidget(
+                    this.getLeftPos() + paddingSides,
+                    this.getTopPos() + paddingTop,
+                    this.getImageWidth() - paddingSides - paddingSides,
+                    this.getImageHeight() - paddingTop - paddingBottom,
+                    this.getTitle(),
+                    this.minecraft.font
+            ));
+        }
 
         if (!this.buttons.isEmpty()) {
             int gap = 4;
-            int width = (this.getWidth() - paddingSides - paddingSides - (this.buttons.size() - 1) * gap) / this.buttons.size();
+            int width = (this.getImageWidth() - paddingSides - paddingSides - (this.buttons.size() - 1) * gap) / this.buttons.size();
 
             for (int i = 0; i < this.buttons.size(); i++) {
                 var button = this.buttons.get(i);
-                button.setPosition(this.getX() + paddingSides + i * (width + gap), this.getBottom() - paddingSides + 2 - button.getHeight());
+                button.setPosition(this.getLeftPos() + paddingSides + i * (width + gap), this.getBottom() - paddingSides + 2 - button.getHeight());
                 button.setWidth(width);
                 this.addRenderableWidget(button);
             }
@@ -104,47 +103,39 @@ public class ModalScreen extends Screen {
         }
 
         if (this.headerText != null && !this.buttons.isEmpty()) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_HEADER_AND_FOOTER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
-            guiGraphics.drawString(Minecraft.getInstance().font, this.headerText, this.getX() + 7, this.getY() + 7, RenderUtil.DEFAULT_GRAY, false);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_HEADER_AND_FOOTER, this.getLeftPos(), this.getTopPos(), this.getImageWidth(), this.getImageHeight());
+            guiGraphics.drawString(Minecraft.getInstance().font, this.headerText, this.getLeftPos() + 7, this.getTopPos() + 7, RenderUtil.DEFAULT_GRAY, false);
         } else if (this.headerText != null) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_HEADER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
-            guiGraphics.drawString(Minecraft.getInstance().font, this.headerText, this.getX() + 7, this.getY() + 7, RenderUtil.DEFAULT_GRAY, false);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_HEADER, this.getLeftPos(), this.getTopPos(), this.getImageWidth(), this.getImageHeight());
+            guiGraphics.drawString(Minecraft.getInstance().font, this.headerText, this.getLeftPos() + 7, this.getTopPos() + 7, RenderUtil.DEFAULT_GRAY, false);
         } else if (!this.buttons.isEmpty()) {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_FOOTER, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_FOOTER, this.getLeftPos(), this.getTopPos(), this.getImageWidth(), this.getImageHeight());
         } else {
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_DEFAULT, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_MODAL_DEFAULT, this.getLeftPos(), this.getTopPos(), this.getImageWidth(), this.getImageHeight());
         }
     }
 
-    public int getX() {
-        return x;
+    public int getLeftPos() {
+        return leftPos;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public int getTopPos() {
+        return topPos;
     }
 
-    public int getY() {
-        return y;
+    public int getImageWidth() {
+        return imageWidth;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
+    public int getImageHeight() {
+        return imageHeight;
     }
 
     public int getRight() {
-        return x + width;
+        return leftPos + imageWidth;
     }
 
     public int getBottom() {
-        return y + height;
+        return topPos + imageHeight;
     }
 }

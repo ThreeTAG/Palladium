@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.client.gui.screen.customization.CustomizationsGrid;
+import net.threetag.palladium.client.gui.screen.customization.EyeSelectionScreen;
 import net.threetag.palladium.client.gui.screen.customization.PlayerCustomizationScreen;
 import net.threetag.palladium.client.gui.toast.CustomizationToast;
 import net.threetag.palladium.client.gui.widget.PowerTreeWidget;
@@ -214,6 +215,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx experience level");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx experience levels");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Customization");
+            this.add(EyeSelectionScreen.TRANS_TITLE, "Select your eyes");
+            this.add(EyeSelectionScreen.TRANS_RESET, "Reset");
+            this.add(EyeSelectionScreen.TRANS_SAVE, "Save");
             this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "There doesn't seem to be anything here...");
             this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
 
@@ -358,6 +362,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsstufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsstufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
+            this.add(EyeSelectionScreen.TRANS_TITLE, "Wähle deine Augen aus");
+            this.add(EyeSelectionScreen.TRANS_RESET, "Zurücksetzen");
+            this.add(EyeSelectionScreen.TRANS_SAVE, "Speichern");
             this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "Hier scheint es nichts zu geben...");
             this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
 
@@ -505,6 +512,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.add("gui.palladium.powers.buy_ability.experience_level", "%sx Erfahrungsschdufe");
             this.add("gui.palladium.powers.buy_ability.experience_level_plural", "%sx Erfahrungsschdufen");
             this.add(PlayerCustomizationScreen.TITLE_TRANSLATION_KEY, "Anpassungen");
+            this.add(EyeSelectionScreen.TRANS_TITLE, "Such dir dei Oogn aus");
+            this.add(EyeSelectionScreen.TRANS_RESET, "Zrücksetzn");
+            this.add(EyeSelectionScreen.TRANS_SAVE, "Speichern");
             this.add(CustomizationsGrid.NO_CUSTOMIZATIONS_LABEL, "Hier scheind es nüschd zu gähm...");
             this.add(CustomizationsGrid.VERY_SAD_LABEL, ":(");
 

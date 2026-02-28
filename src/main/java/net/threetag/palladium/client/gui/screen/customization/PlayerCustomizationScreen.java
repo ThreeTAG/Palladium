@@ -2,6 +2,7 @@ package net.threetag.palladium.client.gui.screen.customization;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
@@ -10,10 +11,14 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.neoforged.neoforge.client.ClientHooks;
 import net.threetag.palladium.client.gui.widget.tab.IconTabNavigationBar;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationHelper;
 import net.threetag.palladium.customization.CustomizationPreview;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
+import net.threetag.palladium.flag.PalladiumFeatureFlags;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -79,6 +84,14 @@ public class PlayerCustomizationScreen extends Screen {
                 this.width / 3 * 2, this.tabNavigationBar.getRectangle().bottom(),
                 this.width / 3, this.layout.getContentHeight()
         ));
+
+        if (Objects.requireNonNull(this.minecraft.getConnection()).isFeatureEnabled(FeatureFlagSet.of(PalladiumFeatureFlags.EYE_SELECTION))) {
+            this.addRenderableWidget(Button.builder(Component.literal("Eyes!!!"),
+                            button -> ClientHooks.pushGuiLayer(this.minecraft, new EyeSelectionScreen(this.minecraft.player, EntityCustomizationHandler.get(this.minecraft.player).getEyeSelection()).disableBackgroundRendering()))
+                    .tooltip(Tooltip.create(Component.translatable(EyeSelectionScreen.TRANS_TITLE)))
+                    .bounds(this.width - 20, this.tabNavigationBar.getRectangle().bottom() - 20, 30, 20)
+                    .build());
+        }
     }
 
     @Override

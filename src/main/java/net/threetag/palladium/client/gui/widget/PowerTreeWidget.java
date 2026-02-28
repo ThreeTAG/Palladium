@@ -241,7 +241,7 @@ public class PowerTreeWidget extends AbstractWidget implements TickableWidget {
                 return;
             }
 
-            var modal = new ModalScreen(parent.getRectangle(), this.description)
+            var modal = new ModalScreen(this.description)
                     .setHeader(this.title)
                     .disableBackgroundRendering();
 

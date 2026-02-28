@@ -13,10 +13,7 @@ import net.threetag.palladium.Palladium;
 import net.threetag.palladium.entity.PalladiumHubData;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
-import net.threetag.palladium.network.SyncEntityCustomizationPacket;
-import net.threetag.palladium.network.SyncEntityUnselectCustomizationPacket;
-import net.threetag.palladium.network.SyncUnlockedCustomizationPacket;
-import net.threetag.palladium.network.SyncUnlockedCustomizationsPacket;
+import net.threetag.palladium.network.*;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
 import java.util.*;
@@ -25,15 +22,18 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
 
     public static final Codec<EntityCustomizationHandler> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.unboundedMap(CustomizationCategory.HOLDER_CODEC, Customization.Codecs.HOLDER_CODEC).optionalFieldOf("selected", Collections.emptyMap()).forGetter(h -> h.selected),
-            Customization.Codecs.HOLDER_CODEC.listOf().optionalFieldOf("unlocked", Collections.emptyList()).forGetter(h -> h.unlocked)
+            Customization.Codecs.HOLDER_CODEC.listOf().optionalFieldOf("unlocked", Collections.emptyList()).forGetter(h -> h.unlocked),
+            Codec.LONG.optionalFieldOf("eye_selection", 0L).forGetter(h -> h.eyeSelection)
     ).apply(instance, EntityCustomizationHandler::new));
 
-    private Map<Holder<CustomizationCategory>, Holder<Customization>> selected;
-    private List<Holder<Customization>> unlocked;
+    private final Map<Holder<CustomizationCategory>, Holder<Customization>> selected;
+    private final List<Holder<Customization>> unlocked;
+    private long eyeSelection;
 
-    public EntityCustomizationHandler(Map<Holder<CustomizationCategory>, Holder<Customization>> selected, List<Holder<Customization>> unlocked) {
+    public EntityCustomizationHandler(Map<Holder<CustomizationCategory>, Holder<Customization>> selected, List<Holder<Customization>> unlocked, long eyeSelection) {
         this.selected = new HashMap<>(selected);
         this.unlocked = new ArrayList<>(unlocked);
+        this.eyeSelection = eyeSelection;
     }
 
     @Override
@@ -193,6 +193,22 @@ public class EntityCustomizationHandler extends PalladiumEntityData<LivingEntity
                 }
             }
         });
+    }
+
+    public long getEyeSelection() {
+        return this.eyeSelection;
+    }
+
+    public void setEyeSelection(long eyeSelection) {
+        this.eyeSelection = eyeSelection;
+
+        if (eyeSelection == 0L) {
+            this.eyeSelection = EyeSelectionUtil.DEFAULT_EYES;
+        }
+
+        if (!this.getEntity().level().isClientSide()) {
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(this.getEntity(), SyncEntityEyeSelection.create(this.getEntity()));
+        }
     }
 
     @Override

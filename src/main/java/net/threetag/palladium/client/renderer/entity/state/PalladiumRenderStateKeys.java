@@ -24,6 +24,7 @@ import net.threetag.palladium.client.renderer.entity.layer.pack.VibrationPackRen
 import net.threetag.palladium.client.trail.EntityTrailHandler;
 import net.threetag.palladium.client.trail.Trail;
 import net.threetag.palladium.client.util.ModelUtil;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.data.PalladiumEntityData;
 import net.threetag.palladium.entity.data.PalladiumEntityDataTypes;
 import net.threetag.palladium.entity.flight.DefaultFlightType;
@@ -44,6 +45,7 @@ public class PalladiumRenderStateKeys {
     public static ContextKey<Float[]> AIM = create("aim");
     public static ContextKey<Float> SHRINK_OVERLAY = create("shrink_player_overlay");
     public static ContextKey<Map<DataContext, ModelAnimationDefinition>> ANIMATIONS = create("animations");
+    public static ContextKey<Long> EYE_SELECTION = create("eye_selection");
     public static ContextKey<Float> IN_FLIGHT = create("in_flight");
     public static ContextKey<Float> OPACITY = create("opacity");
     public static ContextKey<Integer> TINT = create("tint");
@@ -69,6 +71,7 @@ public class PalladiumRenderStateKeys {
             state.setRenderData(HIDDEN_MODEL_PARTS, ModelUtil.getHiddenModelPartNames(entity));
             state.setRenderData(AIM, AimAbility.getTimer(entity, state.partialTick));
             state.setRenderData(SHRINK_OVERLAY, AbilityUtil.getHighestAnimationTimerProgress(entity, AbilitySerializers.SHRINK_PLAYER_OVERLAY.get(), state.partialTick));
+            state.setRenderData(EYE_SELECTION, EntityCustomizationHandler.get(entity).getEyeSelection());
             state.setRenderData(IN_FLIGHT, EntityFlightHandler.get(entity).getInFlightTimer(state.partialTick));
             state.setRenderData(TINT, -1);
             state.setRenderData(TRAILS, EntityTrailHandler.get(entity).getTrails());

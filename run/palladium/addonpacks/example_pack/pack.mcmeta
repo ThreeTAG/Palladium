@@ -6,7 +6,8 @@
   },
   "features": {
     "enabled": [
-      "palladium:tailoring"
+      "palladium:tailoring",
+      "palladium:eye_selection"
     ]
   }
 }
