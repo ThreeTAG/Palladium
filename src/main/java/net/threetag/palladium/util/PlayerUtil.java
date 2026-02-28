@@ -16,8 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.entity.flight.EntityFlightHandler;
 
 public class PlayerUtil {
+
+    public static boolean isFlying(LivingEntity entity) {
+        return isCreativeFlying(entity) || EntityFlightHandler.get(entity).isFlying();
+    }
 
     public static boolean isCreativeFlying(LivingEntity entity) {
         if (entity instanceof Player) {

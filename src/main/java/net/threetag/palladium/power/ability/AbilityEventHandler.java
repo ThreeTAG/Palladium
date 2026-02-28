@@ -13,6 +13,7 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.attachment.PalladiumAttachments;
 import net.threetag.palladium.component.PalladiumDataComponents;
+import net.threetag.palladium.util.PlayerUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,9 +97,13 @@ public class AbilityEventHandler {
     @SubscribeEvent
     static void onTick(EntityTickEvent.Pre e) {
         if (e.getEntity() instanceof Player player && !player.level().isClientSide()) {
-            var abilityEnabled = AbilityUtil.isTypeEnabled(player, AbilitySerializers.WALL_CLIMBING.get());
-            var collision = player.level().findSupportingBlock(player, player.getBoundingBox().inflate(0.2F, -0.2F, 0.2F)).isPresent();
-            player.setData(PalladiumAttachments.IS_CLIMBING.get(), abilityEnabled && collision && (!player.onGround() || player.isCrouching()));
+            var flying = PlayerUtil.isFlying(player);
+            player.setData(PalladiumAttachments.IS_CLIMBING.get(),
+                    !flying
+                            && (!player.onGround() || player.isCrouching())
+                            && AbilityUtil.isTypeEnabled(player, AbilitySerializers.WALL_CLIMBING.get())
+                            && player.level().findSupportingBlock(player, player.getBoundingBox().inflate(0.2F, 0F, 0.2F)).isPresent()
+            );
         }
     }
 
