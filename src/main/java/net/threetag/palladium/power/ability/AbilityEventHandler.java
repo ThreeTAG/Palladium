@@ -103,6 +103,7 @@ public class AbilityEventHandler {
                             && (!player.onGround() || player.isCrouching())
                             && AbilityUtil.isTypeEnabled(player, AbilitySerializers.WALL_CLIMBING.get())
                             && player.level().findSupportingBlock(player, player.getBoundingBox().inflate(0.2F, 0F, 0.2F)).isPresent()
+                            && player.level().findSupportingBlock(player, player.getBoundingBox().move(0, -1, 0)).isEmpty()
             );
         }
     }

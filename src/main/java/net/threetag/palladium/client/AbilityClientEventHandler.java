@@ -95,7 +95,7 @@ public class AbilityClientEventHandler {
         var mc = Minecraft.getInstance();
 
         if (mc.player != null) {
-            if (mc.player.getData(PalladiumAttachments.IS_CLIMBING.get())) {
+            if (mc.player.getData(PalladiumAttachments.IS_CLIMBING.get()) && WALL_JUMP_TICKS <= 0) {
                 mc.player.level().findSupportingBlock(mc.player, mc.player.getBoundingBox().inflate(0.2F, -0.2F, 0.2F)).ifPresent(blockPos -> {
                     var direction = blockPos.subtract(mc.player.blockPosition());
                     var toWallRot = (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getZ()));
