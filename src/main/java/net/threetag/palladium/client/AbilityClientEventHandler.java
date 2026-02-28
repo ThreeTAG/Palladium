@@ -97,8 +97,8 @@ public class AbilityClientEventHandler {
         if (mc.player != null) {
             if (mc.player.getData(PalladiumAttachments.IS_CLIMBING.get()) && WALL_JUMP_TICKS <= 0) {
                 mc.player.level().findSupportingBlock(mc.player, mc.player.getBoundingBox().inflate(0.2F, -0.2F, 0.2F)).ifPresent(blockPos -> {
-                    var direction = blockPos.subtract(mc.player.blockPosition());
-                    var toWallRot = (float) Math.toDegrees(Math.atan2(direction.getX(), direction.getZ()));
+                    var direction = mc.player.blockPosition().subtract(blockPos);
+                    var toWallRot = (float) -Mth.wrapDegrees(Math.toDegrees(Math.atan2(direction.getX(), direction.getZ())) + 180F);
                     mc.player.setYBodyRot(toWallRot);
 
                     float f = Mth.wrapDegrees(mc.player.getYRot() - toWallRot);
@@ -116,8 +116,9 @@ public class AbilityClientEventHandler {
                         mc.player.level().findSupportingBlock(mc.player, mc.player.getBoundingBox().inflate(0.2F, -0.2F, 0.2F)).ifPresent(blockPos -> {
                             WALL_JUMP_DIRECTION = mc.player.blockPosition().subtract(blockPos);
                             WALL_JUMP_TICKS = 10;
+                            var jumpAngle = (float) -Mth.wrapDegrees(Math.toDegrees(Math.atan2(WALL_JUMP_DIRECTION.getX(), WALL_JUMP_DIRECTION.getZ())));
 
-                            mc.player.setYRot((float) Math.toDegrees(Math.atan2(WALL_JUMP_DIRECTION.getX(), WALL_JUMP_DIRECTION.getZ())));
+                            mc.player.setYRot(jumpAngle);
                             mc.options.keyUp.consumeClick();
                             mc.player.needsSync = true;
                             CommonHooks.onLivingJump(mc.player);
