@@ -39,11 +39,13 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (this.currentList != null) {
+        var mc = Minecraft.getInstance();
+
+        if (this.currentList != null && !mc.options.hideGui) {
             this.toRender = this.lists.size() == 1 && this.lists.getFirst().simple ? this.currentList.simplified : this.currentList.completeBar;
             var alignment = PalladiumClientConfig.ABILITY_BAR_ALIGNMENT.get();
-            var pos = getPosition(this, Minecraft.getInstance().getWindow(), alignment);
-            this.render(Minecraft.getInstance(), guiGraphics, pos.x, pos.y, alignment);
+            var pos = getPosition(this, mc.getWindow(), alignment);
+            this.render(mc, guiGraphics, pos.x, pos.y, alignment);
         } else {
             this.toRender = null;
         }
