@@ -1,0 +1,20 @@
+{
+  "name": "Eye Selection Test",
+  "icon": "minecraft:spider_eye",
+  "abilities": {
+    "overlay": {
+      "type": "palladium:dummy",
+      "properties": {
+        "render_layer": "test:glowing_eyes_test",
+        "title": "Glowing Eyes",
+        "list_index": 0
+      },
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "toggle"
+        }
+      }
+    }
+  }
+}

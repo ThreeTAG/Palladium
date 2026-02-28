@@ -1,0 +1,7 @@
+{
+  "texture": {
+    "type": "palladium:eye_selection",
+    "color": "#ff0000"
+  },
+  "light_emission": 15
+}

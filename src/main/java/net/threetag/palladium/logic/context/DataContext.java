@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.customization.EntityCustomizationHandler;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.power.Power;
 import net.threetag.palladium.power.PowerInstance;
@@ -34,7 +35,8 @@ public class DataContext {
         return create()
                 .with(DataContextKeys.ENTITY, entity)
                 .with(DataContextKeys.LEVEL, entity.level())
-                .with(DataContextKeys.BLOCK_POS, entity.blockPosition());
+                .with(DataContextKeys.BLOCK_POS, entity.blockPosition())
+                .with(DataContextKeys.EYE_SELECTION, entity instanceof LivingEntity living ? EntityCustomizationHandler.get(living).getEyeSelection() : 0L);
     }
 
     public static DataContext forItemInEquipmentSlot(LivingEntity entity, EquipmentSlot slot) {

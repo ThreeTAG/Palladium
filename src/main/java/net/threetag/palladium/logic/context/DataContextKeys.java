@@ -23,6 +23,7 @@ public class DataContextKeys {
     public static ContextKey<Holder<Power>> POWER = create("power");
     public static ContextKey<PowerInstance> POWER_INSTANCE = create("power_instance");
     public static ContextKey<Boolean> ANY_ANIMATION_FINISHED = create("any_animation_finished");
+    public static ContextKey<Long> EYE_SELECTION = create("eye_selection");
 
     private static <T> ContextKey<T> create(String name) {
         return new ContextKey<>(Palladium.id(name));
