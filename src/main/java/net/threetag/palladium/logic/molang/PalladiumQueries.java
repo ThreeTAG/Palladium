@@ -202,17 +202,17 @@ public class PalladiumQueries implements ObjectValue {
 
     @Binding("pos_x")
     public double pos_x() {
-        return this.context.entity().getX();
+        return Mth.lerp(this.context.partialTick(), this.context.entity().xo, this.context.entity().getX());
     }
 
     @Binding("pos_y")
     public double pos_y() {
-        return this.context.entity().getY();
+        return Mth.lerp(this.context.partialTick(), this.context.entity().yo, this.context.entity().getY());
     }
 
     @Binding("pos_z")
     public double pos_z() {
-        return this.context.entity().getZ();
+        return Mth.lerp(this.context.partialTick(), this.context.entity().zo, this.context.entity().getZ());
     }
 
     @Override
