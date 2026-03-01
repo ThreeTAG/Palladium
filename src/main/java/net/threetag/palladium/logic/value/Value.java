@@ -23,6 +23,20 @@ public abstract class Value {
         return base.replaceAll("#" + key, getAsString(context));
     }
 
+    public Number getAsNumber(DataContext context, Number fallback) {
+        var value = this.get(context);
+
+        if (value instanceof Number n) {
+            return n;
+        } else {
+            return fallback;
+        }
+    }
+
+    public Number getAsNumber(DataContext context) {
+        return this.getAsNumber(context, 0);
+    }
+
     public int getAsInt(DataContext context, int fallback) {
         var value = this.get(context);
 

@@ -31,6 +31,10 @@ public abstract class SettingType {
         return new Combined(options);
     }
 
+    public static SettingType list(SettingType type) {
+        return simple(type.toString() + "[]");
+    }
+
     public static SettingType listOrPrimitive(SettingType type) {
         return combined(type, simple(type.toString() + "[]"));
     }

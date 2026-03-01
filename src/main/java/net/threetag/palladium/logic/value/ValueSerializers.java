@@ -10,6 +10,8 @@ public class ValueSerializers {
     public static final DeferredRegister<ValueSerializer<?>> VALUE_SERIALIZERS = DeferredRegister.create(PalladiumRegistryKeys.VALUE_SERIALIZER, Palladium.MOD_ID);
 
     public static final DeferredHolder<ValueSerializer<?>, StaticValue.Serializer> STATIC = VALUE_SERIALIZERS.register("static", StaticValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, MaxNumberValue.Serializer> MAX_NUMBER = VALUE_SERIALIZERS.register("max_number", MaxNumberValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, MinNumberValue.Serializer> MIN_NUMBER = VALUE_SERIALIZERS.register("min_number", MinNumberValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoLangIntegerValue.Serializer> MOLANG_INTEGER = VALUE_SERIALIZERS.register("molang_integer", MoLangIntegerValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoLangFloatValue.Serializer> MOLANG_FLOAT = VALUE_SERIALIZERS.register("molang_float", MoLangFloatValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoLangStringValue.Serializer> MOLANG_STRING = VALUE_SERIALIZERS.register("molang_string", MoLangStringValue.Serializer::new);

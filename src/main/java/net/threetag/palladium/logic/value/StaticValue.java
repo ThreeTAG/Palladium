@@ -22,6 +22,18 @@ public class StaticValue extends Value {
         this.object = object;
     }
 
+    public StaticValue(Number number) {
+        this(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(number)));
+    }
+
+    public StaticValue(String string) {
+        this(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(string)));
+    }
+
+    public StaticValue(boolean bool) {
+        this(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(bool)));
+    }
+
     @Override
     public Object get(DataContext context) {
         if (this.object.getValue() instanceof JsonPrimitive json) {
@@ -52,7 +64,7 @@ public class StaticValue extends Value {
         public void addDocumentation(CodecDocumentationBuilder<Value, StaticValue> builder, HolderLookup.Provider provider) {
             builder.setName("Static Value").setDescription("Utilises a simple, static value")
                     .add("value", TYPE_ANY, "A simple, static value.")
-                    .addExampleObject(new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(42))));
+                    .addExampleObject(new StaticValue(42));
         }
     }
 }

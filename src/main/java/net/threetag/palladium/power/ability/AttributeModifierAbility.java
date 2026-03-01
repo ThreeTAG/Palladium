@@ -1,9 +1,6 @@
 package net.threetag.palladium.power.ability;
 
-import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -133,10 +130,10 @@ public class AttributeModifierAbility extends Ability {
             builder.setDescription("Adds an attribute modifier to the entity while the ability is enabled.")
                     .add("modifier(s)", TYPE_ATTRIBUTE_MODIFIER, "The attribute modifier(s) that will be applied")
                     .addExampleObject(new AttributeModifierAbility(new HashSet<>(List.of(
-                            new DynamicModifier(Attributes.ARMOR, Optional.empty(), new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(1D))), AttributeModifier.Operation.ADD_VALUE)
+                            new DynamicModifier(Attributes.ARMOR, Optional.empty(), new StaticValue(1D), AttributeModifier.Operation.ADD_VALUE)
                     )), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()))
                     .addExampleObject(new AttributeModifierAbility(new HashSet<>(Arrays.asList(
-                            new DynamicModifier(Attributes.MOVEMENT_SPEED, Optional.empty(), new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive(5D))), AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                            new DynamicModifier(Attributes.MOVEMENT_SPEED, Optional.empty(), new StaticValue(5D), AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
                             new DynamicModifier(Attributes.JUMP_STRENGTH, Optional.empty(), new MoonPhaseValue(""), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     )), AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }

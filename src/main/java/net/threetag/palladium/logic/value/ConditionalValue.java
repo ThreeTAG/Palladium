@@ -1,8 +1,5 @@
 package net.threetag.palladium.logic.value;
 
-import com.google.gson.JsonPrimitive;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -54,8 +51,8 @@ public class ConditionalValue extends Value {
                     .add("on_false", TYPE_VALUE, "The value to return if the condition is not met.")
                     .addExampleObject(new ConditionalValue(
                             new CrouchingCondition(),
-                            new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive("crouching"))),
-                            new StaticValue(new Dynamic<>(JsonOps.INSTANCE, new JsonPrimitive("not_crouching")))));
+                            new StaticValue("crouching"),
+                            new StaticValue("not_crouching")));
         }
     }
 }
