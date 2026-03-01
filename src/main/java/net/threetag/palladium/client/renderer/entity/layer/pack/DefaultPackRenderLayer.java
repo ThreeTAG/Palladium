@@ -219,7 +219,7 @@ public class DefaultPackRenderLayer extends PackRenderLayer<PackRenderLayer.Stat
                 modelPart.visible = true;
                 modelPart.skipDraw = false;
             }
-            var partName = arm == HumanoidArm.RIGHT ? "rightArm" : "leftArm";
+            var partName = arm == HumanoidArm.RIGHT ? "right_arm" : "left_arm";
 
             if (model.root().hasChild(partName)) {
                 var foundPart = model.root().getChild(partName);
