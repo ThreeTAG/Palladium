@@ -2,9 +2,10 @@ package net.threetag.palladium.client.gui.screen.customization;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.components.tabs.TabManager;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.neoforged.neoforge.client.ClientHooks;
+import net.threetag.palladium.Palladium;
 import net.threetag.palladium.client.gui.widget.tab.IconTabNavigationBar;
 import net.threetag.palladium.customization.CustomizationCategory;
 import net.threetag.palladium.customization.CustomizationHelper;
@@ -37,6 +39,7 @@ public class PlayerCustomizationScreen extends Screen {
     public final TabManager tabManager = new TabManager(this::addRenderableWidget, this::removeWidget);
     private IconTabNavigationBar tabNavigationBar;
     private CustomizationPreviewComponent preview;
+    private SpriteIconButton eyeSelectionButton;
 
     public PlayerCustomizationScreen(Screen lastScreen) {
         this(lastScreen, null);
@@ -52,7 +55,20 @@ public class PlayerCustomizationScreen extends Screen {
     protected void init() {
         this.layout.addTitleHeader(this.title, this.font);
         this.addContents();
-        this.layout.addToFooter(Button.builder(CommonComponents.GUI_DONE, button -> this.onClose()).width(200).build());
+
+        LinearLayout linearlayout = this.layout.addToFooter(LinearLayout.horizontal()).spacing(8);
+        linearlayout.addChild(Button.builder(CommonComponents.GUI_DONE, button -> this.onClose()).width(200).build());
+
+        if (Objects.requireNonNull(this.minecraft.getConnection()).isFeatureEnabled(FeatureFlagSet.of(PalladiumFeatureFlags.EYE_SELECTION))) {
+            linearlayout.addChild(SpriteIconButton.builder(Component.translatable(EyeSelectionScreen.TRANS_TITLE),
+                            b -> ClientHooks.pushGuiLayer(this.minecraft, new EyeSelectionScreen(this.minecraft.player, EntityCustomizationHandler.get(this.minecraft.player).getEyeSelection()).disableBackgroundRendering()),
+                            true)
+                    .size(20, 20)
+                    .withTootip()
+                    .sprite(Palladium.id("widget/eye_button"), 20, 20)
+                    .build());
+        }
+
         this.layout.visitWidgets(this::addRenderableWidget);
         this.repositionElements();
     }
@@ -84,14 +100,6 @@ public class PlayerCustomizationScreen extends Screen {
                 this.width / 3 * 2, this.tabNavigationBar.getRectangle().bottom(),
                 this.width / 3, this.layout.getContentHeight()
         ));
-
-        if (Objects.requireNonNull(this.minecraft.getConnection()).isFeatureEnabled(FeatureFlagSet.of(PalladiumFeatureFlags.EYE_SELECTION))) {
-            this.addRenderableWidget(Button.builder(Component.literal("Eyes!!!"),
-                            button -> ClientHooks.pushGuiLayer(this.minecraft, new EyeSelectionScreen(this.minecraft.player, EntityCustomizationHandler.get(this.minecraft.player).getEyeSelection()).disableBackgroundRendering()))
-                    .tooltip(Tooltip.create(Component.translatable(EyeSelectionScreen.TRANS_TITLE)))
-                    .bounds(this.width - 20, this.tabNavigationBar.getRectangle().bottom() - 20, 30, 20)
-                    .build());
-        }
     }
 
     @Override
