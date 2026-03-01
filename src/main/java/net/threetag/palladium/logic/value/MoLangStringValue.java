@@ -29,7 +29,7 @@ public class MoLangStringValue extends StringValue {
         return ValueSerializers.MOLANG_STRING.get();
     }
 
-    public static class Serializer extends StringSerializer<MoLangStringValue> {
+    public static class Serializer extends ValueSerializer<MoLangStringValue> {
 
         @Override
         public MapCodec<MoLangStringValue> codec() {
@@ -39,6 +39,7 @@ public class MoLangStringValue extends StringValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoLangStringValue> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang String").setDescription("Allows MoLang usage to assemble a string")
+                    .add("molang", TYPE_MOLANG, "MoLang query")
                     .addExampleObject(new MoLangStringValue("query.day() ? 'day' : 'night'"));
         }
     }

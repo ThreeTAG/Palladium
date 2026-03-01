@@ -27,7 +27,7 @@ public class MoLangFloatValue extends FloatValue {
         return ValueSerializers.MOLANG_FLOAT.get();
     }
 
-    public static class Serializer extends FloatSerializer<MoLangFloatValue> {
+    public static class Serializer extends ValueSerializer<MoLangFloatValue> {
 
         @Override
         public MapCodec<MoLangFloatValue> codec() {
@@ -37,6 +37,7 @@ public class MoLangFloatValue extends FloatValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoLangFloatValue> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang Float").setDescription("Allows MoLang usage to calculate an float")
+                    .add("molang", TYPE_MOLANG, "MoLang query")
                     .addExampleObject(new MoLangFloatValue("query.ground_speed() * 2.5"));
         }
     }

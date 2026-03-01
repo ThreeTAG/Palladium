@@ -27,7 +27,7 @@ public class MoLangIntegerValue extends IntegerValue {
         return ValueSerializers.MOLANG_INTEGER.get();
     }
 
-    public static class Serializer extends IntSerializer<MoLangIntegerValue> {
+    public static class Serializer extends ValueSerializer<MoLangIntegerValue> {
 
         @Override
         public MapCodec<MoLangIntegerValue> codec() {
@@ -37,6 +37,7 @@ public class MoLangIntegerValue extends IntegerValue {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Value, MoLangIntegerValue> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang Integer").setDescription("Allows MoLang usage to calculate an integer")
+                    .add("molang", TYPE_MOLANG, "MoLang query")
                     .addExampleObject(new MoLangIntegerValue("query.ground_speed() * 2"));
         }
     }
