@@ -26,7 +26,7 @@ public class PowerUtil {
      */
     public static Collection<Power> getPowers(LivingEntity entity) {
         var powerHandler = getPowerHandler(entity);
-        return powerHandler.getPowerInstances().values().stream().map(powerInstance -> powerInstance.getPower().value()).toList();
+        return powerHandler.getPowers().stream().map(powerInstance -> powerInstance.getPower().value()).toList();
     }
 
     /**
@@ -37,7 +37,7 @@ public class PowerUtil {
      */
     public static Collection<Identifier> getPowerIds(LivingEntity entity) {
         var powerHandler = getPowerHandler(entity);
-        return powerHandler.getPowerInstances().values().stream()
+        return powerHandler.getPowers().stream()
                 .map(h -> entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).getKey(h.getPower().value()))
                 .toList();
     }
@@ -73,7 +73,7 @@ public class PowerUtil {
      */
     public static Collection<Power> getPowersForNamespace(LivingEntity entity, String namespace) {
         var powerHandler = getPowerHandler(entity);
-        return powerHandler.getPowerInstances().values().stream()
+        return powerHandler.getPowers().stream()
                 .map(powerInstance -> powerInstance.getPower().value())
                 .filter(p -> entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).getKey(p).getNamespace().equals(namespace))
                 .toList();
@@ -87,7 +87,7 @@ public class PowerUtil {
      */
     public static Collection<Identifier> getPowerIdsForNamespace(LivingEntity entity, String namespace) {
         var powerHandler = getPowerHandler(entity);
-        return powerHandler.getPowerInstances().values().stream()
+        return powerHandler.getPowers().stream()
                 .map(h -> entity.registryAccess().lookupOrThrow(PalladiumRegistryKeys.POWER).getKey(h.getPower().value()))
                 .filter(id -> Objects.requireNonNull(id).getNamespace().equals(namespace))
                 .toList();

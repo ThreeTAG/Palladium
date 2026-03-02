@@ -85,7 +85,7 @@ public class AbilityBar implements GuiLayer, AbilityBarComponent {
         this.currentList = null;
         this.lists.clear();
 
-        for (PowerInstance holder : PowerUtil.getPowerHandler(player).getPowerInstances().values()) {
+        for (PowerInstance holder : PowerUtil.getPowerHandler(player).getPowers()) {
             List<AbilityList> containerList = new ArrayList<>();
             List<AbilityList> remainingLists = new ArrayList<>();
             List<AbilityInstance<?>> remaining = new ArrayList<>();

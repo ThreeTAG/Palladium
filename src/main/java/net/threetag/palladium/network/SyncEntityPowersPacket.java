@@ -52,7 +52,7 @@ public record SyncEntityPowersPacket(int entityId, List<Holder<Power>> remove,
 
     public static SyncEntityPowersPacket create(LivingEntity entity) {
         List<NewPowerChange> add = new ArrayList<>();
-        PowerUtil.getPowerHandler(entity).getPowerInstances().forEach((identifier, powerInstance) -> {
+        PowerUtil.getPowerHandler(entity).getPowers().forEach((powerInstance) -> {
             add.add(new NewPowerChange(powerInstance));
         });
         return new SyncEntityPowersPacket(entity.getId(), Collections.emptyList(), add);

@@ -96,7 +96,7 @@ public class PowerButtonInjection {
     }
 
     public static List<PowerInstance> getAvailablePowers(Player player) {
-        return PowerUtil.getPowerHandler(player).getPowerInstances().values().stream().filter(instance -> !instance.getPower().value().isHidden()).toList();
+        return PowerUtil.getPowerHandler(player).getPowers().stream().filter(instance -> !instance.getPower().value().isHidden()).toList();
     }
 
     public static Vector2i getButtonPosition(Screen screen) {

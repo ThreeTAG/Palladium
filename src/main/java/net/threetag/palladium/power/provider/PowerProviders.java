@@ -16,7 +16,6 @@ public class PowerProviders {
     // TODO
     public static final DeferredHolder<PowerProvider, SuperpowerProvider> SUPERPOWER = PROVIDERS.register("superpower", SuperpowerProvider::new);
     public static final DeferredHolder<PowerProvider, ItemPowerProvider> ITEM = PROVIDERS.register("item", ItemPowerProvider::new);
-//    public static final Holder<PowerProvider> EQUIPMENT_SLOTS = PROVIDERS.register("equipment_slots", EquipmentSlotPowerProvider::new);
 //    public static final Holder<PowerProvider> SUIT_SETS = PROVIDERS.register("suit_sets", SuitSetPowerProvider::new);
 
 }

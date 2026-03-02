@@ -1,6 +1,5 @@
 package net.threetag.palladium.power;
 
-import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -15,10 +14,8 @@ import net.threetag.palladium.power.provider.PowerProvider;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, EntityPowerHandler> {
 
@@ -31,8 +28,8 @@ public class EntityPowerHandler extends PalladiumEntityData<LivingEntity, Entity
         this.powerData = powerData;
     }
 
-    public Map<Identifier, PowerInstance> getPowerInstances() {
-        return ImmutableMap.copyOf(this.powers);
+    public Collection<PowerInstance> getPowers() {
+        return this.powers.values().stream().sorted((o1, o2) -> o2.getPriority() - o1.getPriority()).collect(Collectors.toList());
     }
 
     @Override
