@@ -3,11 +3,8 @@ package net.threetag.palladium.power.ability.unlocking;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,15 +22,6 @@ public class ScoreBuyableUnlockingHandler extends BuyableUnlockingHandler {
             ComponentSerialization.CODEC.fieldOf("description").forGetter(h -> h.description),
             Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ScoreBuyableUnlockingHandler::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, ScoreBuyableUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8, h -> h.objective,
-            ByteBufCodecs.VAR_INT, h -> h.amount,
-            Icon.STREAM_CODEC, h -> h.icon,
-            ComponentSerialization.STREAM_CODEC, h -> h.description,
-            Condition.STREAM_CODEC, h -> h.condition,
-            ScoreBuyableUnlockingHandler::new
-    );
 
     private final String objective;
     private final int amount;
@@ -87,9 +75,5 @@ public class ScoreBuyableUnlockingHandler extends BuyableUnlockingHandler {
             return CODEC;
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ScoreBuyableUnlockingHandler> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

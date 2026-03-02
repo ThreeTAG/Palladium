@@ -2,8 +2,6 @@ package net.threetag.palladium.power.ability.enabling;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.logic.condition.Condition;
 import net.threetag.palladium.logic.condition.TrueCondition;
@@ -15,11 +13,6 @@ public class ConditionalEnablingHandler extends EnablingHandler {
     public static final MapCodec<ConditionalEnablingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Condition.CODEC.fieldOf("conditions").forGetter(handler -> handler.condition)
     ).apply(instance, ConditionalEnablingHandler::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, ConditionalEnablingHandler> STREAM_CODEC = StreamCodec.composite(
-            Condition.STREAM_CODEC, h -> h.condition,
-            ConditionalEnablingHandler::new
-    );
 
     public static final ConditionalEnablingHandler EMPTY = new ConditionalEnablingHandler(TrueCondition.INSTANCE);
 
@@ -46,9 +39,5 @@ public class ConditionalEnablingHandler extends EnablingHandler {
             return CODEC;
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ConditionalEnablingHandler> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

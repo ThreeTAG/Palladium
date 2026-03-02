@@ -2,10 +2,7 @@ package net.threetag.palladium.power.ability.unlocking;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,13 +19,6 @@ public class ItemBuyableUnlockingHandler extends BuyableUnlockingHandler {
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("amount", 1).forGetter(h -> h.amount),
             Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ItemBuyableUnlockingHandler::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, ItemBuyableUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
-            Ingredient.CONTENTS_STREAM_CODEC, h -> h.ingredient,
-            ByteBufCodecs.VAR_INT, h -> h.amount,
-            Condition.STREAM_CODEC, h -> h.condition,
-            ItemBuyableUnlockingHandler::new
-    );
 
     private final Ingredient ingredient;
     private final int amount;
@@ -110,9 +100,5 @@ public class ItemBuyableUnlockingHandler extends BuyableUnlockingHandler {
             return CODEC;
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ItemBuyableUnlockingHandler> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

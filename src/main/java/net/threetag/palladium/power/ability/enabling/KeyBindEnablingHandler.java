@@ -231,10 +231,6 @@ public class KeyBindEnablingHandler extends EnablingHandler {
             return CODEC;
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, KeyBindEnablingHandler> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 
     public enum Behaviour implements StringRepresentable {

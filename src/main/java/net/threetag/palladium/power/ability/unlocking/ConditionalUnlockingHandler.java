@@ -2,8 +2,6 @@ package net.threetag.palladium.power.ability.unlocking;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.logic.condition.AbilityUnlockedCondition;
 import net.threetag.palladium.logic.condition.AndCondition;
@@ -21,11 +19,6 @@ public class ConditionalUnlockingHandler extends UnlockingHandler {
     public static final MapCodec<ConditionalUnlockingHandler> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Condition.CODEC.fieldOf("conditions").forGetter(h -> h.condition)
     ).apply(instance, ConditionalUnlockingHandler::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, ConditionalUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
-            Condition.STREAM_CODEC, h -> h.condition,
-            ConditionalUnlockingHandler::new
-    );
 
     public static final ConditionalUnlockingHandler EMPTY = new ConditionalUnlockingHandler(TrueCondition.INSTANCE);
 
@@ -69,9 +62,5 @@ public class ConditionalUnlockingHandler extends UnlockingHandler {
             return CODEC;
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ConditionalUnlockingHandler> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }

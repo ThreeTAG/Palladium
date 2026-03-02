@@ -3,10 +3,7 @@ package net.threetag.palladium.power.ability.unlocking;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.threetag.palladium.icon.ExperienceIcon;
@@ -19,12 +16,6 @@ public class ExperienceLevelBuyableUnlockingHandler extends BuyableUnlockingHand
             Codec.INT.fieldOf("xp_level").forGetter(h -> h.xpLevel),
             Condition.CODEC.optionalFieldOf("conditions", TrueCondition.INSTANCE).forGetter(h -> h.condition)
     ).apply(instance, ExperienceLevelBuyableUnlockingHandler::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, ExperienceLevelBuyableUnlockingHandler> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, h -> h.xpLevel,
-            Condition.STREAM_CODEC, h -> h.condition,
-            ExperienceLevelBuyableUnlockingHandler::new
-    );
 
     private final int xpLevel;
 
@@ -66,9 +57,5 @@ public class ExperienceLevelBuyableUnlockingHandler extends BuyableUnlockingHand
             return CODEC;
         }
 
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ExperienceLevelBuyableUnlockingHandler> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 }
