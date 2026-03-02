@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.minecraft.util.StringRepresentable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -82,7 +83,11 @@ public abstract class SettingType {
 
             var array = new JsonArray();
             for (java.lang.Enum<?> value : this.values) {
-                array.add(value.name());
+                if (value instanceof StringRepresentable rep) {
+                    array.add(rep.getSerializedName());
+                } else {
+                    array.add(value.name());
+                }
             }
             json.add("values", array);
 
@@ -91,7 +96,7 @@ public abstract class SettingType {
 
         @Override
         public String toString() {
-            return Arrays.stream(this.values).map(e -> "\"" + e.name() + "\"").collect(Collectors.joining(" | "));
+            return Arrays.stream(this.values).map(e -> "\"" + (e instanceof StringRepresentable rep ? rep.getSerializedName() : e.name()) + "\"").collect(Collectors.joining(" | "));
         }
     }
 
