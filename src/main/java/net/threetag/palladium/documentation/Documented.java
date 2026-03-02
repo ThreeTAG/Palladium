@@ -69,6 +69,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_FLIGHT_TYPE = SettingType.simple("Flight Type ID");
     SettingType TYPE_DIMENSION = SettingType.simple("Dimension ID");
     SettingType TYPE_POWER = SettingType.simple("Power ID");
+    SettingType TYPE_ATTACHMENT_TYPE = SettingType.simple("Data Attachment ID");
     SettingType TYPE_CUSTOMIZATION_CATEGORY_LIST = SettingType.simple("Customization Category ID(s)");
     SettingType TYPE_DAMAGE_TYPE_HOLDER_SET = SettingType.simple("Damage Type ID(s) / Tag(s)");
     SettingType TYPE_ABILITY_TYPE_HOLDER_SET = SettingType.simple("Ability Type ID(s) / Tag(s)");

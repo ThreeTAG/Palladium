@@ -12,6 +12,9 @@ public class ValueSerializers {
     public static final DeferredHolder<ValueSerializer<?>, StaticValue.Serializer> STATIC = VALUE_SERIALIZERS.register("static", StaticValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MaxNumberValue.Serializer> MAX_NUMBER = VALUE_SERIALIZERS.register("max_number", MaxNumberValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MinNumberValue.Serializer> MIN_NUMBER = VALUE_SERIALIZERS.register("min_number", MinNumberValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, IntegerDataAttachmentValue.Serializer> INTEGER_DATA_ATTACHMENT = VALUE_SERIALIZERS.register("integer_data_attachment", IntegerDataAttachmentValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, FloatDataAttachmentValue.Serializer> FLOAT_DATA_ATTACHMENT = VALUE_SERIALIZERS.register("float_data_attachment", FloatDataAttachmentValue.Serializer::new);
+    public static final DeferredHolder<ValueSerializer<?>, StringDataAttachmentValue.Serializer> STRING_DATA_ATTACHMENT = VALUE_SERIALIZERS.register("string_data_attachment", StringDataAttachmentValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoLangIntegerValue.Serializer> MOLANG_INTEGER = VALUE_SERIALIZERS.register("molang_integer", MoLangIntegerValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoLangFloatValue.Serializer> MOLANG_FLOAT = VALUE_SERIALIZERS.register("molang_float", MoLangFloatValue.Serializer::new);
     public static final DeferredHolder<ValueSerializer<?>, MoLangStringValue.Serializer> MOLANG_STRING = VALUE_SERIALIZERS.register("molang_string", MoLangStringValue.Serializer::new);
