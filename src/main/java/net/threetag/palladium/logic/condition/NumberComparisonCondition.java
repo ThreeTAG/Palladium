@@ -47,7 +47,7 @@ public record NumberComparisonCondition(Value value, NumberComparator operator, 
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, NumberComparisonCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Number Comparison")
-                    .setDescription("Compares two values using the given operator.")
+                    .setDescription("Compares two number values using the given operator.")
                     .add("value", TYPE_VALUE, "The main value in the comparison")
                     .add("operator", TYPE_NUMBER_COMPARATOR, "The comparison operator being used")
                     .add("target", TYPE_VALUE, "The value that the main value is being compared against")

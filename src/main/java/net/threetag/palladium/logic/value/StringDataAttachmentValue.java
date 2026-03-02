@@ -59,7 +59,7 @@ public class StringDataAttachmentValue extends StringValue {
                     .add("attachment", TYPE_ATTACHMENT_TYPE, "The ID of the data attachment.")
                     .addOptional("fallback", TYPE_STRING, "If the data attachment doesn't exist or is not existent in the entity, this fallback value will be used.")
                     .addExampleObject(new StringDataAttachmentValue(ResourceKey.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, Identifier.fromNamespaceAndPath("example", "string_attachment_id")), "", ""))
-                    .addExampleObject(new StringDataAttachmentValue(ResourceKey.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, Identifier.fromNamespaceAndPath("example", "string_attachment_id")), "example_fallback", "this * 2"));
+                    .addExampleObject(new StringDataAttachmentValue(ResourceKey.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, Identifier.fromNamespaceAndPath("example", "string_attachment_id")), "example_fallback", ""));
         }
     }
 }

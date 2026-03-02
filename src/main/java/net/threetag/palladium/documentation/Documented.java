@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.entity.flight.SwingingFlightType;
 import net.threetag.palladium.util.NumberComparator;
+import net.threetag.palladium.util.StringComparator;
 
 import java.util.Arrays;
 
@@ -50,6 +51,7 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_SWINGING_HEIGHT_TYPE = SettingType.enumList(SwingingFlightType.MaxHeightType.values());
     SettingType TYPE_COLOR = SettingType.simple("Color");
     SettingType TYPE_NUMBER_COMPARATOR = SettingType.enumList(NumberComparator.values());
+    SettingType TYPE_STRING_COMPARATOR = SettingType.enumList(StringComparator.values());
     SettingType TYPE_INGREDIENT = SettingType.simple("Ingredient / Item");
     SettingType TYPE_ICON = SettingType.simple("Icon definition");
     SettingType TYPE_ICON_LIST = SettingType.simple("Icon definition array");

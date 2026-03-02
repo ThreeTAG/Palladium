@@ -17,6 +17,7 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, AndCondition.Serializer> AND = CONDITION_SERIALIZERS.register("and", AndCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, MoLangCondition.Serializer> MOLANG = CONDITION_SERIALIZERS.register("molang", MoLangCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, NumberComparisonCondition.Serializer> NUMBER_COMPARISON = CONDITION_SERIALIZERS.register("number_comparison", NumberComparisonCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, StringComparisonCondition.Serializer> STRING_COMPARISON = CONDITION_SERIALIZERS.register("string_comparison", StringComparisonCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, NumberDataAttachmentCondition.Serializer> NUMBER_DATA_ATTACHMENT = CONDITION_SERIALIZERS.register("number_data_attachment", NumberDataAttachmentCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, HasPowerCondition.Serializer> HAS_POWER = CONDITION_SERIALIZERS.register("has_power", HasPowerCondition.Serializer::new);
 //    public static final DeferredHolder<ConditionSerializer<?>, WearsSuitSetCondition.Serializer> WEARS_SUIT_SET = CONDITION_SERIALIZERS.register("wears_suit_set", WearsSuitSetCondition.Serializer::new);
