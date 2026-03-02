@@ -71,11 +71,6 @@ public class MoLangCondition implements Condition, EntityContext {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, MoLangCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, MoLangCondition> builder, HolderLookup.Provider provider) {
             builder.setName("MoLang")
                     .setDescription("Uses a MoLang query as a condition")

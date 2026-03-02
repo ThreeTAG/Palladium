@@ -18,20 +18,20 @@ import net.threetag.palladium.util.MixedHolderSet;
 
 import java.util.List;
 
-public class CustomizationSelectCondition implements Condition {
+public class CustomizationSelectedCondition implements Condition {
 
-    public static final MapCodec<CustomizationSelectCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<CustomizationSelectedCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             MixedHolderSet.codec(PalladiumRegistryKeys.CUSTOMIZATION).fieldOf("customization").forGetter(c -> c.customization)
-    ).apply(instance, CustomizationSelectCondition::new));
+    ).apply(instance, CustomizationSelectedCondition::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, CustomizationSelectCondition> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, CustomizationSelectedCondition> STREAM_CODEC = StreamCodec.composite(
             MixedHolderSet.streamCodec(PalladiumRegistryKeys.CUSTOMIZATION), c -> c.customization,
-            CustomizationSelectCondition::new
+            CustomizationSelectedCondition::new
     );
 
     private final MixedHolderSet<Customization> customization;
 
-    public CustomizationSelectCondition(MixedHolderSet<Customization> customization) {
+    public CustomizationSelectedCondition(MixedHolderSet<Customization> customization) {
         this.customization = customization;
     }
 
@@ -57,28 +57,23 @@ public class CustomizationSelectCondition implements Condition {
         return ConditionSerializers.CUSTOMIZATION_SELECTED.get();
     }
 
-    public static class Serializer extends ConditionSerializer<CustomizationSelectCondition> {
+    public static class Serializer extends ConditionSerializer<CustomizationSelectedCondition> {
 
         @Override
-        public MapCodec<CustomizationSelectCondition> codec() {
+        public MapCodec<CustomizationSelectedCondition> codec() {
             return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, CustomizationSelectCondition> streamCodec() {
-            return STREAM_CODEC;
         }
 
         @SuppressWarnings("deprecation")
         @Override
-        public void addDocumentation(CodecDocumentationBuilder<Condition, CustomizationSelectCondition> builder, HolderLookup.Provider provider) {
+        public void addDocumentation(CodecDocumentationBuilder<Condition, CustomizationSelectedCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Customization Selected")
                     .setDescription("Checks if the given customization is currently selected by the entity.")
                     .add("customization", TYPE_CUSTOMIZATION_HOLDER_SET, "ID(s) or tag(s) of the required flight type.")
-                    .addExampleObject(new CustomizationSelectCondition(new MixedHolderSet<>(
+                    .addExampleObject(new CustomizationSelectedCondition(new MixedHolderSet<>(
                             HolderSet.emptyNamed(provider.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION), TagKey.create(PalladiumRegistryKeys.CUSTOMIZATION, Identifier.fromNamespaceAndPath("example", "customization_tag")))
                     )))
-                    .addExampleObject(new CustomizationSelectCondition(new MixedHolderSet<>(List.of(
+                    .addExampleObject(new CustomizationSelectedCondition(new MixedHolderSet<>(List.of(
                             HolderSet.emptyNamed(provider.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION), TagKey.create(PalladiumRegistryKeys.CUSTOMIZATION, Identifier.fromNamespaceAndPath("example", "customization_tag_1"))),
                             HolderSet.emptyNamed(provider.lookupOrThrow(PalladiumRegistryKeys.CUSTOMIZATION), TagKey.create(PalladiumRegistryKeys.CUSTOMIZATION, Identifier.fromNamespaceAndPath("example", "customization_tag_2")))
                     ))));

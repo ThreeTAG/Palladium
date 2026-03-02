@@ -64,6 +64,6 @@ public class ConditionSerializers {
     public static final DeferredHolder<ConditionSerializer<?>, WideArmorModelCondition.Serializer> WIDE_ARMOR_MODEL = CONDITION_SERIALIZERS.register("wide_armor_model", WideArmorModelCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, EntityScaleCondition.Serializer> ENTITY_SCALE = CONDITION_SERIALIZERS.register("entity_scale", EntityScaleCondition.Serializer::new);
     public static final DeferredHolder<ConditionSerializer<?>, IsUsingFlightTypeCondition.Serializer> IS_USING_FLIGHT_TYPE = CONDITION_SERIALIZERS.register("is_using_flight_type", IsUsingFlightTypeCondition.Serializer::new);
-    public static final DeferredHolder<ConditionSerializer<?>, CustomizationSelectCondition.Serializer> CUSTOMIZATION_SELECTED = CONDITION_SERIALIZERS.register("customization_selected", CustomizationSelectCondition.Serializer::new);
+    public static final DeferredHolder<ConditionSerializer<?>, CustomizationSelectedCondition.Serializer> CUSTOMIZATION_SELECTED = CONDITION_SERIALIZERS.register("customization_selected", CustomizationSelectedCondition.Serializer::new);
 
 }

@@ -54,11 +54,6 @@ public record AbilityUnlockedCondition(AbilityReference ability) implements Cond
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityUnlockedCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityUnlockedCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability unlocked")
                     .setDescription("Checks if the ability is unlocked.")

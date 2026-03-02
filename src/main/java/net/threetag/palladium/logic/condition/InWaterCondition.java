@@ -39,11 +39,6 @@ public class InWaterCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, InWaterCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, InWaterCondition> builder, HolderLookup.Provider provider) {
             builder.setName("In Water")
                     .setDescription("Checks if the entity is in water.")

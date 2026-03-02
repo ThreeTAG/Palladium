@@ -50,11 +50,6 @@ public record EmptySlotCondition(PlayerSlot slot) implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, EmptySlotCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, EmptySlotCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Empty Slot")
                     .setDescription("Checks if the given slot of an entity is empty")

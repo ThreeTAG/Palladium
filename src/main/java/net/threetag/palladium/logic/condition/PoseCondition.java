@@ -50,11 +50,6 @@ public record PoseCondition(List<Pose> poses) implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, PoseCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, PoseCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Pose")
                     .setDescription("Checks if the entity is in a specific pose.")

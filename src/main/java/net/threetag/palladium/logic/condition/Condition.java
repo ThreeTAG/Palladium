@@ -2,14 +2,10 @@ package net.threetag.palladium.logic.condition;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.LivingEntity;
 import net.threetag.palladium.logic.context.DataContext;
 import net.threetag.palladium.power.ability.AbilityInstance;
 import net.threetag.palladium.registry.PalladiumRegistries;
-import net.threetag.palladium.registry.PalladiumRegistryKeys;
 import net.threetag.palladium.util.PalladiumCodecs;
 
 import java.util.Collection;
@@ -34,8 +30,6 @@ public interface Condition {
     Codec<Condition> CODEC = PalladiumCodecs.listOrPrimitive(MOLANG_WRAPPED_CODEC).xmap(AndCondition::new, condition -> condition instanceof AndCondition(
             List<Condition> conditions
     ) ? conditions : Collections.singletonList(condition));
-
-    StreamCodec<RegistryFriendlyByteBuf, Condition> STREAM_CODEC = ByteBufCodecs.registry(PalladiumRegistryKeys.CONDITION_SERIALIZER).dispatch(Condition::getSerializer, ConditionSerializer::streamCodec);
 
     boolean test(DataContext context);
 

@@ -34,11 +34,6 @@ public class HasMovementInputCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HasMovementInputCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, HasMovementInputCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Has Movement Input")
                     .setDescription("Checks if a player is currently pressing keys to move.")

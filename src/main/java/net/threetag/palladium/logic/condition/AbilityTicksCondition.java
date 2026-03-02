@@ -61,11 +61,6 @@ public record AbilityTicksCondition(AbilityReference ability, int min,
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityTicksCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityTicksCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Ticks")
                     .setDescription("Checks if the ability has been enabled for a certain amount of ticks.")

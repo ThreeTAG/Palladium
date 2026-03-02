@@ -32,11 +32,6 @@ public class FalseCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, FalseCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, FalseCondition> builder, HolderLookup.Provider provider) {
             builder.setName("False")
                     .setDescription("It's just false. That's it.")

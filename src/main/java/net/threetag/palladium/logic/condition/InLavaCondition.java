@@ -39,11 +39,6 @@ public class InLavaCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, InLavaCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, InLavaCondition> builder, HolderLookup.Provider provider) {
             builder.setName("In Lava")
                     .setDescription("Checks if the entity is in lava.")

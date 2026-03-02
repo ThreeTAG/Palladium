@@ -33,11 +33,6 @@ public class OnGroundCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, OnGroundCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, OnGroundCondition> builder, HolderLookup.Provider provider) {
             builder.setName("On Ground")
                     .setDescription("Checks if the entity is on the ground.")

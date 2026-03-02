@@ -54,11 +54,6 @@ public record EntityTypeCondition(MixedHolderSet<EntityType<?>> entityType) impl
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, EntityTypeCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, EntityTypeCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Entity Type")
                     .setDescription("Checks if the entity is of a specific entity type")

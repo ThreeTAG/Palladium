@@ -54,11 +54,6 @@ public record EnergyBarCondition(EnergyBarReference energyBar, int min, int max)
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, EnergyBarCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, EnergyBarCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Energy Bar")
                     .setDescription("Checks if an energy bar has a required amount in it.")

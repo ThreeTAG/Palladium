@@ -39,11 +39,6 @@ public class IsSwimmingCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsSwimmingCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsSwimmingCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is Swimming")
                     .setDescription("Checks if the entity is swimming.")

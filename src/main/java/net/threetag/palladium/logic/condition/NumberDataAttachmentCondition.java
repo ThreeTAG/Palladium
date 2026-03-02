@@ -60,11 +60,6 @@ public record NumberDataAttachmentCondition(ResourceKey<AttachmentType<?>> attac
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, NumberDataAttachmentCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, NumberDataAttachmentCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Number Data Attachment")
                     .setDescription("Checks if the value a number data attachment is within a given range.")

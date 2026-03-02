@@ -52,11 +52,6 @@ public record AbilityFirstTickCondition(AbilityReference ability) implements Con
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityFirstTickCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityFirstTickCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability on First Tick")
                     .setDescription("Checks if the ability is on its first tick.")

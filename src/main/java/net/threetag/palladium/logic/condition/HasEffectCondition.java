@@ -55,11 +55,6 @@ public record HasEffectCondition(MixedHolderSet<MobEffect> mobEffect) implements
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HasEffectCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, HasEffectCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Has Effect")
                     .setDescription("Checks if the entity has a (potion) effect.")

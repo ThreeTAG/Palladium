@@ -39,11 +39,6 @@ public class IsOnFireCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsOnFireCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsOnFireCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is on Fire")
                     .setDescription("Checks if the entity is currently on fire.")

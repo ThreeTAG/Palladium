@@ -22,20 +22,20 @@ import net.threetag.palladium.util.ParsedCommands;
 
 import java.util.Objects;
 
-public record CommandResultCondition(ParsedCommands command, NumberComparator comparator, int compareTo,
+public record CommandResultCondition(ParsedCommands command, NumberComparator operator, int compareTo,
                                      boolean log) implements Condition, CommandSource {
 
     public static final MapCodec<CommandResultCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     ParsedCommands.CODEC.optionalFieldOf("command", ParsedCommands.EMPTY).forGetter(CommandResultCondition::command),
-                    NumberComparator.CODEC.fieldOf("comparator").forGetter(CommandResultCondition::comparator),
+                    NumberComparator.CODEC.fieldOf("operator").forGetter(CommandResultCondition::operator),
                     Codec.INT.fieldOf("compare_to").forGetter(CommandResultCondition::compareTo),
                     Codec.BOOL.optionalFieldOf("log", false).forGetter(CommandResultCondition::log)
             ).apply(instance, CommandResultCondition::new)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, CommandResultCondition> STREAM_CODEC = StreamCodec.composite(
             ParsedCommands.STREAM_CODEC, CommandResultCondition::command,
-            NumberComparator.STREAM_CODEC, CommandResultCondition::comparator,
+            NumberComparator.STREAM_CODEC, CommandResultCondition::operator,
             ByteBufCodecs.VAR_INT, CommandResultCondition::compareTo,
             ByteBufCodecs.BOOL, CommandResultCondition::log,
             CommandResultCondition::new
@@ -62,7 +62,7 @@ public record CommandResultCondition(ParsedCommands command, NumberComparator co
             serverLevel.getServer().getFunctions().execute(this.command.getCommandFunction(entity.level().getServer()), stack.withSuppressedOutput().withMaximumPermission(PermissionSet.ALL_PERMISSIONS));
 
             // TODO
-//            return switch (comparator) {
+//            return switch (operator) {
 //                case ">=" -> (result >= compareTo);
 //                case "<=" -> (result <= compareTo);
 //                case ">" -> (result > compareTo);
@@ -112,21 +112,11 @@ public record CommandResultCondition(ParsedCommands command, NumberComparator co
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, CommandResultCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
-        public ConditionEnvironment getContextEnvironment() {
-            return ConditionEnvironment.DATA;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, CommandResultCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Command Result")
                     .setDescription("Executes command(s) and compares the output to a number.")
                     .add("command", SettingType.listOrPrimitive(TYPE_STRING), "The command(s) that are being executed.")
-                    .add("comparator", TYPE_NUMBER_COMPARATOR, "The used number comparator.")
+                    .add("operator", TYPE_NUMBER_COMPARATOR, "The used number operator.")
                     .add("compare_to", TYPE_INT, "The number it's being compared to.")
                     .addOptional("log", TYPE_BOOLEAN, "Whether or not the command result is being logged.")
                     .addExampleObject(new CommandResultCondition(new ParsedCommands("say Hello World"), NumberComparator.EQUALS, 5, false));

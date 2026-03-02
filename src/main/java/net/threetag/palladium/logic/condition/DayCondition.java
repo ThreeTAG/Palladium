@@ -33,11 +33,6 @@ public class DayCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, DayCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, DayCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Day")
                     .setDescription("Check if it's currently daytime")

@@ -34,16 +34,6 @@ public class SlimArmorModelCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SlimArmorModelCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
-        public ConditionEnvironment getContextEnvironment() {
-            return ConditionEnvironment.ASSETS;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, SlimArmorModelCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Slim Armor Model")
                     .setDescription("Checks if the entity has the slim armor model (Alex). Returns false if the entity is not a player or if this condition is being checked sever-side.")

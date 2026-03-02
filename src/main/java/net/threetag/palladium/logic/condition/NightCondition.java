@@ -33,11 +33,6 @@ public class NightCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, NightCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, NightCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Night")
                     .setDescription("Check if it's currently nighttime")

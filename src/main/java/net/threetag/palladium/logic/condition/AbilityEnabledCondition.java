@@ -47,11 +47,6 @@ public record AbilityEnabledCondition(AbilityReference ability) implements Condi
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityEnabledCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityEnabledCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability enabled")
                     .setDescription("Checks if the ability is enabled.")

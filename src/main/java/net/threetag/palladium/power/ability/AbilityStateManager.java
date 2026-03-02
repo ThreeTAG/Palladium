@@ -2,8 +2,6 @@ package net.threetag.palladium.power.ability;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.threetag.palladium.power.ability.enabling.ConditionalEnablingHandler;
 import net.threetag.palladium.power.ability.enabling.EnablingHandler;
 import net.threetag.palladium.power.ability.unlocking.ConditionalUnlockingHandler;
@@ -21,12 +19,6 @@ public final class AbilityStateManager {
                     UnlockingHandler.CODEC.optionalFieldOf("unlocking", ConditionalUnlockingHandler.EMPTY).forGetter(AbilityStateManager::getUnlockingHandler),
                     EnablingHandler.CODEC.optionalFieldOf("enabling", ConditionalEnablingHandler.EMPTY).forGetter(AbilityStateManager::getEnablingHandler)
             ).apply(instance, AbilityStateManager::new));
-
-    public static final StreamCodec<RegistryFriendlyByteBuf, AbilityStateManager> STREAM_CODEC = StreamCodec.composite(
-            UnlockingHandler.STREAM_CODEC, h -> h.unlocking,
-            EnablingHandler.STREAM_CODEC, h-> h.enabling,
-            AbilityStateManager::new
-    );
 
     private final UnlockingHandler unlocking;
     private final EnablingHandler enabling;

@@ -59,11 +59,6 @@ public record HasPowerCondition(MixedHolderSet<Power> powers) implements Conditi
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HasPowerCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, HasPowerCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Has Power")
                     .setDescription("Checks if the entity has specified power.")

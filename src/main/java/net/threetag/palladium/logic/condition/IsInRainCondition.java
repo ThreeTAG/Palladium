@@ -39,11 +39,6 @@ public class IsInRainCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsInRainCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsInRainCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is in Rain")
                     .setDescription("Checks if the entity is currently in rain.")

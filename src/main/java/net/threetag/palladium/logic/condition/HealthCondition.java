@@ -48,11 +48,6 @@ public record HealthCondition(float minHealth, float maxHealth) implements Condi
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HealthCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, HealthCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Health")
                     .setDescription("Checks if the entity has a certain amount of health.")

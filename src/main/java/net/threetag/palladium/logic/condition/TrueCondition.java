@@ -32,11 +32,6 @@ public class TrueCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, TrueCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, TrueCondition> builder, HolderLookup.Provider provider) {
             builder.setName("True")
                     .setDescription("It's just true. That's it.")

@@ -39,11 +39,6 @@ public class SprintingCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SprintingCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, SprintingCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Sprinting")
                     .setDescription("Checks if the entity is currently sprinting.")

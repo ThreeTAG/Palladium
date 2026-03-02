@@ -45,21 +45,11 @@ public record HasTagCondition(String tag) implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HasTagCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, HasTagCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Has Tag")
                     .setDescription("Checks if the entity has a specific tag. These tags are added to entities via /tag command.")
                     .add("tag", TYPE_STRING, "The tag that needs to be on the entity")
                     .addExampleObject(new HasTagCondition("example_tag"));
-        }
-
-        @Override
-        public ConditionEnvironment getContextEnvironment() {
-            return ConditionEnvironment.DATA;
         }
     }
 }

@@ -34,16 +34,6 @@ public class WideArmorModelCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, WideArmorModelCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
-        public ConditionEnvironment getContextEnvironment() {
-            return ConditionEnvironment.ASSETS;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, WideArmorModelCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Wide Armor Model")
                     .setDescription("Checks if the entity has the wide armor model (Steve). Returns false if the entity is not a player or if this condition is being checked sever-side.")

@@ -51,11 +51,6 @@ public record AbilityOnCooldownCondition(AbilityReference ability) implements Co
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityOnCooldownCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityOnCooldownCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability on Cooldown")
                     .setDescription("Checks if the ability is currently on cooldown. If the power is not null, it will look for the ability in the specified power. If the power is null, it will look for the ability in the current power.")

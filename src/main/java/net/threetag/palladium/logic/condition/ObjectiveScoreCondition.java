@@ -53,11 +53,6 @@ public record ObjectiveScoreCondition(String objectiveName, int min, int max) im
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ObjectiveScoreCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, ObjectiveScoreCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Objective Score")
                     .setDescription("Checks if the player has a score in a specific objective.")

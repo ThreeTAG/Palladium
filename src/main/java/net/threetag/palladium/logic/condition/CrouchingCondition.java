@@ -34,11 +34,6 @@ public class CrouchingCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, CrouchingCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, CrouchingCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Crouching")
                     .setDescription("Checks if the entity is crouching.")

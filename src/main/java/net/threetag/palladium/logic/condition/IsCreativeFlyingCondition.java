@@ -34,11 +34,6 @@ public class IsCreativeFlyingCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsCreativeFlyingCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsCreativeFlyingCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is Creative Flying")
                     .setDescription("Checks if the entity is currently flying in creative mode.")

@@ -52,11 +52,6 @@ public record BrightnessAtPositionCondition(int min, int max) implements Conditi
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, BrightnessAtPositionCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, BrightnessAtPositionCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Brightness at Position")
                     .setDescription("Checks if the brightness at the given position is within the given range.")

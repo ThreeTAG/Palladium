@@ -57,11 +57,6 @@ public record ItemInSlotCondition(Ingredient ingredient, PlayerSlot slot) implem
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ItemInSlotCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, ItemInSlotCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Item in Slot")
                     .setDescription("Checks if the given item is in the given slot")

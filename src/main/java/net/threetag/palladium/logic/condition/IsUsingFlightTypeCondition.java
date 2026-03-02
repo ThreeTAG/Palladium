@@ -62,11 +62,6 @@ public class IsUsingFlightTypeCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsUsingFlightTypeCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsUsingFlightTypeCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is using Flight Type")
                     .setDescription("Checks if the given entity is currently flying using the specified flight type.")

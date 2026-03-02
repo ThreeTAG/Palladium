@@ -41,11 +41,6 @@ public record DimensionCondition(ResourceKey<Level> dimension) implements Condit
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, DimensionCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, DimensionCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Dimension")
                     .setDescription("Tests for the current dimension.")

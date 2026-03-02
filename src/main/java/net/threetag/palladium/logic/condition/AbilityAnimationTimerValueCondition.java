@@ -61,11 +61,6 @@ public record AbilityAnimationTimerValueCondition(AbilityReference ability, int 
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityAnimationTimerValueCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityAnimationTimerValueCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Animation Timer Value")
                     .setDescription("Checks if the given animation timer in an ability has a certain value.")

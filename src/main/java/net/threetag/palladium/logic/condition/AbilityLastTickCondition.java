@@ -52,11 +52,6 @@ public record AbilityLastTickCondition(AbilityReference ability) implements Cond
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityLastTickCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityLastTickCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability on Last Tick")
                     .setDescription("Checks if the ability was just on its last tick.")

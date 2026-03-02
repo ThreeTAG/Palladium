@@ -55,11 +55,6 @@ public record AbilityTypeEnabledCondition(MixedHolderSet<AbilitySerializer<?>> a
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityTypeEnabledCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityTypeEnabledCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Type enabled")
                     .setDescription("Checks if an ability of a certain type is enabled.")

@@ -54,11 +54,6 @@ public record MoonPhaseCondition(List<MoonPhase> moonPhases) implements Conditio
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, MoonPhaseCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, MoonPhaseCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Moon Phase")
                     .setDescription("Checks and compares the current moon phase in the world.")

@@ -35,11 +35,6 @@ public class IsWallClimbingCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsWallClimbingCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsWallClimbingCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is Wall Climbing")
                     .setDescription("Checks if the entity is currently wall climbing.")

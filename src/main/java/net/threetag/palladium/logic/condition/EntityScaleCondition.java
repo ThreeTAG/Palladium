@@ -51,11 +51,6 @@ public record EntityScaleCondition(float min, float max) implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, EntityScaleCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, EntityScaleCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Entity Scale")
                     .setDescription("Checks the current scale of the entity.")

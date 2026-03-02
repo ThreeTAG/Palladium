@@ -55,11 +55,6 @@ public record AbilityTypeUnlockedCondition(MixedHolderSet<AbilitySerializer<?>> 
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AbilityTypeUnlockedCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, AbilityTypeUnlockedCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Ability Type unlocked")
                     .setDescription("Checks if an ability of a certain type is unlocked.")

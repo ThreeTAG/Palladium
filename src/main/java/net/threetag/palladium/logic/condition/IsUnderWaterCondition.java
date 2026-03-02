@@ -39,11 +39,6 @@ public class IsUnderWaterCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, IsUnderWaterCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, IsUnderWaterCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Is under Water")
                     .setDescription("Checks if the entity is currently under water.")

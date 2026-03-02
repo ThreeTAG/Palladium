@@ -62,11 +62,6 @@ public final class ModLoadedCondition implements Condition {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ModLoadedCondition> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        @Override
         public void addDocumentation(CodecDocumentationBuilder<Condition, ModLoadedCondition> builder, HolderLookup.Provider provider) {
             builder.setName("Mod loaded")
                     .setDescription("Checks if the specified mod was loaded into the game.")
