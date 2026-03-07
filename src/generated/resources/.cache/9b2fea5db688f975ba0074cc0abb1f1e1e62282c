@@ -1,3 +1,11 @@
-// 1.21.11	2026-01-19T19:54:41.5047004	Tags for minecraft:block mod id palladium
+// 1.21.11	2026-03-07T21:04:57.3047179	Tags for minecraft:block mod id palladium
+6ef8db1c032c5f149964f4dd505445c31af638fb data/c/tags/block/ores.json
+d935853c3e54ab69a4b7abaae6cd05020bdad17b data/c/tags/block/ores/vibranium.json
+5a9d846afbce4b815866ab948b11bbe720465d00 data/c/tags/block/storage_blocks.json
+0d1fe16525fbf342f3abe5bc8f3bc1ca03a1336f data/c/tags/block/storage_blocks/raw_vibranium.json
+9abdec2c0adf88b8700bb6391674a105dd1612ef data/c/tags/block/storage_blocks/vibranium.json
 225501824d189ccd4fd55874e05f35717ad8d8a3 data/minecraft/tags/block/mineable/axe.json
+ce549a7aa66824f34351022c79f045b9b3352804 data/minecraft/tags/block/mineable/pickaxe.json
+0004a48a81cb7be62ec68780c7aeb6078c5016fa data/minecraft/tags/block/needs_diamond_tool.json
+0e709b73d97608deb9515892a054ddd6e8ba5c04 data/minecraft/tags/block/needs_iron_tool.json
 cfab2ab481bf476a645d326b87627918009b9e50 data/palladium/tags/block/prevents_intangibility.json

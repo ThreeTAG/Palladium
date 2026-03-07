@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "vibranium_ingot",
+  "ingredients": [
+    "palladium:vibranium_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "palladium:vibranium_ingot"
+  }
+}

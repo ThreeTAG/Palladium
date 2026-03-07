@@ -33,6 +33,11 @@ public class PalladiumLootTableProvider extends LootTableProvider {
         @Override
         protected void generate() {
             this.dropSelf(PalladiumBlocks.TAILORING_BENCH.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_STONE.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_BRICKS.get());
+            this.dropSelf(PalladiumBlocks.VIBRANIUM_ORE.get());
+            this.dropSelf(PalladiumBlocks.VIBRANIUM_BLOCK.get());
+            this.dropSelf(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
         }
 
         @Override

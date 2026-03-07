@@ -1,2 +1,7 @@
-// 1.21.11	2026-01-19T19:54:41.492701	Loot Tables
+// 1.21.11	2026-03-07T20:18:49.6296219	Loot Tables
+63d917b75adefd032baa96ff65e2993ae680324e data/palladium/loot_table/blocks/meteorite_bricks.json
+819ea109beacbcdc26fe6a40ce27f3d38eb5ab49 data/palladium/loot_table/blocks/meteorite_stone.json
+268d81ae8ccd88bf7eccde86bee822d7d29dff9f data/palladium/loot_table/blocks/raw_vibranium_block.json
 879ea24221a8720f0845c43e67d1b2b577102a24 data/palladium/loot_table/blocks/tailoring_bench.json
+10be7e9a1750b8cb82156aaca36eaed6cd4e58cc data/palladium/loot_table/blocks/vibranium_block.json
+e0363e04a7656b18ec9586080b3ace4a52ea3224 data/palladium/loot_table/blocks/vibranium_ore.json

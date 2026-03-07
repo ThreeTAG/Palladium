@@ -97,6 +97,11 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
         protected void addTranslations() {
             // Blocks
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteorite Stone");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteorite Bricks");
+            this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibranium Ore");
+            this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Block of Vibranium");
+            this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Block of Raw Vibranium");
 
             // Items
             this.addCreativeModeTab(PalladiumCreativeTabs.MAIN, "Palladium");
@@ -117,6 +122,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.GREEN_FABRIC, "Green Fabric");
             this.addItem(PalladiumItems.RED_FABRIC, "Red Fabric");
             this.addItem(PalladiumItems.BLACK_FABRIC, "Black Fabric");
+            this.addItem(PalladiumItems.RAW_VIBRANIUM, "Raw Vibranium");
+            this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibranium Ingot");
+            this.addItem(PalladiumItems.VIBRANIUM_NUGGET, "Vibranium Nugget");
 
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
@@ -245,6 +253,11 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
         protected void addTranslations() {
             // Blocks
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteoritengestein");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteoritenziegel");
+            this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibraniumerz");
+            this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblock");
+            this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblock");
 
             // Items
             this.addCreativeModeTab(PalladiumCreativeTabs.MAIN, "Palladium");
@@ -265,6 +278,9 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addItem(PalladiumItems.GREEN_FABRIC, "Grüner Stoff");
             this.addItem(PalladiumItems.RED_FABRIC, "Roter Stoff");
             this.addItem(PalladiumItems.BLACK_FABRIC, "Schwarzer Stoff");
+            this.addItem(PalladiumItems.RAW_VIBRANIUM, "Rohvibranium");
+            this.addItem(PalladiumItems.VIBRANIUM_INGOT, "Vibraniumbarren");
+            this.addItem(PalladiumItems.VIBRANIUM_NUGGET, "Vibraniumklumpen");
 
             // Abilities
             this.addAbility(AbilitySerializers.DUMMY, "Dummy");
@@ -394,6 +410,11 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
 
             // Blocks
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteoriitngestehn");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteoriitnzieschl");
+            this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibraniumärds");
+            this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblogg");
+            this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblogg");
 
             // Items
             this.addCreativeModeTab(PalladiumCreativeTabs.MAIN, "Palladium");

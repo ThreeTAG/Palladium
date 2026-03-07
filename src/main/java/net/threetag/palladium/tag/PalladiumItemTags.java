@@ -1,6 +1,7 @@
 package net.threetag.palladium.tag;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,13 @@ public class PalladiumItemTags {
     public static final EnumMap<DyeColor, TagKey<Item>> FABRIC_BY_COLOR = new EnumMap<>(DyeColor.class);
     public static final EnumMap<DyeColor, TagKey<Item>> DYE_BY_COLOR = new EnumMap<>(DyeColor.class);
     public static final EnumMap<DyeColor, TagKey<Item>> DYED_BY_COLOR = new EnumMap<>(DyeColor.class);
+
+    public static final TagKey<Item> VIBRANIUM_ORES = c("ores/vibranium");
+    public static final TagKey<Item> VIBRANIUM_STORAGE_BLOCKS = c("storage_blocks/vibranium");
+    public static final TagKey<Item> RAW_VIBRANIUM_STORAGE_BLOCKS = c("storage_blocks/raw_vibranium");
+    public static final TagKey<Item> RAW_VIBRANIUM = c("raw_materials/vibranium");
+    public static final TagKey<Item> VIBRANIUM_INGOTS = c("ingots/vibranium");
+    public static final TagKey<Item> VIBRANIUM_NUGGETS = c("nuggets/vibranium");
 
     public static final TagKey<Item> VIBRATION_ABSORPTION_BOOTS = tag("vibration_absorption_boots");
     public static final TagKey<Item> FABRICS = tag("fabrics");
@@ -36,6 +44,10 @@ public class PalladiumItemTags {
 
     private static TagKey<Item> tag(String path) {
         return TagKey.create(Registries.ITEM, Palladium.id(path));
+    }
+
+    private static TagKey<Item> c(String path) {
+        return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", path));
     }
 
     private static TagKey<Item> fabric(DyeColor color) {

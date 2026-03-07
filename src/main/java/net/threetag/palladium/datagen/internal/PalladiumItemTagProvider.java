@@ -3,6 +3,7 @@ package net.threetag.palladium.datagen.internal;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.DyeColor;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.item.PalladiumItems;
@@ -16,8 +17,21 @@ public class PalladiumItemTagProvider extends ItemTagsProvider {
         super(output, lookupProvider, Palladium.MOD_ID);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        this.tag(Tags.Items.STORAGE_BLOCKS).addTags(PalladiumItemTags.VIBRANIUM_STORAGE_BLOCKS, PalladiumItemTags.RAW_VIBRANIUM_STORAGE_BLOCKS);
+        this.tag(PalladiumItemTags.VIBRANIUM_STORAGE_BLOCKS).add(PalladiumItems.VIBRANIUM_BLOCK.get());
+        this.tag(PalladiumItemTags.RAW_VIBRANIUM_STORAGE_BLOCKS).add(PalladiumItems.RAW_VIBRANIUM_BLOCK.get());
+        this.tag(Tags.Items.ORES).addTags(PalladiumItemTags.VIBRANIUM_ORES);
+        this.tag(PalladiumItemTags.VIBRANIUM_ORES).add(PalladiumItems.VIBRANIUM_ORE.get());
+        this.tag(Tags.Items.RAW_MATERIALS).addTag(PalladiumItemTags.RAW_VIBRANIUM);
+        this.tag(PalladiumItemTags.RAW_VIBRANIUM).add(PalladiumItems.RAW_VIBRANIUM.asItem());
+        this.tag(Tags.Items.INGOTS).addTag(PalladiumItemTags.VIBRANIUM_INGOTS);
+        this.tag(PalladiumItemTags.VIBRANIUM_INGOTS).add(PalladiumItems.VIBRANIUM_INGOT.asItem());
+        this.tag(Tags.Items.NUGGETS).addTag(PalladiumItemTags.VIBRANIUM_NUGGETS);
+        this.tag(PalladiumItemTags.VIBRANIUM_NUGGETS).add(PalladiumItems.VIBRANIUM_NUGGET.asItem());
+
         for (DyeColor color : DyeColor.values()) {
             this.tag(PalladiumItemTags.FABRIC_BY_COLOR.get(color)).add(PalladiumItems.FABRIC_BY_COLOR.get(color).get());
             this.tag(PalladiumItemTags.FABRICS).addTag(PalladiumItemTags.FABRIC_BY_COLOR.get(color));

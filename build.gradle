@@ -31,6 +31,18 @@ repositories {
             includeGroup("software.bernie.geckolib")
         }
     }
+
+    // JEI
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 base {
@@ -110,6 +122,10 @@ dependencies {
 
     // GeckoLib
     implementation "software.bernie.geckolib:geckolib-neoforge-${geckolib_version}"
+
+    // JEI
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

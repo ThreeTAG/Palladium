@@ -38,6 +38,10 @@ public class PalladiumCreativeTabs {
         }
 
         if (e.getTabKey().equals(CreativeModeTabs.INGREDIENTS)) {
+            e.insertAfter(Items.RAW_GOLD.getDefaultInstance(), RAW_VIBRANIUM.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.GOLD_NUGGET.getDefaultInstance(), VIBRANIUM_NUGGET.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.NETHERITE_INGOT.getDefaultInstance(), VIBRANIUM_INGOT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
             e.insertAfter(Items.PINK_DYE.getDefaultInstance(), WHITE_FABRIC.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             e.insertAfter(WHITE_FABRIC.toStack(), LIGHT_GRAY_FABRIC.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             e.insertAfter(LIGHT_GRAY_FABRIC.toStack(), GRAY_FABRIC.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -54,6 +58,18 @@ public class PalladiumCreativeTabs {
             e.insertAfter(BLUE_FABRIC.toStack(), PURPLE_FABRIC.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             e.insertAfter(PURPLE_FABRIC.toStack(), MAGENTA_FABRIC.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             e.insertAfter(MAGENTA_FABRIC.toStack(), PINK_FABRIC.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+
+        if (e.getTabKey().equals(CreativeModeTabs.BUILDING_BLOCKS)) {
+            e.insertAfter(Items.CHISELED_TUFF_BRICKS.getDefaultInstance(), METEORITE_STONE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.NETHERITE_BLOCK.getDefaultInstance(), VIBRANIUM_BLOCK.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_STONE.get().getDefaultInstance(), METEORITE_BRICKS.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+
+        if (e.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {
+            e.insertAfter(Items.POINTED_DRIPSTONE.getDefaultInstance(), METEORITE_STONE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_DIAMOND_ORE.getDefaultInstance(), VIBRANIUM_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.RAW_GOLD_BLOCK.getDefaultInstance(), RAW_VIBRANIUM_BLOCK.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
 

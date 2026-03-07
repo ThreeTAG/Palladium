@@ -7,7 +7,8 @@
   "features": {
     "enabled": [
       "palladium:tailoring",
-      "palladium:eye_selection"
+      "palladium:eye_selection",
+      "palladium:materials/vibranium"
     ]
   }
 }

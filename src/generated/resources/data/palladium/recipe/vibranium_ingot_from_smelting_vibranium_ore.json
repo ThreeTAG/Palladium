@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 1.5,
+  "group": "vibranium_ingot",
+  "ingredient": "palladium:vibranium_ore",
+  "result": {
+    "count": 1,
+    "id": "palladium:vibranium_ingot"
+  }
+}

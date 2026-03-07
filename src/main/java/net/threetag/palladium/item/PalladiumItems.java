@@ -3,6 +3,7 @@ package net.threetag.palladium.item;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.threetag.palladium.Palladium;
@@ -19,10 +20,21 @@ public class PalladiumItems {
     // Utility Blocks
     public static final DeferredItem<BlockItem> TAILORING_BENCH = ITEMS.registerSimpleBlockItem(PalladiumBlocks.TAILORING_BENCH, properties -> properties.requiredFeatures(PalladiumFeatureFlags.TAILORING));
 
+    // Resource Blocks
+    public static final DeferredItem<BlockItem> METEORITE_STONE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_STONE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_BRICKS = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_BRICKS, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> VIBRANIUM_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.VIBRANIUM_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> VIBRANIUM_BLOCK = ITEMS.registerSimpleBlockItem(PalladiumBlocks.VIBRANIUM_BLOCK, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> RAW_VIBRANIUM_BLOCK = ITEMS.registerSimpleBlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+
     // Utilities
     public static final DeferredItem<Item> SUIT_STAND = ITEMS.registerItem("suit_stand", SuitStandItem::new);
 
     // Materials
+    public static final DeferredItem<Item> RAW_VIBRANIUM = ITEMS.registerSimpleItem("raw_vibranium", properties -> properties.rarity(Rarity.EPIC).requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<Item> VIBRANIUM_INGOT = ITEMS.registerSimpleItem("vibranium_ingot", properties -> properties.rarity(Rarity.EPIC).requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<Item> VIBRANIUM_NUGGET = ITEMS.registerSimpleItem("vibranium_nugget", properties -> properties.rarity(Rarity.EPIC).requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+
     public static final DeferredItem<Item> WHITE_FABRIC = registerFabric(DyeColor.WHITE);
     public static final DeferredItem<Item> LIGHT_GRAY_FABRIC = registerFabric(DyeColor.LIGHT_GRAY);
     public static final DeferredItem<Item> GRAY_FABRIC = registerFabric(DyeColor.GRAY);

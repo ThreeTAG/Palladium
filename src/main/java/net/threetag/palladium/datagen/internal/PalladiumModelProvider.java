@@ -33,9 +33,18 @@ public class PalladiumModelProvider extends ModelProvider {
                                 .put(TextureSlot.WEST, TextureMapping.getBlockTexture(block, "_side"))
                                 .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block, "_side")),
                         ModelTemplates.CUBE));
+        blockModels.createTrivialCube(PalladiumBlocks.METEORITE_STONE.get());
+        blockModels.createTrivialCube(PalladiumBlocks.METEORITE_BRICKS.get());
+        blockModels.createTrivialCube(PalladiumBlocks.VIBRANIUM_ORE.get());
+        blockModels.createTrivialCube(PalladiumBlocks.VIBRANIUM_BLOCK.get());
+        blockModels.createTrivialCube(PalladiumBlocks.RAW_VIBRANIUM_BLOCK.get());
 
         // Items
         itemModels.generateFlatItem(PalladiumItems.SUIT_STAND.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PalladiumItems.RAW_VIBRANIUM.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PalladiumItems.VIBRANIUM_INGOT.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PalladiumItems.VIBRANIUM_NUGGET.get(), ModelTemplates.FLAT_ITEM);
+
         for (DeferredItem<Item> item : PalladiumItems.FABRIC_BY_COLOR.values()) {
             itemModels.generateFlatItem(item.get(), ModelTemplates.FLAT_ITEM);
         }

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "palladium:vibranium_ingot"
+  ],
+  "result": {
+    "count": 9,
+    "id": "palladium:vibranium_nugget"
+  }
+}

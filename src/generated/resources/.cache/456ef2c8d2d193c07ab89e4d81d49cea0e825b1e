@@ -1,4 +1,4 @@
-// 1.21.11	2026-01-19T19:54:41.5017005	Tags for minecraft:item mod id palladium
+// 1.21.11	2026-03-07T21:04:57.3027184	Tags for minecraft:item mod id palladium
 347c4c303c342cf80d2972a44ccca6bb46a5ad01 data/c/tags/item/dyed/black.json
 0583a5f29302c4cf17cd34015dbb36caf410d698 data/c/tags/item/dyed/blue.json
 b370981fcaee270bf7d937d23f5efdc42327a030 data/c/tags/item/dyed/brown.json
@@ -15,6 +15,17 @@ da2a4e5df8f0ac83aa86f7cc7205693feb74ed5a data/c/tags/item/dyed/lime.json
 7df4201bbbaaaf83e3c317a94213a166db200b9f data/c/tags/item/dyed/red.json
 ef97fc0e82f726c8d0cacfc22d4ba7fbf6e0dc46 data/c/tags/item/dyed/white.json
 670d16c571ff130f2a431e6e0aa7f76eaaa3dd11 data/c/tags/item/dyed/yellow.json
+32738cdcc7e16fdd4b5dff25b87fabb75821723e data/c/tags/item/ingots.json
+bcdf9eac4472bfdbbd0550eccf8aaac2728e16e6 data/c/tags/item/ingots/vibranium.json
+55847be3122eb9983232931a75dc80cafab08726 data/c/tags/item/nuggets.json
+4018564ad23180f79f2766b5a436f42f3bd189d3 data/c/tags/item/nuggets/vibranium.json
+6ef8db1c032c5f149964f4dd505445c31af638fb data/c/tags/item/ores.json
+d935853c3e54ab69a4b7abaae6cd05020bdad17b data/c/tags/item/ores/vibranium.json
+f2300812850a7c163cbad14a492a67119ca77bf1 data/c/tags/item/raw_materials.json
+150af94e3dcb1adbe19bbf5782f12cec69d56006 data/c/tags/item/raw_materials/vibranium.json
+5a9d846afbce4b815866ab948b11bbe720465d00 data/c/tags/item/storage_blocks.json
+0d1fe16525fbf342f3abe5bc8f3bc1ca03a1336f data/c/tags/item/storage_blocks/raw_vibranium.json
+9abdec2c0adf88b8700bb6391674a105dd1612ef data/c/tags/item/storage_blocks/vibranium.json
 347c4c303c342cf80d2972a44ccca6bb46a5ad01 data/palladium/tags/item/black_fabrics.json
 0583a5f29302c4cf17cd34015dbb36caf410d698 data/palladium/tags/item/blue_fabrics.json
 b370981fcaee270bf7d937d23f5efdc42327a030 data/palladium/tags/item/brown_fabrics.json

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_meteorite_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "palladium:meteorite_stone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "palladium:meteorite_bricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_meteorite_stone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "palladium:meteorite_bricks"
+    ]
+  }
+}

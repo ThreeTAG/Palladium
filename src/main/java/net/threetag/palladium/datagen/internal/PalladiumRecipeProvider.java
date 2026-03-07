@@ -1,29 +1,35 @@
 package net.threetag.palladium.datagen.internal;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.advancements.criterion.PlayerTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.threetag.palladium.Palladium;
+import net.threetag.palladium.block.PalladiumBlocks;
 import net.threetag.palladium.flag.PalladiumFeatureFlags;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.tag.PalladiumItemTags;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class PalladiumRecipeProvider extends RecipeProvider {
+
+    public static final ImmutableList<ItemLike> VIBRANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_VIBRANIUM, PalladiumItems.VIBRANIUM_ORE);
 
     public PalladiumRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
         super(registries, output);
@@ -33,6 +39,23 @@ public class PalladiumRecipeProvider extends RecipeProvider {
     protected void buildRecipes() {
         this.shaped(RecipeCategory.DECORATIONS, PalladiumItems.SUIT_STAND.get()).pattern(" B ").pattern("SBS").pattern("SXS").define('B', Tags.Items.GEMS_QUARTZ).define('S', Ingredient.of(Blocks.QUARTZ_SLAB, Blocks.SMOOTH_QUARTZ_SLAB)).define('X', Blocks.SMOOTH_STONE_SLAB).unlockedBy(getHasName(Items.ARMOR_STAND), has(Items.ARMOR_STAND)).save(this.output);
         this.shaped(RecipeCategory.DECORATIONS, PalladiumItems.TAILORING_BENCH.get()).pattern("SF").pattern("WW").define('S', Tags.Items.TOOLS_SHEAR).define('F', PalladiumItemTags.FABRICS).define('W', ItemTags.PLANKS).unlockedBy("unlock_right_away", PlayerTrigger.TriggerInstance.tick()).showNotification(false).save(this.output.withConditions(PalladiumFeatureFlags.conditionTailoring()));
+
+        // Materials
+        this.shaped(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICKS, 4)
+                .define('S', PalladiumBlocks.METEORITE_STONE)
+                .pattern("SS")
+                .pattern("SS")
+                .unlockedBy(getHasName(PalladiumBlocks.METEORITE_STONE), this.has(PalladiumBlocks.METEORITE_STONE))
+                .save(this.output);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICKS, PalladiumBlocks.METEORITE_STONE);
+        this.nineBlockStorageRecipes(RecipeCategory.MISC, PalladiumItems.RAW_VIBRANIUM, RecipeCategory.BUILDING_BLOCKS, PalladiumItems.RAW_VIBRANIUM_BLOCK);
+        this.nineBlockStorageRecipesRecipesWithCustomUnpacking(
+                RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT, RecipeCategory.BUILDING_BLOCKS, PalladiumItems.VIBRANIUM_BLOCK, Palladium.id("vibranium_ingot_from_vibranium_block").toString(), "vibranium_ingot"
+        );
+        this.nineBlockStorageRecipesWithCustomPacking(
+                RecipeCategory.MISC, PalladiumItems.VIBRANIUM_NUGGET, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT, Palladium.id("vibranium_ingot_vibranium_nuggets").toString(), "vibranium_ingot"
+        );
+        this.oreSmelting(VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT, 1.5F, 400, "vibranium_ingot");
 
         // Fabrics
         for (DyeColor color : DyeColor.values()) {
@@ -44,6 +67,52 @@ public class PalladiumRecipeProvider extends RecipeProvider {
 
     private static Item getWoolBlockByColor(DyeColor color) {
         return BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(color.getName() + "_wool"));
+    }
+
+    @Override
+    protected void nineBlockStorageRecipes(RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed) {
+        this.nineBlockStorageRecipes(unpackedCategory, unpacked, packedCategory, packed, Palladium.MOD_ID + ":" + getSimpleRecipeName(packed), null, Palladium.MOD_ID + ":" + getSimpleRecipeName(unpacked), null);
+    }
+
+    @Override
+    protected void nineBlockStorageRecipesRecipesWithCustomUnpacking(
+            RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String unpackedName, String unpackedGroup
+    ) {
+        this.nineBlockStorageRecipes(unpackedCategory, unpacked, packedCategory, packed, Palladium.MOD_ID + ":" + getSimpleRecipeName(packed), null, unpackedName, unpackedGroup);
+    }
+
+    @Override
+    protected void nineBlockStorageRecipesWithCustomPacking(
+            RecipeCategory unpackedCategory, ItemLike unpacked, RecipeCategory packedCategory, ItemLike packed, String packedName, String packedGroup
+    ) {
+        this.nineBlockStorageRecipes(unpackedCategory, unpacked, packedCategory, packed, packedName, packedGroup, Palladium.MOD_ID + ":" + getSimpleRecipeName(unpacked), null);
+    }
+
+    @Override
+    protected void stonecutterResultFromBase(RecipeCategory category, ItemLike result, ItemLike material, int resultCount) {
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), category, result, resultCount)
+                .unlockedBy(getHasName(material), this.has(material))
+                .save(this.output, Palladium.MOD_ID + ":" + getConversionRecipeName(result, material) + "_stonecutting");
+    }
+
+    @Override
+    protected <T extends AbstractCookingRecipe> void oreCooking(
+            RecipeSerializer<T> serializer,
+            AbstractCookingRecipe.Factory<T> recipeFactory,
+            List<ItemLike> ingredients,
+            RecipeCategory category,
+            ItemLike result,
+            float experience,
+            int cookingTime,
+            String group,
+            String suffix
+    ) {
+        for (ItemLike itemlike : ingredients) {
+            SimpleCookingRecipeBuilder.generic(Ingredient.of(itemlike), category, result, experience, cookingTime, serializer, recipeFactory)
+                    .group(group)
+                    .unlockedBy(getHasName(itemlike), this.has(itemlike))
+                    .save(this.output, Palladium.MOD_ID + ":" + getItemName(result) + suffix + "_" + getItemName(itemlike));
+        }
     }
 
     public static class Runner extends RecipeProvider.Runner {
