@@ -1,5 +1,7 @@
 accessWidener v2 named
 
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
+
 accessible field com/mojang/blaze3d/vertex/PoseStack poseStack Ljava/util/Deque;
 
 accessible field net/minecraft/client/model/PlayerModel cloak Lnet/minecraft/client/model/geom/ModelPart;

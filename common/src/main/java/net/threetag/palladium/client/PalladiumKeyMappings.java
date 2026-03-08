@@ -31,6 +31,7 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
     public static final KeyMapping OPEN_EQUIPMENT = new KeyMapping("key.palladium.open_equipment", GLFW.GLFW_KEY_SLASH, "key.categories.gameplay");
     public static final KeyMapping SWITCH_ABILITY_LIST = new KeyMapping("key.palladium.switch_ability_list", 88, CATEGORY);
     public static AbilityKeyMapping[] ABILITY_KEYS = new AbilityKeyMapping[5];
+    public static Boolean[] ABILITY_KEYS_PRESSED = new Boolean[] {false, false, false, false, false};
     public static AbilityInstance LEFT_CLICKED_ABILITY = null;
     public static AbilityInstance RIGHT_CLICKED_ABILITY = null;
     public static AbilityInstance SPACE_BAR_ABILITY = null;
@@ -49,6 +50,20 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
         ClientTickEvents.CLIENT_POST.register(instance);
     }
 
+    private static void handleAbilityKeyPressed(AbilityKeyMapping key, boolean down) {
+        var client = Minecraft.getInstance();
+        AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
+        if (list != null) {
+            AbilityInstance entry = list.getDisplayedAbilities()[key.index - 1];
+
+            if (entry != null && (!down || (!entry.getConfiguration().needsEmptyHand() || client.player.getMainHandItem().isEmpty()))) {
+                if (entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.KEY_BIND) {
+                    new AbilityKeyPressedMessage(entry.getReference(), down).send();
+                }
+            }
+        }
+    }
+
     @Override
     public void keyPressed(Minecraft client, int keyCode, int scanCode, int action, int modifiers) {
         if (client.player != null && client.screen == null && !client.player.isSpectator()) {
@@ -63,23 +78,6 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
             if (SWITCH_ABILITY_LIST.isDown()) {
                 AbilityBarRenderer.scroll(!client.player.isCrouching());
                 return;
-            }
-
-            // Ability keys
-            AbilityBarRenderer.AbilityList list = AbilityBarRenderer.getSelectedList();
-            if (list != null && action != GLFW.GLFW_REPEAT) {
-                for (AbilityKeyMapping key : ABILITY_KEYS) {
-                    AbilityInstance entry = list.getDisplayedAbilities()[key.index - 1];
-
-                    if (entry != null && (action != GLFW.GLFW_PRESS || (!entry.getConfiguration().needsEmptyHand() || client.player.getMainHandItem().isEmpty()))) {
-                        if (key.matches(keyCode, scanCode) && entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.KEY_BIND) {
-                            new AbilityKeyPressedMessage(entry.getReference(), action == GLFW.GLFW_PRESS).send();
-                        } else if (entry.getConfiguration().getKeyType() == AbilityConfiguration.KeyType.SPACE_BAR && client.options.keyJump.matches(keyCode, scanCode)) {
-                            new AbilityKeyPressedMessage(entry.getReference(), action == GLFW.GLFW_PRESS).send();
-                            return;
-                        }
-                    }
-                }
             }
 
             // Space Bar
@@ -197,6 +195,16 @@ public class PalladiumKeyMappings implements InputEvents.KeyPressed, ClientTickE
     @Override
     public void clientTick(Minecraft minecraft) {
         if (minecraft.player != null && minecraft.screen == null && !minecraft.player.isSpectator()) {
+            for (int i = 0; i < ABILITY_KEYS.length; i++) {
+                var key = ABILITY_KEYS[i];
+                var cachedPressed = ABILITY_KEYS_PRESSED[i];
+
+                if (key.isDown() != cachedPressed) {
+                    handleAbilityKeyPressed(key, !cachedPressed);
+                    ABILITY_KEYS_PRESSED[i] = !cachedPressed;
+                }
+            }
+
             // Stop left-clicked ability
             if (LEFT_CLICKED_ABILITY != null && !minecraft.options.keyAttack.isDown()) {
                 new AbilityKeyPressedMessage(LEFT_CLICKED_ABILITY.getReference(), false).send();

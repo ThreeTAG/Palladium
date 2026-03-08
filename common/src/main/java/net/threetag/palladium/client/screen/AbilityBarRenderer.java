@@ -1,5 +1,6 @@
 package net.threetag.palladium.client.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -229,8 +230,14 @@ public class AbilityBarRenderer implements OverlayRegistry.IngameOverlay {
                     poseStack.pushPose();
                     poseStack.translate(0, 0, 200);
                     if (keyType == AbilityConfiguration.KeyType.KEY_BIND) {
-                        Component key = PalladiumKeyMappings.ABILITY_KEYS[i].getTranslatedKeyMessage();
-                        guiGraphics.drawString(minecraft.font, key, 5 + 19 - 2 - minecraft.font.width(key), 5 + i * 22 + 7, 0xffffff, false);
+                        var keyBind = PalladiumKeyMappings.ABILITY_KEYS[i];
+
+                        if (keyBind.key.getType() == InputConstants.Type.MOUSE) {
+                            guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 8, 24, 112, 5, 7);
+                        } else {
+                            Component keyName = keyBind.getTranslatedKeyMessage();
+                            guiGraphics.drawString(minecraft.font, keyName, 5 + 19 - 2 - minecraft.font.width(keyName), 5 + i * 22 + 7, 0xffffff, false);
+                        }
                     } else if (keyType == AbilityConfiguration.KeyType.LEFT_CLICK) {
                         guiGraphics.blit(texture, 5 + 19 - 8, 5 + i * 22 + 8, 24, 92, 5, 7);
                     } else if (keyType == AbilityConfiguration.KeyType.RIGHT_CLICK) {
