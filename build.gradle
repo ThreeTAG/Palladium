@@ -120,6 +120,9 @@ allprojects {
             url = 'https://maven.blamejared.com'
         }
 
+        // Porting Lib
+        maven { url = "https://mvn.devos.one/releases/" }
+
         // JitPack
         maven {
             url = 'https://jitpack.io'
@@ -147,9 +150,6 @@ allprojects {
         maven {
             url = 'https://maven.wispforest.io'
         }
-
-        // Porting Lib
-        maven { url = "https://mvn.devos.one/snapshots/" }
 
         // ReachEntityAttributes
         maven {
