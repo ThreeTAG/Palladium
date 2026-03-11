@@ -26,7 +26,7 @@ public class AbilitySound extends AbstractTickableSoundLocationInstance {
 
     @Override
     public void tick() {
-        if (this.entity.isDeadOrDying()) {
+        if (this.entity.isDeadOrDying() || this.entity.isRemoved()) {
             this.stop();
             return;
         }
