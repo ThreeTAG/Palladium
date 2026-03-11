@@ -1,5 +1,6 @@
 package net.threetag.palladium.client.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -39,6 +40,7 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
             int steps = 90 / abilityAmount;
             var texture = CURRENT_WHEEL.getTexture();
 
+            RenderSystem.enableBlend();
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(minecraft.getWindow().getGuiScaledWidth() / 2F, minecraft.getWindow().getGuiScaledHeight() / 2F, 0);
 
@@ -115,6 +117,7 @@ public class AbilityWheelRenderer implements OverlayRegistry.IngameOverlay {
             }
 
             guiGraphics.pose().popPose();
+            RenderSystem.disableBlend();
         }
     }
 
