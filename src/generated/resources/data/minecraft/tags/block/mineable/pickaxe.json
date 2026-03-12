@@ -2,7 +2,16 @@
   "values": [
     "palladium:meteorite_stone",
     "palladium:meteorite_bricks",
-    "palladium:vibranium_ore",
+    "palladium:meteorite_vibranium_vein",
+    "palladium:meteorite_coal_ore",
+    "palladium:meteorite_iron_ore",
+    "palladium:meteorite_copper_ore",
+    "palladium:meteorite_gold_ore",
+    "palladium:meteorite_redstone_ore",
+    "palladium:meteorite_emerald_ore",
+    "palladium:meteorite_lapis_ore",
+    "palladium:meteorite_diamond_ore",
+    "palladium:meteorite_vibranium_ore",
     "palladium:vibranium_block",
     "palladium:raw_vibranium_block"
   ]

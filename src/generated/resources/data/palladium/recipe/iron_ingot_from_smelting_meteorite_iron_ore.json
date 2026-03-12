@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "iron_ingot",
+  "ingredient": "palladium:meteorite_iron_ore",
+  "result": {
+    "count": 1,
+    "id": "minecraft:iron_ingot"
+  }
+}

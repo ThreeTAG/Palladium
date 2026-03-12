@@ -99,7 +99,16 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
             this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteorite Stone");
             this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteorite Bricks");
-            this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibranium Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_COAL_ORE, "Meteorite Coal Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_IRON_ORE, "Meteorite Iron Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_COPPER_ORE, "Meteorite Copper Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_GOLD_ORE, "Meteorite Gold Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_REDSTONE_ORE, "Meteorite Redstone Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_EMERALD_ORE, "Meteorite Emerald Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_LAPIS_ORE, "Meteorite Lapis Lazuli Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_DIAMOND_ORE, "Meteorite Diamond Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_VIBRANIUM_ORE, "Meteorite Vibranium Ore");
+            this.addBlock(PalladiumBlocks.METEORITE_VIBRANIUM_VEIN, "Meteorite Vibranium Vein");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Block of Vibranium");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Block of Raw Vibranium");
 
@@ -255,7 +264,16 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
             this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteoritengestein");
             this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteoritenziegel");
-            this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibraniumerz");
+            this.addBlock(PalladiumBlocks.METEORITE_COAL_ORE, "Meteoriten-Steinkohle");
+            this.addBlock(PalladiumBlocks.METEORITE_IRON_ORE, "Meteoriten-Eisenerz");
+            this.addBlock(PalladiumBlocks.METEORITE_COPPER_ORE, "Meteoriten-Kupferz");
+            this.addBlock(PalladiumBlocks.METEORITE_GOLD_ORE, "Meteoriten-Golderz");
+            this.addBlock(PalladiumBlocks.METEORITE_REDSTONE_ORE, "Meteoriten-Redstone-Erz");
+            this.addBlock(PalladiumBlocks.METEORITE_EMERALD_ORE, "Meteoriten-Smaragderz");
+            this.addBlock(PalladiumBlocks.METEORITE_LAPIS_ORE, "Meteoriten-Lapislazulierz");
+            this.addBlock(PalladiumBlocks.METEORITE_DIAMOND_ORE, "Meteoriten-Diamanterz");
+            this.addBlock(PalladiumBlocks.METEORITE_VIBRANIUM_ORE, "Meteoriten-Vibraniumerz");
+            this.addBlock(PalladiumBlocks.METEORITE_VIBRANIUM_VEIN, "Meteoriten-Vibraniumvene");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblock");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblock");
 
@@ -412,7 +430,16 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
             this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteoriitngestehn");
             this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteoriitnzieschl");
-            this.addBlock(PalladiumBlocks.VIBRANIUM_ORE, "Vibraniumärds");
+            this.addBlock(PalladiumBlocks.METEORITE_COAL_ORE, "Meteoriitn-Schdeengohle");
+            this.addBlock(PalladiumBlocks.METEORITE_IRON_ORE, "Meteoriitn-Eisnärds");
+            this.addBlock(PalladiumBlocks.METEORITE_COPPER_ORE, "Meteoriitn-Gupforrärds");
+            this.addBlock(PalladiumBlocks.METEORITE_GOLD_ORE, "Meteoriitn-Goldärz");
+            this.addBlock(PalladiumBlocks.METEORITE_REDSTONE_ORE, "Meteoriitn-Redstone-Ärds");
+            this.addBlock(PalladiumBlocks.METEORITE_EMERALD_ORE, "Meteoriitn-Smaragdärz");
+            this.addBlock(PalladiumBlocks.METEORITE_LAPIS_ORE, "Meteoriitn-Labisladsuliärds");
+            this.addBlock(PalladiumBlocks.METEORITE_DIAMOND_ORE, "Meteoriitn-Diamantärds");
+            this.addBlock(PalladiumBlocks.METEORITE_VIBRANIUM_ORE, "Meteoriitn-Vibraniumärds");
+            this.addBlock(PalladiumBlocks.METEORITE_VIBRANIUM_VEIN, "Meteoriitn-Vibraniumvene");
             this.addBlock(PalladiumBlocks.VIBRANIUM_BLOCK, "Vibraniumblogg");
             this.addBlock(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, "Rohvibraniumblogg");
 

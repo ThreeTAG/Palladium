@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "redstone",
+  "ingredient": "palladium:meteorite_redstone_ore",
+  "result": {
+    "count": 1,
+    "id": "minecraft:redstone"
+  }
+}

@@ -68,7 +68,16 @@ public class PalladiumCreativeTabs {
 
         if (e.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {
             e.insertAfter(Items.POINTED_DRIPSTONE.getDefaultInstance(), METEORITE_STONE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            e.insertAfter(Items.DEEPSLATE_DIAMOND_ORE.getDefaultInstance(), VIBRANIUM_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_COAL_ORE.getDefaultInstance(), METEORITE_COAL_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_IRON_ORE.getDefaultInstance(), METEORITE_IRON_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_COPPER_ORE.getDefaultInstance(), METEORITE_COPPER_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_GOLD_ORE.getDefaultInstance(), METEORITE_GOLD_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_REDSTONE_ORE.getDefaultInstance(), METEORITE_REDSTONE_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_EMERALD_ORE.getDefaultInstance(), METEORITE_EMERALD_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_LAPIS_ORE.getDefaultInstance(), METEORITE_LAPIS_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.DEEPSLATE_DIAMOND_ORE.getDefaultInstance(), METEORITE_DIAMOND_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_DIAMOND_ORE.get().getDefaultInstance(), METEORITE_VIBRANIUM_ORE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_VIBRANIUM_ORE.get().getDefaultInstance(), METEORITE_VIBRANIUM_VEIN.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             e.insertAfter(Items.RAW_GOLD_BLOCK.getDefaultInstance(), RAW_VIBRANIUM_BLOCK.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }

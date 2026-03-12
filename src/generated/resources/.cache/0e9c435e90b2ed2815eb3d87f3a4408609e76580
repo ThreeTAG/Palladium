@@ -1,0 +1,6 @@
+// 1.21.11	2026-03-07T21:53:37.7468561	Tags for minecraft:worldgen/biome mod id palladium
+d7164df7295d21d7c6e218e86b75441a5f3fbc24 data/c/tags/worldgen/biome/is_cave.json
+d7164df7295d21d7c6e218e86b75441a5f3fbc24 data/c/tags/worldgen/biome/is_rare.json
+d7164df7295d21d7c6e218e86b75441a5f3fbc24 data/c/tags/worldgen/biome/is_underground.json
+d7164df7295d21d7c6e218e86b75441a5f3fbc24 data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json
+d7164df7295d21d7c6e218e86b75441a5f3fbc24 data/minecraft/tags/worldgen/biome/is_overworld.json

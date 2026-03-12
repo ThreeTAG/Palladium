@@ -2,6 +2,7 @@ package net.threetag.palladium.datagen.internal;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
@@ -24,13 +25,25 @@ public class PalladiumItemTagProvider extends ItemTagsProvider {
         this.tag(PalladiumItemTags.VIBRANIUM_STORAGE_BLOCKS).add(PalladiumItems.VIBRANIUM_BLOCK.get());
         this.tag(PalladiumItemTags.RAW_VIBRANIUM_STORAGE_BLOCKS).add(PalladiumItems.RAW_VIBRANIUM_BLOCK.get());
         this.tag(Tags.Items.ORES).addTags(PalladiumItemTags.VIBRANIUM_ORES);
-        this.tag(PalladiumItemTags.VIBRANIUM_ORES).add(PalladiumItems.VIBRANIUM_ORE.get());
+        this.tag(PalladiumItemTags.VIBRANIUM_ORES).add(PalladiumItems.METEORITE_VIBRANIUM_ORE.get());
         this.tag(Tags.Items.RAW_MATERIALS).addTag(PalladiumItemTags.RAW_VIBRANIUM);
         this.tag(PalladiumItemTags.RAW_VIBRANIUM).add(PalladiumItems.RAW_VIBRANIUM.asItem());
         this.tag(Tags.Items.INGOTS).addTag(PalladiumItemTags.VIBRANIUM_INGOTS);
         this.tag(PalladiumItemTags.VIBRANIUM_INGOTS).add(PalladiumItems.VIBRANIUM_INGOT.asItem());
         this.tag(Tags.Items.NUGGETS).addTag(PalladiumItemTags.VIBRANIUM_NUGGETS);
         this.tag(PalladiumItemTags.VIBRANIUM_NUGGETS).add(PalladiumItems.VIBRANIUM_NUGGET.asItem());
+
+        this.tag(ItemTags.STONE_TOOL_MATERIALS).add(PalladiumItems.METEORITE_STONE.get());
+        this.tag(ItemTags.STONE_CRAFTING_MATERIALS).add(PalladiumItems.METEORITE_STONE.get());
+
+        this.tag(ItemTags.COAL_ORES).add(PalladiumItems.METEORITE_COAL_ORE.get());
+        this.tag(ItemTags.IRON_ORES).add(PalladiumItems.METEORITE_IRON_ORE.get());
+        this.tag(ItemTags.COPPER_ORES).add(PalladiumItems.METEORITE_COPPER_ORE.get());
+        this.tag(ItemTags.GOLD_ORES).add(PalladiumItems.METEORITE_GOLD_ORE.get());
+        this.tag(ItemTags.REDSTONE_ORES).add(PalladiumItems.METEORITE_REDSTONE_ORE.get());
+        this.tag(ItemTags.EMERALD_ORES).add(PalladiumItems.METEORITE_EMERALD_ORE.get());
+        this.tag(ItemTags.LAPIS_ORES).add(PalladiumItems.METEORITE_LAPIS_ORE.get());
+        this.tag(ItemTags.DIAMOND_ORES).add(PalladiumItems.METEORITE_DIAMOND_ORE.get());
 
         for (DyeColor color : DyeColor.values()) {
             this.tag(PalladiumItemTags.FABRIC_BY_COLOR.get(color)).add(PalladiumItems.FABRIC_BY_COLOR.get(color).get());

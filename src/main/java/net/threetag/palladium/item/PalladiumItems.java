@@ -23,7 +23,16 @@ public class PalladiumItems {
     // Resource Blocks
     public static final DeferredItem<BlockItem> METEORITE_STONE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_STONE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
     public static final DeferredItem<BlockItem> METEORITE_BRICKS = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_BRICKS, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
-    public static final DeferredItem<BlockItem> VIBRANIUM_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.VIBRANIUM_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_COAL_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_COAL_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_IRON_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_IRON_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_COPPER_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_COPPER_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_GOLD_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_GOLD_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_REDSTONE_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_REDSTONE_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_EMERALD_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_EMERALD_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_LAPIS_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_LAPIS_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_DIAMOND_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_DIAMOND_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_VIBRANIUM_ORE = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_VIBRANIUM_ORE, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredItem<BlockItem> METEORITE_VIBRANIUM_VEIN = ITEMS.registerSimpleBlockItem(PalladiumBlocks.METEORITE_VIBRANIUM_VEIN, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
     public static final DeferredItem<BlockItem> VIBRANIUM_BLOCK = ITEMS.registerSimpleBlockItem(PalladiumBlocks.VIBRANIUM_BLOCK, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
     public static final DeferredItem<BlockItem> RAW_VIBRANIUM_BLOCK = ITEMS.registerSimpleBlockItem(PalladiumBlocks.RAW_VIBRANIUM_BLOCK, properties -> properties.requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
 

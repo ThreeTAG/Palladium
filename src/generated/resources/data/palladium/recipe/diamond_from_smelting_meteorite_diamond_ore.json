@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "diamond",
+  "ingredient": "palladium:meteorite_diamond_ore",
+  "result": {
+    "count": 1,
+    "id": "minecraft:diamond"
+  }
+}

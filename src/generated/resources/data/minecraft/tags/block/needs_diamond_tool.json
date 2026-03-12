@@ -1,6 +1,7 @@
 {
   "values": [
-    "palladium:vibranium_ore",
+    "palladium:meteorite_vibranium_ore",
+    "palladium:meteorite_vibranium_vein",
     "palladium:vibranium_block",
     "palladium:raw_vibranium_block"
   ]

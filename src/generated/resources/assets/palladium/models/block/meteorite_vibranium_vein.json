@@ -1,0 +1,7 @@
+{
+  "parent": "palladium:block/cube_emissive_overlay",
+  "textures": {
+    "all": "palladium:block/meteorite_vibranium_vein",
+    "emissive": "palladium:block/meteorite_vibranium_vein_emissive"
+  }
+}

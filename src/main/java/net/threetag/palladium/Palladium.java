@@ -8,6 +8,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.threetag.palladium.attachment.PalladiumAttachments;
 import net.threetag.palladium.block.PalladiumBlocks;
@@ -41,6 +42,8 @@ import net.threetag.palladium.power.ability.unlocking.UnlockingHandlerSerializer
 import net.threetag.palladium.power.dampening.PowerDampeningSources;
 import net.threetag.palladium.power.provider.PowerProviders;
 import net.threetag.palladium.proxy.PalladiumProxy;
+import net.threetag.palladium.worldgen.biome.PalladiumBiomes;
+import net.threetag.palladium.worldgen.feature.PalladiumFeatures;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,6 +72,7 @@ public final class Palladium {
         PalladiumDialogActions.ACTIONS.register(modEventBus);
         PalladiumCriteriaTriggers.CRITERIA_TRIGGERS.register(modEventBus);
         PalladiumAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        PalladiumFeatures.FEATURES.register(modEventBus);
         EntityEffects.EFFECTS.register(modEventBus);
         KeyBindTypeSerializers.KEY_BIND_TYPES.register(modEventBus);
         UnlockingHandlerSerializers.UNLOCKING_HANDLERS.register(modEventBus);
@@ -91,6 +95,11 @@ public final class Palladium {
         if (ModList.get().isLoaded("geckolib")) {
             GeckoLibCompat.init(modEventBus);
         }
+    }
+
+    @SubscribeEvent
+    static void init(FMLCommonSetupEvent e) {
+        PalladiumBiomes.registerTerrablenderRegions();
     }
 
     @SubscribeEvent

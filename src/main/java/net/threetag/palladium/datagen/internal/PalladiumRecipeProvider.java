@@ -15,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -24,12 +25,13 @@ import net.threetag.palladium.flag.PalladiumFeatureFlags;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.tag.PalladiumItemTags;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class PalladiumRecipeProvider extends RecipeProvider {
 
-    public static final ImmutableList<ItemLike> VIBRANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_VIBRANIUM, PalladiumItems.VIBRANIUM_ORE);
+    public static final ImmutableList<ItemLike> VIBRANIUM_SMELTABLES = ImmutableList.of(PalladiumItems.RAW_VIBRANIUM, PalladiumItems.METEORITE_VIBRANIUM_ORE);
 
     public PalladiumRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
         super(registries, output);
@@ -55,6 +57,14 @@ public class PalladiumRecipeProvider extends RecipeProvider {
         this.nineBlockStorageRecipesWithCustomPacking(
                 RecipeCategory.MISC, PalladiumItems.VIBRANIUM_NUGGET, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT, Palladium.id("vibranium_ingot_vibranium_nuggets").toString(), "vibranium_ingot"
         );
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_COAL_ORE), RecipeCategory.MISC, Items.COAL, 0.1F, 200, "coal", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_IRON_ORE), RecipeCategory.MISC, Items.IRON_INGOT, 0.7F, 200, "iron_ingot", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_COPPER_ORE), RecipeCategory.MISC, Items.COPPER_INGOT, 0.7F, 200, "copper_ingot", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_GOLD_ORE), RecipeCategory.MISC, Items.GOLD_INGOT, 1F, 200, "gold_ingot", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_DIAMOND_ORE), RecipeCategory.MISC, Items.DIAMOND, 1F, 200, "diamond", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_LAPIS_ORE), RecipeCategory.MISC, Items.LAPIS_LAZULI, 0.2F, 200, "lapis_lazuli", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_REDSTONE_ORE), RecipeCategory.MISC, Items.REDSTONE, 0.7F, 200, "redstone", "_from_smelting");
+        this.oreCooking(RecipeSerializer.SMELTING_RECIPE, SmeltingRecipe::new, Collections.singletonList(PalladiumItems.METEORITE_EMERALD_ORE), RecipeCategory.MISC, Items.EMERALD, 1F, 200, "emerald", "_from_smelting");
         this.oreSmelting(VIBRANIUM_SMELTABLES, RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT, 1.5F, 400, "vibranium_ingot");
 
         // Fabrics

@@ -2,8 +2,9 @@ package net.threetag.palladium.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.Util;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.neoforged.api.distmarker.Dist;
@@ -65,9 +66,11 @@ import net.threetag.palladium.menu.PalladiumMenuTypes;
 import net.threetag.palladium.proxy.PalladiumClientProxy;
 import net.threetag.palladium.registry.PalladiumRegistries;
 import net.threetag.palladium.registry.PalladiumRegistryKeys;
+import net.threetag.palladium.worldgen.biome.PalladiumBiomes;
+import net.threetag.palladium.worldgen.feature.PalladiumConfiguredFeatures;
+import net.threetag.palladium.worldgen.feature.PalladiumPlacedFeatures;
 
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 @Mod(value = Palladium.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = Palladium.MOD_ID, value = Dist.CLIENT)
@@ -159,7 +162,12 @@ public class PalladiumClient {
 
     @SubscribeEvent
     static void gatherData(GatherDataEvent.Client e) {
-        var completableFuture = CompletableFuture.supplyAsync(PalladiumRegistries::createLookup, Util.backgroundExecutor());
+        e.createDatapackRegistryObjects(new RegistrySetBuilder()
+                .add(PalladiumRegistryKeys.POWER, context -> {
+                })
+                .add(Registries.CONFIGURED_FEATURE, PalladiumConfiguredFeatures::bootstrap)
+                .add(Registries.PLACED_FEATURE, PalladiumPlacedFeatures::bootstrap)
+                .add(Registries.BIOME, PalladiumBiomes::bootstrap));
 
         // Client
         e.createProvider(PalladiumLangProvider.English::new);
@@ -178,7 +186,8 @@ public class PalladiumClient {
         e.createProvider(PalladiumCustomizationCategoryProvider::new);
         e.createProvider(PalladiumFlightTypeProvider::new);
         e.createProvider(PalladiumRecipeProvider.Runner::new);
-        e.createProvider((output, lookupProvider) -> new PalladiumPowerTagProvider(output, completableFuture));
+        e.createProvider(PalladiumPowerTagProvider::new);
+        e.createProvider(PalladiumBiomeTagProvider::new);
     }
 
     @SubscribeEvent

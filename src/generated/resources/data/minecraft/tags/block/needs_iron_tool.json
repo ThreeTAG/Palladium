@@ -1,6 +1,10 @@
 {
   "values": [
     "palladium:meteorite_stone",
-    "palladium:meteorite_bricks"
+    "palladium:meteorite_bricks",
+    "palladium:meteorite_gold_ore",
+    "palladium:meteorite_redstone_ore",
+    "palladium:meteorite_emerald_ore",
+    "palladium:meteorite_diamond_ore"
   ]
 }

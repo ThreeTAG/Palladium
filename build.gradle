@@ -43,6 +43,11 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+
+    // Terrablender
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+    }
 }
 
 base {
@@ -116,6 +121,9 @@ dependencies {
     implementation("com.zigythebird:mochafloats:4.1.0") {
         transitive = false
     }
+
+    // Terrablender
+    implementation "com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-${terrablender_version}"
 
     // Accessories
     compileOnly "io.wispforest:accessories-neoforge:${accessories_version}"

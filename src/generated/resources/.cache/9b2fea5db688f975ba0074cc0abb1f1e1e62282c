@@ -1,11 +1,21 @@
-// 1.21.11	2026-03-07T21:04:57.3047179	Tags for minecraft:block mod id palladium
+// 1.21.11	2026-03-10T14:54:05.8344089	Tags for minecraft:block mod id palladium
 6ef8db1c032c5f149964f4dd505445c31af638fb data/c/tags/block/ores.json
-d935853c3e54ab69a4b7abaae6cd05020bdad17b data/c/tags/block/ores/vibranium.json
+5daeaf1e8d7d16f7a50c14fdbd43d2c76c63b504 data/c/tags/block/ores/vibranium.json
 5a9d846afbce4b815866ab948b11bbe720465d00 data/c/tags/block/storage_blocks.json
 0d1fe16525fbf342f3abe5bc8f3bc1ca03a1336f data/c/tags/block/storage_blocks/raw_vibranium.json
 9abdec2c0adf88b8700bb6391674a105dd1612ef data/c/tags/block/storage_blocks/vibranium.json
+a6b693d67ad5e1f9835c1a02d1679f273be32e38 data/minecraft/tags/block/coal_ores.json
+a420730265db60d74bf5ab0aa29219602c5fdefd data/minecraft/tags/block/copper_ores.json
+f9ce46d66b36df2f6737738827583fb102f447a9 data/minecraft/tags/block/diamond_ores.json
+cc729917cefa364920f46f354047f801211695d2 data/minecraft/tags/block/emerald_ores.json
+b79b97849eff02a162b208c9fdf0291b7347edc4 data/minecraft/tags/block/gold_ores.json
+6adddad14773d479f068e8c8572ae6f561c96279 data/minecraft/tags/block/iron_ores.json
+01671519dd546d7743c39dc4117a591ad27a2ddf data/minecraft/tags/block/lapis_ores.json
 225501824d189ccd4fd55874e05f35717ad8d8a3 data/minecraft/tags/block/mineable/axe.json
-ce549a7aa66824f34351022c79f045b9b3352804 data/minecraft/tags/block/mineable/pickaxe.json
-0004a48a81cb7be62ec68780c7aeb6078c5016fa data/minecraft/tags/block/needs_diamond_tool.json
-0e709b73d97608deb9515892a054ddd6e8ba5c04 data/minecraft/tags/block/needs_iron_tool.json
+d5cdb70eeca943c3ad87c217e0d0af661c88893b data/minecraft/tags/block/mineable/pickaxe.json
+794d06726df3987d0d8b4561f2dbedfb5feaa614 data/minecraft/tags/block/moss_replaceable.json
+b9187005ed4ee507076571e955969150edea88ea data/minecraft/tags/block/needs_diamond_tool.json
+3fc533c696aff1a5cead4df3340eb58b1cfbf721 data/minecraft/tags/block/needs_iron_tool.json
+881bf364b7a6230dcc0d805f613b15df635f1741 data/minecraft/tags/block/needs_stone_tool.json
+3ce97b45b6c358b758a3e967150880de5435398a data/minecraft/tags/block/redstone_ores.json
 cfab2ab481bf476a645d326b87627918009b9e50 data/palladium/tags/block/prevents_intangibility.json

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "group": "coal",
+  "ingredient": "palladium:meteorite_coal_ore",
+  "result": {
+    "count": 1,
+    "id": "minecraft:coal"
+  }
+}
