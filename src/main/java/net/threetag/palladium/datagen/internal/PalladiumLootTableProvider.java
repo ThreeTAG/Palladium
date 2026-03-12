@@ -41,7 +41,13 @@ public class PalladiumLootTableProvider extends LootTableProvider {
         protected void generate() {
             this.dropSelf(PalladiumBlocks.TAILORING_BENCH.get());
             this.dropSelf(PalladiumBlocks.METEORITE_STONE.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_STONE_STAIRS.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_STONE_WALL.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_STONE_SLAB.get());
             this.dropSelf(PalladiumBlocks.METEORITE_BRICKS.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_BRICK_STAIRS.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_BRICK_WALL.get());
+            this.dropSelf(PalladiumBlocks.METEORITE_BRICK_SLAB.get());
             this.add(PalladiumBlocks.METEORITE_VIBRANIUM_VEIN.get(), b -> this.createSilkTouchDispatchTable(
                     b,
                     this.applyExplosionCondition(

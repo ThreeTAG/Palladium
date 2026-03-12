@@ -1,4 +1,4 @@
-// 1.21.11	2026-03-10T15:44:09.0243356	Tags for minecraft:item mod id palladium
+// 1.21.11	2026-03-12T17:22:16.5109506	Tags for minecraft:item mod id palladium
 347c4c303c342cf80d2972a44ccca6bb46a5ad01 data/c/tags/item/dyed/black.json
 0583a5f29302c4cf17cd34015dbb36caf410d698 data/c/tags/item/dyed/blue.json
 b370981fcaee270bf7d937d23f5efdc42327a030 data/c/tags/item/dyed/brown.json
@@ -34,8 +34,11 @@ b79b97849eff02a162b208c9fdf0291b7347edc4 data/minecraft/tags/item/gold_ores.json
 6adddad14773d479f068e8c8572ae6f561c96279 data/minecraft/tags/item/iron_ores.json
 01671519dd546d7743c39dc4117a591ad27a2ddf data/minecraft/tags/item/lapis_ores.json
 3ce97b45b6c358b758a3e967150880de5435398a data/minecraft/tags/item/redstone_ores.json
+17d8a5225db88c4b1242c03f3ed6dcfff8c55204 data/minecraft/tags/item/slabs.json
+7b625fc905352ef23c117d803ab91358b578d034 data/minecraft/tags/item/stairs.json
 794d06726df3987d0d8b4561f2dbedfb5feaa614 data/minecraft/tags/item/stone_crafting_materials.json
 794d06726df3987d0d8b4561f2dbedfb5feaa614 data/minecraft/tags/item/stone_tool_materials.json
+5618cd2c72596eec870d0751de5b008791471701 data/minecraft/tags/item/walls.json
 347c4c303c342cf80d2972a44ccca6bb46a5ad01 data/palladium/tags/item/black_fabrics.json
 0583a5f29302c4cf17cd34015dbb36caf410d698 data/palladium/tags/item/blue_fabrics.json
 b370981fcaee270bf7d937d23f5efdc42327a030 data/palladium/tags/item/brown_fabrics.json

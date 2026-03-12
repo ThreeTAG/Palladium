@@ -61,9 +61,15 @@ public class PalladiumCreativeTabs {
         }
 
         if (e.getTabKey().equals(CreativeModeTabs.BUILDING_BLOCKS)) {
-            e.insertAfter(Items.CHISELED_TUFF_BRICKS.getDefaultInstance(), METEORITE_STONE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             e.insertAfter(Items.NETHERITE_BLOCK.getDefaultInstance(), VIBRANIUM_BLOCK.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            e.insertAfter(METEORITE_STONE.get().getDefaultInstance(), METEORITE_BRICKS.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(Items.CHISELED_TUFF_BRICKS.getDefaultInstance(), METEORITE_STONE.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_STONE.get().getDefaultInstance(), METEORITE_STONE_STAIRS.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_STONE_STAIRS.get().getDefaultInstance(), METEORITE_STONE_SLAB.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_STONE_SLAB.get().getDefaultInstance(), METEORITE_STONE_WALL.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_STONE_WALL.get().getDefaultInstance(), METEORITE_BRICKS.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_BRICKS.get().getDefaultInstance(), METEORITE_BRICK_STAIRS.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_BRICK_STAIRS.get().getDefaultInstance(), METEORITE_BRICK_SLAB.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            e.insertAfter(METEORITE_BRICK_SLAB.get().getDefaultInstance(), METEORITE_BRICK_WALL.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
 
         if (e.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {

@@ -44,6 +44,9 @@ public class PalladiumItemTagProvider extends ItemTagsProvider {
         this.tag(ItemTags.EMERALD_ORES).add(PalladiumItems.METEORITE_EMERALD_ORE.get());
         this.tag(ItemTags.LAPIS_ORES).add(PalladiumItems.METEORITE_LAPIS_ORE.get());
         this.tag(ItemTags.DIAMOND_ORES).add(PalladiumItems.METEORITE_DIAMOND_ORE.get());
+        this.tag(ItemTags.STAIRS).add(PalladiumItems.METEORITE_STONE_STAIRS.get(), PalladiumItems.METEORITE_BRICK_STAIRS.get());
+        this.tag(ItemTags.WALLS).add(PalladiumItems.METEORITE_STONE_WALL.get(), PalladiumItems.METEORITE_BRICK_WALL.get());
+        this.tag(ItemTags.SLABS).add(PalladiumItems.METEORITE_STONE_SLAB.get(), PalladiumItems.METEORITE_BRICK_SLAB.get());
 
         for (DyeColor color : DyeColor.values()) {
             this.tag(PalladiumItemTags.FABRIC_BY_COLOR.get(color)).add(PalladiumItems.FABRIC_BY_COLOR.get(color).get());

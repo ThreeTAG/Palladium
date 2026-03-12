@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "palladium:block/meteorite_brick_slab"
+    },
+    "type=double": {
+      "model": "palladium:block/meteorite_bricks"
+    },
+    "type=top": {
+      "model": "palladium:block/meteorite_brick_slab_top"
+    }
+  }
+}

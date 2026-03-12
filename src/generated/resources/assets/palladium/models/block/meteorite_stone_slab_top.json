@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "palladium:block/meteorite_stone",
+    "side": "palladium:block/meteorite_stone",
+    "top": "palladium:block/meteorite_stone"
+  }
+}

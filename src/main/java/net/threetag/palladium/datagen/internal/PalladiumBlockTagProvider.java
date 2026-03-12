@@ -24,7 +24,13 @@ public class PalladiumBlockTagProvider extends BlockTagsProvider {
         this.tag(BlockTags.MINEABLE_WITH_AXE).add(PalladiumBlocks.TAILORING_BENCH.get());
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
                 PalladiumBlocks.METEORITE_STONE.get(),
+                PalladiumBlocks.METEORITE_STONE_STAIRS.get(),
+                PalladiumBlocks.METEORITE_STONE_WALL.get(),
+                PalladiumBlocks.METEORITE_STONE_SLAB.get(),
                 PalladiumBlocks.METEORITE_BRICKS.get(),
+                PalladiumBlocks.METEORITE_BRICK_STAIRS.get(),
+                PalladiumBlocks.METEORITE_BRICK_WALL.get(),
+                PalladiumBlocks.METEORITE_BRICK_SLAB.get(),
                 PalladiumBlocks.METEORITE_VIBRANIUM_VEIN.get(),
                 PalladiumBlocks.METEORITE_COAL_ORE.get(),
                 PalladiumBlocks.METEORITE_IRON_ORE.get(),
@@ -45,7 +51,13 @@ public class PalladiumBlockTagProvider extends BlockTagsProvider {
         );
         this.tag(BlockTags.NEEDS_IRON_TOOL).add(
                 PalladiumBlocks.METEORITE_STONE.get(),
+                PalladiumBlocks.METEORITE_STONE_STAIRS.get(),
+                PalladiumBlocks.METEORITE_STONE_WALL.get(),
+                PalladiumBlocks.METEORITE_STONE_SLAB.get(),
                 PalladiumBlocks.METEORITE_BRICKS.get(),
+                PalladiumBlocks.METEORITE_BRICK_STAIRS.get(),
+                PalladiumBlocks.METEORITE_BRICK_WALL.get(),
+                PalladiumBlocks.METEORITE_BRICK_SLAB.get(),
                 PalladiumBlocks.METEORITE_GOLD_ORE.get(),
                 PalladiumBlocks.METEORITE_REDSTONE_ORE.get(),
                 PalladiumBlocks.METEORITE_EMERALD_ORE.get(),
@@ -68,5 +80,8 @@ public class PalladiumBlockTagProvider extends BlockTagsProvider {
         this.tag(PalladiumBlockTags.VIBRANIUM_ORES).add(PalladiumBlocks.METEORITE_VIBRANIUM_ORE.get());
         this.tag(Tags.Blocks.STORAGE_BLOCKS).addTags(PalladiumBlockTags.VIBRANIUM_STORAGE_BLOCKS, PalladiumBlockTags.RAW_VIBRANIUM_STORAGE_BLOCKS);
         this.tag(Tags.Blocks.ORES).addTags(PalladiumBlockTags.VIBRANIUM_ORES);
+        this.tag(BlockTags.STAIRS).add(PalladiumBlocks.METEORITE_STONE_STAIRS.get(), PalladiumBlocks.METEORITE_BRICK_STAIRS.get());
+        this.tag(BlockTags.WALLS).add(PalladiumBlocks.METEORITE_STONE_WALL.get(), PalladiumBlocks.METEORITE_BRICK_WALL.get());
+        this.tag(BlockTags.SLABS).add(PalladiumBlocks.METEORITE_STONE_SLAB.get(), PalladiumBlocks.METEORITE_BRICK_SLAB.get());
     }
 }

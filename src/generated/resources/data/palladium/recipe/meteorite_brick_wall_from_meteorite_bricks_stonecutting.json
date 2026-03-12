@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "palladium:meteorite_bricks",
+  "result": {
+    "count": 1,
+    "id": "palladium:meteorite_brick_wall"
+  }
+}

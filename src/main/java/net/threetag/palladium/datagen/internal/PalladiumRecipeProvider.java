@@ -49,7 +49,27 @@ public class PalladiumRecipeProvider extends RecipeProvider {
                 .pattern("SS")
                 .unlockedBy(getHasName(PalladiumBlocks.METEORITE_STONE), this.has(PalladiumBlocks.METEORITE_STONE))
                 .save(this.output);
+        this.stairBuilder(PalladiumItems.METEORITE_STONE_STAIRS, Ingredient.of(PalladiumItems.METEORITE_STONE))
+                .unlockedBy(getHasName(PalladiumItems.METEORITE_STONE), this.has(PalladiumItems.METEORITE_STONE))
+                .save(this.output);
+        this.slab(RecipeCategory.BUILDING_BLOCKS, PalladiumItems.METEORITE_STONE_SLAB, PalladiumItems.METEORITE_STONE);
+        this.wall(RecipeCategory.BUILDING_BLOCKS, PalladiumItems.METEORITE_STONE_WALL, PalladiumItems.METEORITE_STONE);
+        this.stairBuilder(PalladiumItems.METEORITE_BRICK_STAIRS, Ingredient.of(PalladiumItems.METEORITE_BRICKS))
+                .unlockedBy(getHasName(PalladiumItems.METEORITE_BRICKS), this.has(PalladiumItems.METEORITE_BRICKS))
+                .save(this.output);
+        this.slab(RecipeCategory.BUILDING_BLOCKS, PalladiumItems.METEORITE_BRICK_SLAB, PalladiumItems.METEORITE_BRICKS);
+        this.wall(RecipeCategory.BUILDING_BLOCKS, PalladiumItems.METEORITE_BRICK_WALL, PalladiumItems.METEORITE_BRICKS);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_STONE_STAIRS, PalladiumBlocks.METEORITE_STONE);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_STONE_WALL, PalladiumBlocks.METEORITE_STONE);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_STONE_SLAB, PalladiumBlocks.METEORITE_STONE, 2);
         this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICKS, PalladiumBlocks.METEORITE_STONE);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICK_STAIRS, PalladiumBlocks.METEORITE_STONE);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICK_WALL, PalladiumBlocks.METEORITE_STONE);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICK_SLAB, PalladiumBlocks.METEORITE_STONE, 2);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICK_STAIRS, PalladiumBlocks.METEORITE_BRICKS);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICK_WALL, PalladiumBlocks.METEORITE_BRICKS);
+        this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, PalladiumBlocks.METEORITE_BRICK_SLAB, PalladiumBlocks.METEORITE_BRICKS, 2);
+
         this.nineBlockStorageRecipes(RecipeCategory.MISC, PalladiumItems.RAW_VIBRANIUM, RecipeCategory.BUILDING_BLOCKS, PalladiumItems.RAW_VIBRANIUM_BLOCK);
         this.nineBlockStorageRecipesRecipesWithCustomUnpacking(
                 RecipeCategory.MISC, PalladiumItems.VIBRANIUM_INGOT, RecipeCategory.BUILDING_BLOCKS, PalladiumItems.VIBRANIUM_BLOCK, Palladium.id("vibranium_ingot_from_vibranium_block").toString(), "vibranium_ingot"

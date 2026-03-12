@@ -35,8 +35,14 @@ public class PalladiumModelProvider extends ModelProvider {
                                 .put(TextureSlot.WEST, TextureMapping.getBlockTexture(block, "_side"))
                                 .put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block, "_side")),
                         ModelTemplates.CUBE));
-        blockModels.createTrivialCube(PalladiumBlocks.METEORITE_STONE.get());
-        blockModels.createTrivialCube(PalladiumBlocks.METEORITE_BRICKS.get());
+        blockModels.family(PalladiumBlocks.METEORITE_STONE.get())
+                .stairs(PalladiumBlocks.METEORITE_STONE_STAIRS.get())
+                .wall(PalladiumBlocks.METEORITE_STONE_WALL.get())
+                .slab(PalladiumBlocks.METEORITE_STONE_SLAB.get());
+        blockModels.family(PalladiumBlocks.METEORITE_BRICKS.get())
+                .stairs(PalladiumBlocks.METEORITE_BRICK_STAIRS.get())
+                .wall(PalladiumBlocks.METEORITE_BRICK_WALL.get())
+                .slab(PalladiumBlocks.METEORITE_BRICK_SLAB.get());
         blockModels.createTrivialCube(PalladiumBlocks.METEORITE_COAL_ORE.get());
         blockModels.createTrivialCube(PalladiumBlocks.METEORITE_IRON_ORE.get());
         blockModels.createTrivialCube(PalladiumBlocks.METEORITE_COPPER_ORE.get());

@@ -1,4 +1,4 @@
-// 1.21.11	2026-03-10T14:54:05.8344089	Tags for minecraft:block mod id palladium
+// 1.21.11	2026-03-12T17:22:16.5119651	Tags for minecraft:block mod id palladium
 6ef8db1c032c5f149964f4dd505445c31af638fb data/c/tags/block/ores.json
 5daeaf1e8d7d16f7a50c14fdbd43d2c76c63b504 data/c/tags/block/ores/vibranium.json
 5a9d846afbce4b815866ab948b11bbe720465d00 data/c/tags/block/storage_blocks.json
@@ -12,10 +12,13 @@ b79b97849eff02a162b208c9fdf0291b7347edc4 data/minecraft/tags/block/gold_ores.jso
 6adddad14773d479f068e8c8572ae6f561c96279 data/minecraft/tags/block/iron_ores.json
 01671519dd546d7743c39dc4117a591ad27a2ddf data/minecraft/tags/block/lapis_ores.json
 225501824d189ccd4fd55874e05f35717ad8d8a3 data/minecraft/tags/block/mineable/axe.json
-d5cdb70eeca943c3ad87c217e0d0af661c88893b data/minecraft/tags/block/mineable/pickaxe.json
+84c43561ddec68a990de127ca6babb63016ab190 data/minecraft/tags/block/mineable/pickaxe.json
 794d06726df3987d0d8b4561f2dbedfb5feaa614 data/minecraft/tags/block/moss_replaceable.json
 b9187005ed4ee507076571e955969150edea88ea data/minecraft/tags/block/needs_diamond_tool.json
-3fc533c696aff1a5cead4df3340eb58b1cfbf721 data/minecraft/tags/block/needs_iron_tool.json
+d2bc482fd5c462a3a8d8aff6cfcaa6b6884f225a data/minecraft/tags/block/needs_iron_tool.json
 881bf364b7a6230dcc0d805f613b15df635f1741 data/minecraft/tags/block/needs_stone_tool.json
 3ce97b45b6c358b758a3e967150880de5435398a data/minecraft/tags/block/redstone_ores.json
+17d8a5225db88c4b1242c03f3ed6dcfff8c55204 data/minecraft/tags/block/slabs.json
+7b625fc905352ef23c117d803ab91358b578d034 data/minecraft/tags/block/stairs.json
+5618cd2c72596eec870d0751de5b008791471701 data/minecraft/tags/block/walls.json
 cfab2ab481bf476a645d326b87627918009b9e50 data/palladium/tags/block/prevents_intangibility.json

@@ -98,7 +98,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Blocks
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Tailoring Bench");
             this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteorite Stone");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_STAIRS, "Meteorite Stone Stairs");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_WALL, "Meteorite Stone Wall");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_SLAB, "Meteorite Stone Slab");
             this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteorite Bricks");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_STAIRS, "Meteorite Brick Stairs");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_WALL, "Meteorite Brick Wall");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_SLAB, "Meteorite Brick Slab");
             this.addBlock(PalladiumBlocks.METEORITE_COAL_ORE, "Meteorite Coal Ore");
             this.addBlock(PalladiumBlocks.METEORITE_IRON_ORE, "Meteorite Iron Ore");
             this.addBlock(PalladiumBlocks.METEORITE_COPPER_ORE, "Meteorite Copper Ore");
@@ -263,7 +269,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Blocks
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch");
             this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteoritengestein");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_STAIRS, "Meteoritengesteintreppe");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_WALL, "Meteoritengesteinmauer");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_SLAB, "Meteoritengesteinstufe");
             this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteoritenziegel");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_STAIRS, "Meteoritenziegeltreppe");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_WALL, "Meteoritenziegelmauer");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_SLAB, "Meteoritenziegelstufe");
             this.addBlock(PalladiumBlocks.METEORITE_COAL_ORE, "Meteoriten-Steinkohle");
             this.addBlock(PalladiumBlocks.METEORITE_IRON_ORE, "Meteoriten-Eisenerz");
             this.addBlock(PalladiumBlocks.METEORITE_COPPER_ORE, "Meteoriten-Kupferz");
@@ -429,7 +441,13 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             // Blocks
             this.addBlock(PalladiumBlocks.TAILORING_BENCH, "Schneidertisch’n");
             this.addBlock(PalladiumBlocks.METEORITE_STONE, "Meteoriitngestehn");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_STAIRS, "Meteoriitngestehndrebbe");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_WALL, "Meteoriitngestehnmauor");
+            this.addBlock(PalladiumBlocks.METEORITE_STONE_SLAB, "Meteoriitngestehnschdufe");
             this.addBlock(PalladiumBlocks.METEORITE_BRICKS, "Meteoriitnzieschl");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_STAIRS, "Meteoriitnzieschldrebbe");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_WALL, "Meteoriitnzieschlmauor");
+            this.addBlock(PalladiumBlocks.METEORITE_BRICK_SLAB, "Meteoriitnzieschlschdufe");
             this.addBlock(PalladiumBlocks.METEORITE_COAL_ORE, "Meteoriitn-Schdeengohle");
             this.addBlock(PalladiumBlocks.METEORITE_IRON_ORE, "Meteoriitn-Eisnärds");
             this.addBlock(PalladiumBlocks.METEORITE_COPPER_ORE, "Meteoriitn-Gupforrärds");

@@ -1,7 +1,13 @@
 {
   "values": [
     "palladium:meteorite_stone",
+    "palladium:meteorite_stone_stairs",
+    "palladium:meteorite_stone_wall",
+    "palladium:meteorite_stone_slab",
     "palladium:meteorite_bricks",
+    "palladium:meteorite_brick_stairs",
+    "palladium:meteorite_brick_wall",
+    "palladium:meteorite_brick_slab",
     "palladium:meteorite_vibranium_vein",
     "palladium:meteorite_coal_ore",
     "palladium:meteorite_iron_ore",

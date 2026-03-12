@@ -11,6 +11,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.threetag.palladium.Palladium;
 import net.threetag.palladium.flag.PalladiumFeatureFlags;
 
+import java.util.function.Supplier;
+
 public class PalladiumBlocks {
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Palladium.MOD_ID);
@@ -26,6 +28,9 @@ public class PalladiumBlocks {
             .strength(4.0F, 8.0F)
             .sound(SoundType.DEEPSLATE)
             .requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredBlock<Block> METEORITE_STONE_STAIRS = registerStairs("meteorite_stone_stairs", METEORITE_STONE);
+    public static final DeferredBlock<Block> METEORITE_STONE_WALL = BLOCKS.registerBlock("meteorite_stone_wall", WallBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(METEORITE_STONE.get()).forceSolidOn());
+    public static final DeferredBlock<Block> METEORITE_STONE_SLAB = BLOCKS.registerBlock("meteorite_stone_slab", SlabBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(METEORITE_STONE.get()));
     public static final DeferredBlock<Block> METEORITE_BRICKS = BLOCKS.registerSimpleBlock("meteorite_bricks", p -> p
             .mapColor(MapColor.COLOR_BLACK)
             .instrument(NoteBlockInstrument.BASEDRUM)
@@ -33,6 +38,9 @@ public class PalladiumBlocks {
             .strength(4.0F, 8.0F)
             .sound(SoundType.DEEPSLATE)
             .requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+    public static final DeferredBlock<Block> METEORITE_BRICK_STAIRS = registerStairs("meteorite_brick_stairs", METEORITE_BRICKS);
+    public static final DeferredBlock<Block> METEORITE_BRICK_WALL = BLOCKS.registerBlock("meteorite_brick_wall", WallBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(METEORITE_BRICKS.get()).forceSolidOn());
+    public static final DeferredBlock<Block> METEORITE_BRICK_SLAB = BLOCKS.registerBlock("meteorite_brick_slab", SlabBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(METEORITE_BRICKS.get()));
     public static final DeferredBlock<Block> METEORITE_COAL_ORE = BLOCKS.registerBlock("meteorite_coal_ore", p -> new DropExperienceBlock(UniformInt.of(0, 2), p), (p) -> BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_ORE)
             .mapColor(MapColor.COLOR_BLACK).strength(5.5F, 4F).sound(SoundType.DEEPSLATE));
     public static final DeferredBlock<Block> METEORITE_IRON_ORE = BLOCKS.registerBlock("meteorite_iron_ore", p -> new DropExperienceBlock(ConstantInt.of(0), p), (p) -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)
@@ -70,5 +78,9 @@ public class PalladiumBlocks {
             .requiresCorrectToolForDrops()
             .strength(30F, 1200.0F)
             .requiredFeatures(PalladiumFeatureFlags.MATERIALS_VIBRANIUM));
+
+    private static DeferredBlock<Block> registerStairs(String name, Supplier<Block> baseBlock) {
+        return BLOCKS.registerBlock(name, props -> new StairBlock(baseBlock.get().defaultBlockState(), props), () -> BlockBehaviour.Properties.ofFullCopy(baseBlock.get()));
+    }
 
 }

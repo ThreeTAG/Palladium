@@ -1,5 +1,8 @@
-// 1.21.11	2026-03-10T14:54:05.8259574	Loot Tables
+// 1.21.11	2026-03-12T17:22:16.5058727	Loot Tables
 63d917b75adefd032baa96ff65e2993ae680324e data/palladium/loot_table/blocks/meteorite_bricks.json
+6dac00095cf0c06e37815713f269b4c76c90bbc2 data/palladium/loot_table/blocks/meteorite_brick_slab.json
+c578f1311b0329cbcf15e5745c232e75531f6125 data/palladium/loot_table/blocks/meteorite_brick_stairs.json
+bc3199bdb3d7a204c99502e937801ae88fdf6850 data/palladium/loot_table/blocks/meteorite_brick_wall.json
 7a3e61284667d3c5c19a423ed7270fa90b2c4f3c data/palladium/loot_table/blocks/meteorite_coal_ore.json
 1fc332f5b46fb6f08cb0c3bc58585452691281d6 data/palladium/loot_table/blocks/meteorite_copper_ore.json
 b39d486c84243254e810e52f0003eafc9025647b data/palladium/loot_table/blocks/meteorite_diamond_ore.json
@@ -9,6 +12,9 @@ b606488e1e1a6aa3ab87837f56d2f782f25d0cdd data/palladium/loot_table/blocks/meteor
 bc28b24fbda19b8d6b5ee3281a21f39750c51b07 data/palladium/loot_table/blocks/meteorite_lapis_ore.json
 fe871cb5133d9ec131878658672d53040255644b data/palladium/loot_table/blocks/meteorite_redstone_ore.json
 819ea109beacbcdc26fe6a40ce27f3d38eb5ab49 data/palladium/loot_table/blocks/meteorite_stone.json
+bae70867869c0e458437e0d4b22e8eac74eb2a73 data/palladium/loot_table/blocks/meteorite_stone_slab.json
+ba710e2b1be8051256a9e33e944cb19c7ea517f9 data/palladium/loot_table/blocks/meteorite_stone_stairs.json
+7f3031443f7e49a9f8039d51fbf07acc920a8441 data/palladium/loot_table/blocks/meteorite_stone_wall.json
 78f794d2b387bd6bc4c99d6a8285b4e0a4b41cd9 data/palladium/loot_table/blocks/meteorite_vibranium_ore.json
 0e340eba9ffa4daec6b8f2c29ed0d2c752d6e676 data/palladium/loot_table/blocks/meteorite_vibranium_vein.json
 268d81ae8ccd88bf7eccde86bee822d7d29dff9f data/palladium/loot_table/blocks/raw_vibranium_block.json
