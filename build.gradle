@@ -123,7 +123,7 @@ dependencies {
     }
 
     // Terrablender
-    implementation "com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-${terrablender_version}"
+    jarJar(implementation("com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-${terrablender_version}"))
 
     // Accessories
     compileOnly "io.wispforest:accessories-neoforge:${accessories_version}"
