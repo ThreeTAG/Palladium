@@ -62,7 +62,7 @@ public class AimAbility extends Ability {
         @Override
         public void addDocumentation(CodecDocumentationBuilder<Ability, AimAbility> builder, HolderLookup.Provider provider) {
             builder.setDescription("Allows the player to aim their arms.")
-                    .addOptional("arm", SettingType.enumList(ArmSetting.values()), "The arm(s) that should point.", ArmSetting.MAIN_ARM)
+                    .addOptional("arm", TYPE_ARM_SETTING, "The arm(s) that should point.", ArmSetting.MAIN_ARM)
                     .addExampleObject(new AimAbility(ArmSetting.MAIN_ARM, AbilityProperties.BASIC, AbilityStateManager.EMPTY, List.of()));
         }
     }

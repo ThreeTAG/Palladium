@@ -1,0 +1,16 @@
+{
+  "name": "Projectile Test",
+  "icon": "minecraft:arrow",
+  "abilities": {
+    "main_arm": {
+      "type": "palladium:projectile",
+      "entity_type": "minecraft:snowball",
+      "state": {
+        "enabling": {
+          "type": "palladium:key_bind",
+          "behaviour": "action"
+        }
+      }
+    }
+  }
+}

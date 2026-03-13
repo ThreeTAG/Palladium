@@ -1,6 +1,7 @@
 package net.threetag.palladium.documentation;
 
 import net.minecraft.core.HolderLookup;
+import net.threetag.palladium.entity.ArmSetting;
 import net.threetag.palladium.entity.PlayerSlot;
 import net.threetag.palladium.entity.flight.SwingingFlightType;
 import net.threetag.palladium.util.NumberComparator;
@@ -63,7 +64,9 @@ public interface Documented<T, R extends T> {
     SettingType TYPE_DIALOG_ACTION = SettingType.simple("Dialog Action");
     SettingType TYPE_ITEM_STACK = SettingType.simple("Item / ItemStack");
     SettingType TYPE_ATTRIBUTE_MODIFIER = SettingType.simple("Attribute Modifier (attribute*, amount*, operation*, id)");
+    SettingType TYPE_ARM_SETTING = SettingType.enumList(ArmSetting.values());
 
+    SettingType TYPE_ENTITY_TYPE = SettingType.simple("Entity Type ID");
     SettingType TYPE_ATTRIBUTE = SettingType.simple("Attribute ID");
     SettingType TYPE_DAMAGE_TYPE = SettingType.simple("Damage Type ID");
     SettingType TYPE_PARTICLE_TYPE = SettingType.simple("Particle Type ID");

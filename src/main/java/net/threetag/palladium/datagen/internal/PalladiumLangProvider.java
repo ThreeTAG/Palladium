@@ -152,7 +152,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.INVISIBILITY, "Invisibility");
             this.addAbility(AbilitySerializers.BEAM, "Energy Beam");
             this.addAbility(AbilitySerializers.SIZE, "Size");
-//            this.addAbility(AbilitySerializers.PROJECTILE, "Projectile");
+            this.addAbility(AbilitySerializers.PROJECTILE, "Projectile");
             this.addAbility(AbilitySerializers.SKIN_CHANGE, "Skin Change");
             this.addAbility(AbilitySerializers.AIM, "Aim");
             this.addAbility(AbilitySerializers.HIDE_MODEL_PART, "Hide Body Part");
@@ -323,7 +323,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.INVISIBILITY, "Unsichtbarkeit");
             this.addAbility(AbilitySerializers.BEAM, "Energiestrahl");
             this.addAbility(AbilitySerializers.SIZE, "Größe");
-//            this.addAbility(AbilitySerializers.PROJECTILE, "Projektil");
+            this.addAbility(AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
             this.addAbility(AbilitySerializers.AIM, "Zielen");
             this.addAbility(AbilitySerializers.HIDE_MODEL_PART, "Körperteile verstecken");
@@ -492,7 +492,7 @@ public abstract class PalladiumLangProvider extends LanguageProvider {
             this.addAbility(AbilitySerializers.INVISIBILITY, "Unsischtbarkeet");
             this.addAbility(AbilitySerializers.BEAM, "Energiestrahl");
             this.addAbility(AbilitySerializers.SIZE, "Größe");
-//            this.addAbility(AbilitySerializers.PROJECTILE, "Projektil");
+            this.addAbility(AbilitySerializers.PROJECTILE, "Projektil");
             this.addAbility(AbilitySerializers.SKIN_CHANGE, "Skin Änderung");
             this.addAbility(AbilitySerializers.AIM, "Zielen");
             this.addAbility(AbilitySerializers.HIDE_MODEL_PART, "Görperdeile versteggen");

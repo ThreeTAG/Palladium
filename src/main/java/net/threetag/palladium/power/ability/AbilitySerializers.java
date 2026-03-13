@@ -19,7 +19,7 @@ public class AbilitySerializers {
     public static final DeferredHolder<AbilitySerializer<?>, InvisibilityAbility.Serializer> INVISIBILITY = ABILITIES.register("invisibility", InvisibilityAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, BeamAbility.Serializer> BEAM = ABILITIES.register("beam", BeamAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, SizeAbility.Serializer> SIZE = ABILITIES.register("size", SizeAbility.Serializer::new);
-//    public static final DeferredHolder<AbilitySerializer<?>, ProjectileAbility.Serializer> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility.Serializer::new);
+    public static final DeferredHolder<AbilitySerializer<?>, ProjectileAbility.Serializer> PROJECTILE = ABILITIES.register("projectile", ProjectileAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, SkinChangeAbility.Serializer> SKIN_CHANGE = ABILITIES.register("skin_change", SkinChangeAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, AimAbility.Serializer> AIM = ABILITIES.register("aim", AimAbility.Serializer::new);
     public static final DeferredHolder<AbilitySerializer<?>, HideModelPartAbility.Serializer> HIDE_MODEL_PART = ABILITIES.register("hide_model_part", HideModelPartAbility.Serializer::new);
