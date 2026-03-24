@@ -1,4 +1,5 @@
-- Fixed flight animations again
-- Added string_property condition
-- Added support to invert palladium.power command entity predicate
-- Add ability reference ID to ability descriptions if addon dev mode is enabled
+- Fixed abilities not working with mouse buttons
+- Fixed playsound ability sometimes playing forever after ability being stopped
+- Fixed power screen crashing with too many abilities (#200)
+- Allow transparency for custom ability wheel textures
+- Added ukrainian & russian translations (@RunnyHero)
