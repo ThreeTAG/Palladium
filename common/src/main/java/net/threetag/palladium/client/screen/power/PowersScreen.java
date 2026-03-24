@@ -104,10 +104,16 @@ public class PowersScreen extends Screen {
                             type = TreePowerTab.canBeTree(holder) ? Power.GuiDisplayType.TREE : Power.GuiDisplayType.LIST;
                         }
 
+                        PowerTab tab = null;
+
                         if (type == Power.GuiDisplayType.TREE)
-                            this.tabs.add(TreePowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+                            tab = TreePowerTab.create(this.minecraft, this, i.getAndIncrement(), holder);
                         else
-                            this.tabs.add(ListPowerTab.create(this.minecraft, this, i.getAndIncrement(), holder));
+                            tab = ListPowerTab.create(this.minecraft, this, i.getAndIncrement(), holder);
+
+                        if (tab != null) {
+                            this.tabs.add(tab);
+                        }
                     }
                 }));
 
