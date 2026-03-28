@@ -1,10 +1,12 @@
 package net.threetag.palladium.compat.jei.multiversalvariants;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.item.MultiversalExtrapolatorItem;
 import net.threetag.palladium.item.PalladiumItems;
 import net.threetag.palladium.multiverse.MultiversalItemVariants;
@@ -59,13 +61,17 @@ public class MultiversalVariantRecipe {
         for (MultiversalItemVariants variants : MultiversalItemVariantsManager.getInstance(level).getEntries().values()) {
             for (ResourceLocation category : variants.getCategories()) {
                 for (Item item : variants.getItemsOfCategory(category)) {
-                    List<Item> inputs = new ArrayList<>();
-                    for (Universe universe : multiverse.getUniverses().values()) {
-                        inputs.addAll(variantsManager.getVariantsOf(item, universe));
-                    }
+                    try {
+                        List<Item> inputs = new ArrayList<>();
+                        for (Universe universe : multiverse.getUniverses().values()) {
+                            inputs.addAll(variantsManager.getVariantsOf(item, universe));
+                        }
 
-                    if (!inputs.isEmpty()) {
-                        recipes.add(new MultiversalVariantRecipe(level, inputs, variantsManager.getFirstUniverseIdOfItem(item), item.getDefaultInstance()));
+                        if (!inputs.isEmpty()) {
+                            recipes.add(new MultiversalVariantRecipe(level, inputs, variantsManager.getFirstUniverseIdOfItem(item), item.getDefaultInstance()));
+                        }
+                    } catch (Exception e) {
+                        AddonPackLog.error("Error creating JEI entry for multiversal variant %s: %s", BuiltInRegistries.ITEM.getKey(item), e.getMessage());
                     }
                 }
             }
