@@ -28,16 +28,18 @@ public abstract class TailoringRecipe implements Recipe<Inventory> {
     protected final Map<EquipmentSlot, ItemStack> results;
     protected final List<SizedIngredient> ingredients;
     protected final Ingredient toolIngredient;
+    protected final boolean consumeTool;
     protected final ResourceLocation toolIcon;
     protected final ResourceLocation categoryId;
     protected final boolean requiresUnlocking;
 
     public TailoringRecipe(ResourceLocation id, Map<EquipmentSlot, ItemStack> results, List<SizedIngredient> ingredients,
-                           Ingredient toolIngredient, ResourceLocation toolIcon, ResourceLocation categoryId, boolean requiresUnlocking) {
+                           Ingredient toolIngredient, boolean consumeTool, ResourceLocation toolIcon, ResourceLocation categoryId, boolean requiresUnlocking) {
         this.id = id;
         this.results = results;
         this.ingredients = ingredients;
         this.toolIngredient = toolIngredient;
+        this.consumeTool = consumeTool;
         this.toolIcon = toolIcon;
         this.categoryId = categoryId;
         this.requiresUnlocking = requiresUnlocking;
@@ -76,6 +78,10 @@ public abstract class TailoringRecipe implements Recipe<Inventory> {
 
     public Ingredient getToolIngredient() {
         return toolIngredient;
+    }
+
+    public boolean consumesTool() {
+        return this.consumeTool;
     }
 
     @Nullable

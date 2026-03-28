@@ -84,7 +84,9 @@ public class TailoringMenu extends AbstractContainerMenu {
                 takenStacks.add(sizedIngredient.take(player.getInventory()));
             }
 
-            if (player instanceof ServerPlayer serverPlayer) {
+            if (recipe.consumesTool()) {
+                this.toolSlotContainer.getItem(0).shrink(1);
+            } else if (player instanceof ServerPlayer serverPlayer) {
                 var tool = this.toolSlotContainer.getItem(0);
                 tool.hurtAndBreak((int) recipe.getResults().values().stream().filter(s -> !s.isEmpty()).count(), serverPlayer, pl -> this.toolSlotContainer.clearContent());
             }

@@ -24,9 +24,9 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
     private final SuitSet suitSet;
 
     public SuitSetTailoringRecipe(ResourceLocation id, SuitSet suitSet, List<SizedIngredient> ingredients,
-                                  Ingredient toolIngredient, ResourceLocation toolIcon, ResourceLocation categoryId,
+                                  Ingredient toolIngredient, boolean consumeTool, ResourceLocation toolIcon, ResourceLocation categoryId,
                                   boolean requiresUnlocking) {
-        super(id, buildResults(suitSet), ingredients, toolIngredient, toolIcon, categoryId, requiresUnlocking);
+        super(id, buildResults(suitSet), ingredients, toolIngredient, consumeTool, toolIcon, categoryId, requiresUnlocking);
         this.suitSet = suitSet;
     }
 
@@ -78,6 +78,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
                     suitSet,
                     ingredients,
                     toolIngredient,
+                    GsonHelper.getAsBoolean(serializedRecipe, "consume_tool", false),
                     GsonUtil.getAsResourceLocation(serializedRecipe, "tool_icon", null),
                     GsonUtil.getAsResourceLocation(serializedRecipe, "category", null),
                     GsonHelper.getAsBoolean(serializedRecipe, "requires_unlocking", true)
@@ -106,6 +107,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
                     suitSet,
                     ingredients,
                     Ingredient.fromNetwork(buffer),
+                    buffer.readBoolean(),
                     buffer.readNullable(FriendlyByteBuf::readResourceLocation),
                     buffer.readNullable(FriendlyByteBuf::readResourceLocation),
                     buffer.readBoolean()
@@ -117,6 +119,7 @@ public class SuitSetTailoringRecipe extends TailoringRecipe {
             buffer.writeResourceLocation(SuitSet.REGISTRY.getKey(recipe.suitSet));
             buffer.writeCollection(recipe.ingredients, (buf, ingredient) -> ingredient.toNetwork(buf));
             recipe.toolIngredient.toNetwork(buffer);
+            buffer.writeBoolean(recipe.consumeTool);
             buffer.writeNullable(recipe.toolIcon, FriendlyByteBuf::writeResourceLocation);
             buffer.writeNullable(recipe.categoryId, FriendlyByteBuf::writeResourceLocation);
             buffer.writeBoolean(recipe.requiresUnlocking);
