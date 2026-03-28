@@ -86,7 +86,7 @@ jobs:
             pehkui(optional){modrinth:t5W7Jfwy}{curseforge:319596}
 
       - name: Send SquirrelControl Update
-        uses: tyrrrz/action-http-request@master
+        uses: tyrrrz/action-http-request@1.1.4
         with:
           url: https://squirrelcontrol.threetag.net/api/mod-update-post
           method: POST

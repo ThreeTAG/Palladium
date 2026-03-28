@@ -24,7 +24,7 @@ public class PalladiumMixinPlugin implements IMixinConfigPlugin {
         HAS_CURIOS = hasClass("top.theillusivec4.curios.api.CuriosApi");
         HAS_GECKO = hasClass("software.bernie.geckolib.renderer.GeoArmorRenderer");
         HAS_QUILT = hasClass("org.quiltmc.qsl.resource.loader.impl.ResourceLoaderImpl");
-        HAS_SODIUM = hasClass("net.caffeinemc.mods.sodium.client.render.immediate.model.EntityRenderer");
+        HAS_SODIUM = hasClass("me.jellysquid.mods.sodium.client.render.immediate.model.EntityRenderer");
     }
 
     @Override
