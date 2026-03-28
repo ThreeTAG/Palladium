@@ -1,6 +1,7 @@
 package net.threetag.palladium.util.json;
 
 import com.google.gson.*;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -660,8 +661,18 @@ public class GsonUtil {
             }
 
             Item item = BuiltInRegistries.ITEM.get(id);
+            var stack = new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
 
-            return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
+            if (GsonHelper.isValidNode(json, "nbt")) {
+                try {
+                    var nbt = TagParser.parseTag(GsonHelper.getAsJsonObject(json, "nbt").toString());
+                    stack.setTag(nbt);
+                } catch (CommandSyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            return stack;
         } else {
             throw new JsonParseException("Item stack definition must either be a primitive or an object");
         }
