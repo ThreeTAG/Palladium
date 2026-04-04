@@ -3,17 +3,38 @@ package net.threetag.palladium.client.dynamictexture.transformer;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.util.context.DataContext;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
-public record AlphaMaskTextureTransformer(String maskLocation) implements ITextureTransformer {
+public final class AlphaMaskTextureTransformer implements ITextureTransformer {
+
+    private final String maskLocation;
+    private final List<ResourceLocation> reported = new ArrayList<>();
+
+    public AlphaMaskTextureTransformer(String maskLocation) {
+        this.maskLocation = maskLocation;
+    }
 
     @Override
     public NativeImage transform(DataContext context, NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        NativeImage overlay = NativeImage.read(manager.getResource(new ResourceLocation(stringConverter.apply(this.maskLocation))).get().open());
+        var overlayPath = new ResourceLocation(stringConverter.apply(this.maskLocation));
+        var overlayResource = manager.getResource(overlayPath);
+
+        if (overlayResource.isEmpty()) {
+            if (!this.reported.contains(overlayPath)) {
+                this.reported.add(overlayPath);
+                AddonPackLog.error("Missing alpha mask texture %s", overlayPath);
+            }
+            return texture;
+        }
+
+        NativeImage overlay = NativeImage.read(overlayResource.get().open());
 
         for (int y = 0; y < overlay.getHeight(); ++y) {
             for (int x = 0; x < overlay.getWidth(); ++x) {
@@ -35,4 +56,5 @@ public record AlphaMaskTextureTransformer(String maskLocation) implements ITextu
 
         return texture;
     }
+
 }

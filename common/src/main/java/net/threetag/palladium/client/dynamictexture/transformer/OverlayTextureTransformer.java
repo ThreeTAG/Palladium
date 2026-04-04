@@ -4,16 +4,40 @@ import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.FastColor;
+import net.threetag.palladium.addonpack.log.AddonPackLog;
 import net.threetag.palladium.util.context.DataContext;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
-public record OverlayTextureTransformer(String overlayLocation, boolean ignoreBlank) implements ITextureTransformer {
+public final class OverlayTextureTransformer implements ITextureTransformer {
+
+    private final String overlayLocation;
+    private final boolean ignoreBlank;
+    private final List<ResourceLocation> reported = new ArrayList<>();
+
+    public OverlayTextureTransformer(String overlayLocation, boolean ignoreBlank) {
+        this.overlayLocation = overlayLocation;
+        this.ignoreBlank = ignoreBlank;
+    }
 
     @Override
     public NativeImage transform(DataContext context, NativeImage texture, ResourceManager manager, Function<String, String> stringConverter) throws IOException {
-        NativeImage overlay = NativeImage.read(manager.getResource(new ResourceLocation(stringConverter.apply(this.overlayLocation))).get().open());
+        var overlayPath = new ResourceLocation(stringConverter.apply(this.overlayLocation));
+        var overlayResource = manager.getResource(overlayPath);
+
+        if (overlayResource.isEmpty()) {
+            if (!this.reported.contains(overlayPath)) {
+                this.reported.add(overlayPath);
+                AddonPackLog.error("Missing overlay texture %s", overlayPath);
+            }
+            return texture;
+        }
+
+        NativeImage overlay = NativeImage.read(overlayResource.get().open());
 
         for (int y = 0; y < overlay.getHeight(); ++y) {
             for (int x = 0; x < overlay.getWidth(); ++x) {
@@ -67,4 +91,34 @@ public record OverlayTextureTransformer(String overlayLocation, boolean ignoreBl
             texture.setPixelRGBA(x, y, FastColor.ABGR32.color(u, v, w, z));
         }
     }
+
+    public String overlayLocation() {
+        return overlayLocation;
+    }
+
+    public boolean ignoreBlank() {
+        return ignoreBlank;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (OverlayTextureTransformer) obj;
+        return Objects.equals(this.overlayLocation, that.overlayLocation) &&
+                this.ignoreBlank == that.ignoreBlank;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(overlayLocation, ignoreBlank);
+    }
+
+    @Override
+    public String toString() {
+        return "OverlayTextureTransformer[" +
+                "overlayLocation=" + overlayLocation + ", " +
+                "ignoreBlank=" + ignoreBlank + ']';
+    }
+
 }
