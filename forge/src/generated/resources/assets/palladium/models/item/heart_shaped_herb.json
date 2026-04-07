@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "palladium:block/heart_shaped_herb"
-  }
-}

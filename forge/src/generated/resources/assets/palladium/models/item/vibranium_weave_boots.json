@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "minecraft:item/leather_boots",
-    "layer1": "palladium:item/vibranium_weave_boots_overlay"
-  }
-}

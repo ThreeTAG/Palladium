@@ -1,5 +1,0 @@
-- Fixed abilities not working with mouse buttons
-- Fixed playsound ability sometimes playing forever after ability being stopped
-- Fixed power screen crashing with too many abilities (#200)
-- Allow transparency for custom ability wheel textures
-- Added ukrainian & russian translations (@RunnyHero)

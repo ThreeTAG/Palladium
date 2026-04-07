@@ -1,9 +1,0 @@
-{
-  "type": "palladium:lightning",
-  "spacing": 1,
-  "lifetime": 20,
-  "glow_color": "#ff0000",
-  "amount": 7,
-  "spread_x": 1,
-  "spread_y": 1
-}

@@ -1,4 +1,0 @@
-{
-  "textures": "test:textures/models/armor/dirt.png",
-  "model_layers": "test:player#thick_armor"
-}

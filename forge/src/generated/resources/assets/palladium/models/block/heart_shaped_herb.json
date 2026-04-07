@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cross",
-  "textures": {
-    "cross": "palladium:block/heart_shaped_herb"
-  }
-}
